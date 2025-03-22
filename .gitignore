@@ -1,0 +1,7 @@
+build/
+__pycache__/
+
+parse_pdf.py
+Python Geospatial Development, 2nd Edition.pdf
+sorted_collection.py
+

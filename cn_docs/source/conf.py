@@ -18,6 +18,7 @@ extensions = [
     'sphinx.ext.autodoc', 
     'sphinx.ext.todo', 
     'sphinx.ext.coverage',
+    'sphinx_copybutton',
     'sphinx_inline_tabs',
 ]
 

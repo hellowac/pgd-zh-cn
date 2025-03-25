@@ -23,3 +23,13 @@ python地理空间开发
    ./preface.rst
    
    ./ch1/index.rst
+   ./ch2/index.rst
+   ./ch3/index.rst
+   ./ch4/index.rst
+   ./ch5/index.rst
+   ./ch6/index.rst
+   ./ch7/index.rst
+   ./ch8/index.rst
+   ./ch9/index.rst
+   ./ch10/index.rst
+   ./ch11/index.rst

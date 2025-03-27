@@ -1,4 +1,4 @@
-Playing with the admin system
+玩转管理系统
 ============================================
 
 Playing with the admin system

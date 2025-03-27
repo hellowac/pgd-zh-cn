@@ -1,4 +1,4 @@
-Deleting shapefiles
+删除 shapefiles
 ============================================
 
 Deleting shapefiles

@@ -1,4 +1,4 @@
-Deleting features
+删除要素
 ============================================
 
 Deleting features

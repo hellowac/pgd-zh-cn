@@ -1,4 +1,4 @@
-About DISTAL
+关于 DISTAL
 ============================================
 
 About DISTAL

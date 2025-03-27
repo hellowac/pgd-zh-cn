@@ -1,4 +1,4 @@
-Setting up the database
+设置数据库
 ============================================
 
 Setting up the database

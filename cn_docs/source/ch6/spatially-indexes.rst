@@ -1,4 +1,4 @@
-Spatial indexes
+空间索引
 ============================================
 
 Spatial indexes

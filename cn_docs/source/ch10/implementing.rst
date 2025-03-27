@@ -1,4 +1,4 @@
-Implementing the "list shapefiles" view
+实现“列出 Shapefile”视图
 ============================================
 
 Implementing the "list shapefiles" view

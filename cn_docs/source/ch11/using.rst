@@ -1,4 +1,4 @@
-Using ShapeEditor
+使用 ShapeEditor
 ============================================
 
 Using ShapeEditor

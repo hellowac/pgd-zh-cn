@@ -1,4 +1,4 @@
-Creating an example map
+创建示例地图
 ============================================
 
 Creating an example map

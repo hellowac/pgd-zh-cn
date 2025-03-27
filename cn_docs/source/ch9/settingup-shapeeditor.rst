@@ -1,4 +1,4 @@
-Setting up the ShapeEditor project
+设置 ShapeEditor 项目
 ============================================
 
 Setting up the ShapeEditor project

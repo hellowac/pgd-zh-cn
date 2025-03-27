@@ -1,4 +1,4 @@
-About ShapeEditor
+关于 ShapeEditor
 ============================================
 
 About ShapeEditor

@@ -27,7 +27,7 @@ Task – change projections to combine shapefiles using geographic and UTM coord
 
    The decompressed directory contains the shapefile, called miami.shp, along with a datum_reference.txt file describing the shapefile's coordinate system. This file tells us the following:
 
-   .. code-block:: txt
+   .. code-block:: text
 
       The LULC shape file was generated from the original USGS GIRAS LULC
       file by Lakes Environmental Software.
@@ -147,7 +147,7 @@ Task – change projections to combine shapefiles using geographic and UTM coord
 
    After running this program over the miami.shp shapefile, the coordinates for all the features in the shapefile will have been converted from UTM-17 into geographic coordinates:
 
-   .. code-block:: txt
+   .. code-block:: text
 
       Before reprojection:  x=485719.47, y=2783420.62
                             x=485779.49, y=2783380.63
@@ -183,7 +183,7 @@ Task – change projections to combine shapefiles using geographic and UTM coord
 
    The decompressed directory contains the shapefile, called miami.shp, along with a datum_reference.txt file describing the shapefile's coordinate system. This file tells us the following:
 
-   .. code-block:: txt
+   .. code-block:: text
 
       The LULC shape file was generated from the original USGS GIRAS LULC
       file by Lakes Environmental Software.
@@ -303,7 +303,7 @@ Task – change projections to combine shapefiles using geographic and UTM coord
 
    After running this program over the miami.shp shapefile, the coordinates for all the features in the shapefile will have been converted from UTM-17 into geographic coordinates:
 
-   .. code-block:: txt
+   .. code-block:: text
 
       Before reprojection:  x=485719.47, y=2783420.62
                             x=485779.49, y=2783380.63

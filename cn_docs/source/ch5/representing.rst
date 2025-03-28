@@ -11,7 +11,7 @@ Representing and storing geospatial data
 
     WKT is a compact text-based description of a geospatial object such as a point, a line or a polygon. For example, here is the geometry defining the boundary of the Vatican City in the World Borders Dataset, converted into a WKT string:
 
-    .. code-block:: txt
+    .. code-block:: text
 
         POLYGON ((12.445090330888604 41.90311752178485,
         12.451653339580503 41.907989033391232,
@@ -26,7 +26,7 @@ Representing and storing geospatial data
 
     WKT strings can also be used to represent a **spatial reference** encompassing a projection, a datum and/or a coordinate system. For example, here is an osr. SpatialReference object representing a geographic coordinate system using the WGS84 datum, converted into a WKT string:
 
-    .. code-block:: txt
+    .. code-block:: text
 
         GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS
         84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,
@@ -44,7 +44,7 @@ Representing and storing geospatial data
 
     WKT is a compact text-based description of a geospatial object such as a point, a line or a polygon. For example, here is the geometry defining the boundary of the Vatican City in the World Borders Dataset, converted into a WKT string:
 
-    .. code-block:: txt
+    .. code-block:: text
 
         POLYGON ((12.445090330888604 41.90311752178485,
         12.451653339580503 41.907989033391232,
@@ -59,7 +59,7 @@ Representing and storing geospatial data
 
     WKT strings can also be used to represent a **spatial reference** encompassing a projection, a datum and/or a coordinate system. For example, here is an osr. SpatialReference object representing a geographic coordinate system using the WGS84 datum, converted into a WKT string:
 
-    .. code-block:: txt
+    .. code-block:: text
 
         GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS
         84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],TOWGS84[0,0,0,0,

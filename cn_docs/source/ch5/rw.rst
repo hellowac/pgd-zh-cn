@@ -113,7 +113,7 @@ Task – calculate the bounding box for each country in the world
 
     Running this program produces the following output:
     
-    .. code-block:: txt
+    .. code-block:: text
 
         % python calcBoundingBoxes.py
         Afghanistan (AFG) lat=29.4061..38.4721, long=60.5042..74.9157
@@ -214,7 +214,7 @@ Task – calculate the bounding box for each country in the world
 
     Running this program produces the following output:
     
-    .. code-block:: txt
+    .. code-block:: text
 
         % python calcBoundingBoxes.py
         Afghanistan (AFG) lat=29.4061..38.4721, long=60.5042..74.9157
@@ -806,7 +806,7 @@ Task – analyze height data using a digital elevation map
     
     If you run this, you will see a list of heights (in meters) and how many pixels there are at that height:
 
-    .. code-block:: txt
+    .. code-block:: text
 
        -500 2607581
        1 6641
@@ -821,7 +821,7 @@ Task – analyze height data using a digital elevation map
     -500. What is going on here? Clearly -500 is not a valid height value. The GLOBE
     documentation explains this as follows:
 
-    .. code-block:: txt
+    .. code-block:: text
 
        "Every tile contains values of -500 for oceans, with no values between -500 and the
        minimum value for land noted here."
@@ -1081,7 +1081,7 @@ Task – analyze height data using a digital elevation map
     
     If you run this, you will see a list of heights (in meters) and how many pixels there are at that height:
 
-    .. code-block:: txt
+    .. code-block:: text
 
        -500 2607581
        1 6641
@@ -1096,7 +1096,7 @@ Task – analyze height data using a digital elevation map
     -500. What is going on here? Clearly -500 is not a valid height value. The GLOBE
     documentation explains this as follows:
 
-    .. code-block:: txt
+    .. code-block:: text
 
        "Every tile contains values of -500 for oceans, with no values between -500 and the
        minimum value for land noted here."

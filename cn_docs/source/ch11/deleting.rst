@@ -66,7 +66,7 @@ Deleting features
     This is a simple HTML form that confirms the deletion. When the form is submitted,
     the POST parameter named confirm will be set to 1 if the user wishes to delete the
     feature. Let's now implement the view which uses this template. Open the editor
-    application's views.py and add the following new view function::
+    application's views.py and add the following new view function:
     
     .. code-block:: python
 
@@ -147,7 +147,7 @@ Deleting features
     This is a simple HTML form that confirms the deletion. When the form is submitted,
     the POST parameter named confirm will be set to 1 if the user wishes to delete the
     feature. Let's now implement the view which uses this template. Open the editor
-    application's views.py and add the following new view function::
+    application's views.py and add the following new view function:
     
     .. code-block:: python
 

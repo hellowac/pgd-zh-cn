@@ -214,7 +214,7 @@ The "import shapefile" view function
     To display the form to the user, we'll use a Django template and pass the form
     object as a parameter. Let's create that template now; add a new file named
     import_shapefile.html in the editor application's templates directory
-    and enter the following text into this file::
+    and enter the following text into this file:
 
     .. code-block:: text
 
@@ -360,7 +360,7 @@ The "import shapefile" view function
     To display the form to the user, we'll use a Django template and pass the form
     object as a parameter. Let's create that template now; add a new file named
     import_shapefile.html in the editor application's templates directory
-    and enter the following text into this file::
+    and enter the following text into this file:
 
     .. code-block:: text
 
@@ -1117,20 +1117,20 @@ Store the shapefile's attributes
     attribute values into the database and gracefully handle any conversion
     errors that might occur::
 
-    for attr in attributes:
-        success,result = utils.getOGRFeatureAttribute(
-                                                        attr, srcFeature,
-                                                        character_encoding)
-        if not success:
-            os.remove(fname)
-            shutil.rmtree(dst_dir)
-            shapefile.delete()
-            return result
+        for attr in attributes:
+            success,result = utils.getOGRFeatureAttribute(
+                                                            attr, srcFeature,
+                                                            character_encoding)
+            if not success:
+                os.remove(fname)
+                shutil.rmtree(dst_dir)
+                shapefile.delete()
+                return result
 
-        attr_value = AttributeValue(feature=feature,
-                                    attribute=attr,
-                                    value=result)
-        attr_value.save()
+            attr_value = AttributeValue(feature=feature,
+                                        attribute=attr,
+                                        value=result)
+            attr_value.save()
 
     Note that we pass the Attribute object, the OGR feature, and the character encoding
     to the get_ogr_feature_attribute() function. If an error occurs, we clean up the
@@ -1246,20 +1246,20 @@ Store the shapefile's attributes
     attribute values into the database and gracefully handle any conversion
     errors that might occur::
 
-    for attr in attributes:
-        success,result = utils.getOGRFeatureAttribute(
-                                                        attr, srcFeature,
-                                                        character_encoding)
-        if not success:
-            os.remove(fname)
-            shutil.rmtree(dst_dir)
-            shapefile.delete()
-            return result
+        for attr in attributes:
+            success,result = utils.getOGRFeatureAttribute(
+                                                            attr, srcFeature,
+                                                            character_encoding)
+            if not success:
+                os.remove(fname)
+                shutil.rmtree(dst_dir)
+                shapefile.delete()
+                return result
 
-        attr_value = AttributeValue(feature=feature,
-                                    attribute=attr,
-                                    value=result)
-        attr_value.save()
+            attr_value = AttributeValue(feature=feature,
+                                        attribute=attr,
+                                        value=result)
+            attr_value.save()
 
     Note that we pass the Attribute object, the OGR feature, and the character encoding
     to the get_ogr_feature_attribute() function. If an error occurs, we clean up the

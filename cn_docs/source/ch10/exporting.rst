@@ -456,13 +456,13 @@ Saving the attributes into the shapefile
                 feature.SetField(attr_name, year, month, day,
                                  0, 0, 0, tzone)
             elif attr.type == ogr.OFTTime:
-            parts  = value.split(",")
-            hour   = int(parts[0])
-            minute = int(parts[1])
-            second = int(parts[2])
-            tzone  = int(parts[3])
-            feature.SetField(attr_name, 0, 0, 0,
-                             hour, minute, second, tzone)
+                parts  = value.split(",")
+                hour   = int(parts[0])
+                minute = int(parts[1])
+                second = int(parts[2])
+                tzone  = int(parts[3])
+                feature.SetField(attr_name, 0, 0, 0,
+                                hour, minute, second, tzone)
             elif attr.type == ogr.OFTDateTime:
                 parts  = value.split(",")
                 year   = int(parts[0])
@@ -554,13 +554,13 @@ Saving the attributes into the shapefile
                 feature.SetField(attr_name, year, month, day,
                                  0, 0, 0, tzone)
             elif attr.type == ogr.OFTTime:
-            parts  = value.split(",")
-            hour   = int(parts[0])
-            minute = int(parts[1])
-            second = int(parts[2])
-            tzone  = int(parts[3])
-            feature.SetField(attr_name, 0, 0, 0,
-                             hour, minute, second, tzone)
+                parts  = value.split(",")
+                hour   = int(parts[0])
+                minute = int(parts[1])
+                second = int(parts[2])
+                tzone  = int(parts[3])
+                feature.SetField(attr_name, 0, 0, 0,
+                                hour, minute, second, tzone)
             elif attr.type == ogr.OFTDateTime:
                 parts  = value.split(",")
                 year   = int(parts[0])

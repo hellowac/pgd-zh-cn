@@ -1962,7 +1962,7 @@ Intercepting mouse clicks
     parameters will consist of the record ID of the shapefile and the clicked-on latitude
     and longitude values.
 
-    While we're editing the select_feature.html template, let's go ahead and implement the callback function. Add the following function to the end of the OpenLayers.Control.Click class definition (immediately below the closing } for the onClick() function)::
+    While we're editing the select_feature.html template, let's go ahead and implement the callback function. Add the following function to the end of the OpenLayers.Control.Click class definition (immediately below the closing } for the onClick() function):
 
     .. code-block:: js
 
@@ -1988,7 +1988,7 @@ Intercepting mouse clicks
     Now that we've implemented our callback function, let's go back to our view module
     and define the find_feature_url parameter which will get passed to the template
     we've created. Edit the view.py module to add the following highlighted lines to the
-    edit_shapefile() function::
+    edit_shapefile() function:
 
     .. code-block:: js
 
@@ -2140,7 +2140,7 @@ Intercepting mouse clicks
     parameters will consist of the record ID of the shapefile and the clicked-on latitude
     and longitude values.
 
-    While we're editing the select_feature.html template, let's go ahead and implement the callback function. Add the following function to the end of the OpenLayers.Control.Click class definition (immediately below the closing } for the onClick() function)::
+    While we're editing the select_feature.html template, let's go ahead and implement the callback function. Add the following function to the end of the OpenLayers.Control.Click class definition (immediately below the closing } for the onClick() function):
 
     .. code-block:: js
 
@@ -2166,7 +2166,7 @@ Intercepting mouse clicks
     Now that we've implemented our callback function, let's go back to our view module
     and define the find_feature_url parameter which will get passed to the template
     we've created. Edit the view.py module to add the following highlighted lines to the
-    edit_shapefile() function::
+    edit_shapefile() function:
 
     .. code-block:: js
 

@@ -29,7 +29,7 @@ Adding features
                         'add_feature_url' : add_feature_url,
                         'tms_url': tms_url})
     
-    Then edit the select_feature.html template and add the following highlighted lines to the body of this template::
+    Then edit the select_feature.html template and add the following highlighted lines to the body of this template:
 
     .. code-block:: html
 
@@ -122,7 +122,7 @@ Adding features
                         'add_feature_url' : add_feature_url,
                         'tms_url': tms_url})
     
-    Then edit the select_feature.html template and add the following highlighted lines to the body of this template::
+    Then edit the select_feature.html template and add the following highlighted lines to the body of this template:
 
     .. code-block:: html
 

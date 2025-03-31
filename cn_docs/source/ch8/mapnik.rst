@@ -1375,30 +1375,25 @@ Drawing roads and other complex linear features
 
 .. tab:: 中文
 
-    One thing that may not be immediately obvious is that you can draw a road onto a
-    map by overlying two LineSymbolizers; the first LineSymbolizer draws the edges of
-    the road, while the second LineSymbolizer draws the road's interior. For example::
+    一个可能不会立即显现出来的事实是，您可以通过叠加两个 `LineSymbolizer` 来绘制一条道路；第一个 `LineSymbolizer` 绘制道路的边缘，而第二个 `LineSymbolizer` 绘制道路的内部。例如：
 
         stroke = mapnik.Stroke()
         stroke.color = mapnik.Color("#bf7a3a")
         stroke.width = 7.0
         roadEdgeSymbolizer = mapnik.LineSymbolizer(stroke)
-        
+
         stroke = mapnik.Stroke()
         stroke.color = mapnik.Color("#ffd3a9")
         stroke.width = 6.0
         roadInteriorSymbolizer = mapnik.LineSymbolizer(stroke)
 
-    This technique is commonly used for drawing street maps. The two symbolizers
-    defined above would then be overlaid to produce a road like this:
+    这种技术常用于绘制街道地图。上面定义的两个符号化器将叠加在一起，产生像这样的道路：
 
-    .. image:: ./img/331-2.png
-       :align: center
-       :class: with-border
+    .. image:: ./img/331-2.png  
+        :align: center  
+        :class: with-border
 
-    This technique can be used for more than just drawing roads; the creative use
-    of symbolizers is one of the main "tricks" to achieving complex visual effects
-    using Mapnik.
+    这种技术不仅可以用于绘制道路；符号化器的创造性使用是使用 Mapnik 实现复杂视觉效果的主要“技巧”之一。
 
 .. tab:: 英文
 
@@ -1434,42 +1429,29 @@ LinePatternSymbolizer
 
 .. tab:: 中文
 
-    The LinePatternSymbolizer is used in situations where you want to draw a line that
-    can't be rendered using a simple Stroke object. The LinePatternSymbolizer accepts an
-    image file and draws that image repeatedly along the length of the line or around the
-    outline of a polygon. For example, using the following image file:
+    `LinePatternSymbolizer` 用于在您想绘制一条无法使用简单 `Stroke` 对象渲染的线时。`LinePatternSymbolizer` 接受一个图像文件，并沿着线段的长度或多边形的轮廓反复绘制该图像。例如，使用以下图像文件：
 
-    .. image:: ./img/332-0.png
-       :align: center
+    .. image:: ./img/332-0.png  
+       :align: center  
        :class: with-border
 
-    A LinePatternSymbolizer would draw lines and polygons in the following way:
+    `LinePatternSymbolizer` 将以如下方式绘制线条和多边形：
 
-    .. image:: ./img/332-1.png
-       :align: center
+    .. image:: ./img/332-1.png  
+       :align: center  
        :class: with-border
 
-    Note that linear features and polygon boundaries have a direction—that is, the line
-    or polygon border moves from one point to the next, in the order in which the points
-    were defined when the geometry was created. For example, the points that make up
-    the line segment in the preceding example were defined from left to right—that is,
-    the leftmost point is defined first, then the center point, and then the rightmost point.
+    请注意，线性特征和多边形边界具有方向性——即，线或多边形边框从一个点移动到下一个点，按照定义几何形状时点的顺序。例如，在前面的例子中，构成线段的点是从左到右定义的——也就是说，最左侧的点首先定义，然后是中间点，最后是最右侧的点。
 
-    The direction of a feature is important as it affects the way the LinePatternSymbolizer
-    draws the image. If the preceding linestring was defined in the opposite direction,
-    the LinePatternSymbolizer would draw it like this:
+    特征的方向很重要，因为它会影响 `LinePatternSymbolizer` 绘制图像的方式。如果前面的线串是以相反的方向定义的，`LinePatternSymbolizer` 将像这样绘制它：
 
-    .. image:: ./img/332-2.png
-       :align: center
-       :class: with-border
+    .. image:: ./img/332-2.png  
+        :align: center  
+        :class: with-border
 
-    As you can see, the LinePatternSymbolizer draws the image oriented towards the
-    left of the line, as it moves from one point to the next. To draw the image oriented
-    towards the right, you will have to reverse the order of the points within your feature.
+    正如您所看到的，`LinePatternSymbolizer` 绘制图像时会朝向线的左侧，随着它从一个点移动到下一个点。要使图像朝向右侧绘制，您需要反转特征中点的顺序。
 
-    To use a LinePatternSymbolizer within your Python code, you create a mapnik.
-    PathExpression object that refers to the image file you want to use. You then pass
-    this object to the LinePatternSymbolizer initializer, like this::
+    要在 Python 代码中使用 `LinePatternSymbolizer`，您需要创建一个 `mapnik.PathExpression` 对象，该对象引用您想要使用的图像文件。然后，将该对象传递给 `LinePatternSymbolizer` 的初始化器，如下所示::
 
         path = mapnik.PathExpression("path/to/image.png")
         symbolizer = mapnik.LinePatternSymbolizer(path)
@@ -1523,9 +1505,7 @@ Drawing polygons
 
 .. tab:: 中文
 
-    Just as there are two symbolizers to draw lines, there are two symbolizers to draw
-    the interior of a polygon: the PolygonSymbolizer and the PolygonPatternSymbolizer.
-    Let's take a closer look at each of these two symbolizers.
+    正如有两个符号器用于绘制线条一样，也有两个符号器用于绘制多边形的内部：PolygonSymbolizer 和 PolygonPatternSymbolizer。让我们仔细看看这两个符号器。
 
 .. tab:: 英文
 
@@ -1539,19 +1519,17 @@ PolygonSymbolizer
 PolygonSymbolizer
 
 .. tab:: 中文
+    `PolygonSymbolizer` 用于用单一颜色填充多边形的内部：
 
-    A PolygonSymbolizer fills the interior of a polygon with a single color:
+    .. image:: ./img/333-0.png  
+        :align: center  
+        :class: with-border
 
-    .. image:: ./img/333-0.png
-       :align: center
-       :class: with-border
+    您可以像这样创建一个 `PolygonSymbolizer`::
 
-    You create a PolygonSymbolizer like this::
-    
         symbolizer = mapnik.PolygonSymbolizer()
 
-    Let's take a closer look at the various options for controlling how the polygon will
-    be drawn.
+    让我们更仔细地看看控制多边形绘制方式的各种选项。
 
 .. tab:: 英文
 

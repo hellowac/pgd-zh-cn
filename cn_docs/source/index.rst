@@ -16,8 +16,8 @@ python地理空间开发
    :maxdepth: 2
    :caption: 内容
 
-   ./copyright.rst
-   ./credits.rst
+   .. ./copyright.rst
+   .. ./credits.rst
    ./about_author.rst
    ./about_reviewers.rst
    ./preface.rst

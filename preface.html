@@ -1,0 +1,640 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="genindex.html" /><link rel="search" title="搜索" href="search.html" /><link rel="copyright" title="版权所有" href="copyright.html" /><link rel="next" title="1 使用 Python 进行地理空间开发" href="ch1/index.html" /><link rel="prev" title="审稿人简介" href="about_reviewers.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>前言 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="id1">
+<h1>前言<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>Preface</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>随着基于地图的网站以及空间感知设备和应用程序的激增，地理空间开发变得越来越重要。地理空间市场正在迅速增长，作为一名 Python 开发人员，您不能落后。在当今的位置感知世界中，所有商业 Python 开发人员都可以从对地理空间概念和开发技术的理解中受益。</p>
+<p>处理地理空间数据可能会变得复杂，因为您要处理的是地球表面的数学模型。由于 Python 是一种功能强大的编程语言，具有高级工具包，因此它非常适合地理空间开发。本书将让您熟悉地理空间开发所需的 Python 工具。</p>
+<p>它介绍了基本的地理空间概念，并清晰详细地介绍了位置、距离、单位、投影、基准和地理空间数据格式等关键概念。然后，我们研究了许多 Python 库，并将它们与免费提供的地理空间数据一起使用来完成各种任务。本书深入介绍了将空间数据存储在数据库中的概念，以及如何使用空间数据库作为解决各种地理空间问题的工具。它详细介绍了使用 Mapnik 地图渲染工具包生成地图的方法，并帮助您使用 GeoDjango、Mapnik 和 PostGIS 构建复杂的基于 Web 的地理空间地图编辑应用程序。在本书的最后，您将能够将空间功能集成到您的应用程序中，并从头开始构建完整的地图应用程序。</p>
+<p>本书是一本实践教程。它教您如何使用一系列 Python 工具高效地访问、操作和显示地理空间数据以进行 GIS 开发。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>With the explosion of map-based websites and spatially-aware devices and applications, geospatial development is becoming increasingly important. The geospatial market is growing rapidly, and as a Python developer you can’t afford to be left behind. In today’s location-aware world, all commercial Python developers can benefit from an understanding of geospatial concepts and development techniques.</p>
+<p>Working with geospatial data can get complicated because you are dealing with mathematical models of the Earth’s surface. Since Python is a powerful programming language with high-level toolkits, it is well-suited to geospatial development. This book will familiarize you with the Python tools required for geospatial development.</p>
+<p>It introduces basic geospatial concepts with a clear, detailed walkthrough of the key concepts such as location, distance, units, projections, datums, and geospatial data formats. We then examine a number of Python libraries and use these with freely- available geospatial data to accomplish a variety of tasks. The book provides an in- depth look at the concept of storing spatial data in a database and how you can use spatial databases as tools to solve a variety of geospatial problems. It goes into the details of generating maps using the Mapnik map-rendering toolkit, and helps you to build a sophisticated web-based geospatial map editing application using GeoDjango, Mapnik, and PostGIS. By the end of the book, you will be able to integrate spatial features into your applications and build a complete mapping application from scratch.</p>
+<p>This book is a hands-on tutorial. It teaches you how to access, manipulate, and display geospatial data efficiently using a range of Python tools for GIS development.</p>
+</div>
+</div>
+<section id="id2">
+<h2>本书涵盖的内容<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>What this book covers</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p><em>第 1 章，使用 Python 进行地理空间开发</em>，概述了 Python 编程语言和地理空间开发背后的概念。还介绍了地理空间开发的主要用例以及该领域近期和未来的发展。</p>
+<p><em>第 2 章，GIS</em>，介绍了位置、距离、单位、投影、形状、基准和地理空间数据格式的核心概念，然后讨论了手动处理地理空间数据的过程。</p>
+<p><em>第 3 章，用于地理空间开发的 Python 库</em>，探讨了可用于地理空间开发的主要 Python 库，包括可用功能、库的组织方式以及如何安装和使用它。</p>
+<p><em>第 4 章，地理空间数据来源</em>，研究了可免费获取的地理空间数据的主要来源、可用的信息、使用的数据格式以及如何导入下载的数据。</p>
+<p><em>第 5 章，使用 Python 处理地理空间数据</em>，使用前面介绍的库来执行各种使用地理空间数据的任务，包括更改投影、导入和导出数据、转换和标准化几何和距离单位以及执行地理空间计算。</p>
+<p><em>第 6 章，数据库中的 GIS</em>，介绍 PostGIS、MySQL 和 SQLite 的空间功能。它讨论了存储不同类型空间数据的最佳实践，并研究了如何从 Python 访问这些数据库。</p>
+<p><em>第 7 章，使用空间数据</em>，使用存储在空间数据库中的免费地理空间数据，设计和实现了一个完整的地理空间应用程序 DISTAL。它研究了此应用程序的性能，然后使用最佳实践技术对其进行了优化。</p>
+<p><em>第 8 章，使用 Python 和 Mapnik 制作地图</em>，深入介绍了 Mapnik 地图生成工具包，以及如何使用它来制作各种地图。</p>
+<p><em>第 9 章，将所有内容整合在一起：一个完整​​的地图应用程序</em>，介绍了“ShapeEditor”，这是一个使用 PostGIS、Mapnik 和 GeoDjango 构建的完整而复杂的 Web 应用程序。我们首先设计整个应用程序，然后构建 ShapeEditor 的数据库模型。</p>
+<p><em>第 10 章，ShapeEditor：实现列表视图、导入和导出</em>，继续实现 ShapeEditor 系统，重点介绍显示导入的 Shapefile 列表，以及通过 Web 浏览器导入和导出 Shapefile 的逻辑。</p>
+<p><em>第 11 章，ShapeEditor：选择和编辑特征</em>，总结了 ShapeEditor 的实现，添加了逻辑以让用户在导入的 Shapefile 中选择和编辑特征。这涉及创建自定义 Tile 地图服务器，以及使用 OpenLayers JavaScript 库显示和与地理空间数据交互。</p>
+<p><em>附加章节“地理空间开发的 Web 框架”</em> 探讨了 Web 应用程序框架、Web 服务、JavaScript UI 库和滑动地图的概念。它介绍了地理空间应用程序使用的许多标准 Web 协议，最后概述了可用于构建通过 Web 界面运行的地理空间应用程序的工具和框架。</p>
+<p>您可以从以下位置下载本章：<a class="reference external" href="http://www.packtpub.com/sites/default/files/downloads/1523OS_Bonuschapter.pdf">http://www.packtpub.com/sites/default/files/downloads/1523OS_Bonuschapter.pdf</a></p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p><em>Chapter 1, Geospatial Development Using Python</em>, gives an overview of the Python programming language and the concepts behind geospatial development. Major use-cases of geospatial development and recent and upcoming developments in the field are also covered.</p>
+<p><em>Chapter 2, GIS</em>, introduces the core concepts of location, distance, units, projections, shapes, datums, and geospatial data formats, before discussing the process of working with geospatial data manually.</p>
+<p><em>Chapter 3, Python Libraries for Geospatial Development</em>, explores the major Python libraries available for geospatial development, including the available features, how the library is organized, and how to install and use it.</p>
+<p><em>Chapter 4, Sources of Geospatial Data</em>, investigates the major sources of freely-available geospatial data, what information is available, the data format used, and how to import the downloaded data.</p>
+<p><em>Chapter 5, Working with Geospatial Data in Python</em>, uses the libraries introduced earlier to perform various tasks using geospatial data, including changing projections, importing and exporting data, converting and standardizing units of geometry and distance, and performing geospatial calculations.</p>
+<p><em>Chapter 6, GIS in the Database</em>, introduces the spatial capabilities of PostGIS, MySQL, and SQLite. It discusses best practices for storing different types of spatial data, and looks at how to access these databases from Python.</p>
+<p><em>Chapter 7, Working with Spatial Data</em>, works through the design and implementation of a complete geospatial application called DISTAL, using freely-available geospatial data stored in a spatial database. It investigates the performance of this application and then works to optimize it using best-practice techniques.</p>
+<p><em>Chapter 8, Using Python and Mapnik to Produce Maps</em>, gives an in-depth look at the
+Mapnik map-generation toolkit, and how to use it to produce a variety of maps.</p>
+<p><em>Chapter 9, Putting it all Together: a Complete Mapping Application</em>, introduces the “ShapeEditor”, a complete and sophisticated web application built using PostGIS, Mapnik and GeoDjango. We start by designing the overall application, and then build the ShapeEditor’s database models.</p>
+<p><em>Chapter 10, ShapeEditor: Implementing List View, Import, and Export</em>, continues the implementation of the ShapeEditor system, concentrating on displaying a list of imported shapefiles, along with the logic for importing and exporting shapefiles via a web browser.</p>
+<p><em>Chapter 11, ShapeEditor: Selecting and Editing Features</em>, concludes the implementation of the ShapeEditor, adding logic to let the user select and edit features within an imported shapefile. This involves the creation of a custom Tile Map Server, and the use of the OpenLayers JavaScript library to display and interact with geospatial data.</p>
+<p><em>Bonus chapter, Web Frameworks for Geospatial Development</em>, examines the concepts of web application frameworks, web services, JavaScript UI libraries, and slippy maps. It introduces a number of standard web protocols used by geospatial applications, and finishes with a survey of the tools and frameworks available for building geospatial applications that run via a web interface.</p>
+<p>You can download this chapter from: <a class="reference external" href="http://www.packtpub.com/sites/default/files/downloads/1523OS_Bonuschapter.pdf">http://www.packtpub.com/sites/default/files/downloads/1523OS_Bonuschapter.pdf</a></p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>本书的阅读需求<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p>What you need for this book</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>要阅读本书，您需要拥有 Python 2.5 到 2.7 版本。您还需要下载并安装以下工具和库；完整说明请参阅本书的相关章节：</p>
+<ul class="simple">
+<li><p>GDAL/OGR</p></li>
+<li><p>GEOS</p></li>
+<li><p>Shapely</p></li>
+<li><p>Proj</p></li>
+<li><p>pyproj</p></li>
+<li><p>MySQL</p></li>
+<li><p>MySQLdb</p></li>
+<li><p>SpatiaLite</p></li>
+<li><p>pysqlite</p></li>
+<li><p>PostgreSQL</p></li>
+<li><p>PostGIS</p></li>
+<li><p>pyscopg2</p></li>
+<li><p>Mapnik* Django</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>To follow through this book, you will need to have Python Version 2.5 to 2.7. You will also need to download and install the following tools and libraries; full instructions are given in the relevant sections of this book:</p>
+<ul class="simple">
+<li><p>GDAL/OGR</p></li>
+<li><p>GEOS</p></li>
+<li><p>Shapely</p></li>
+<li><p>Proj</p></li>
+<li><p>pyproj</p></li>
+<li><p>MySQL</p></li>
+<li><p>MySQLdb</p></li>
+<li><p>SpatiaLite</p></li>
+<li><p>pysqlite</p></li>
+<li><p>PostgreSQL</p></li>
+<li><p>PostGIS</p></li>
+<li><p>pyscopg2</p></li>
+<li><p>Mapnik* Django</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>本书的读者对象<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p>Who this book is for</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>本书面向经验丰富的 Python 开发人员，他们希望快速掌握开源地理空间工具和技术，以便构建自己的地理空间应用程序，或将地理空间技术集成到现有的 Python 程序中。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>This book is aimed at experienced Python developers who want to get up to speed with open source geospatial tools and techniques in order to build their own geospatial applications, or to integrate geospatial technology into their existing Python programs.</p>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>惯例<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h2>
+<p>Conventions</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>在本书中，您将看到多种文本样式，用于区分不同类型的信息。以下是一些这些样式的示例，并附有它们的含义解释。</p>
+<p><strong>文本中的代码词</strong> 以如下方式显示：
+“<cite>The pyproj Geod class allows you to perform various geodetic calculations based on points on the Earth’s surface.</cite>”</p>
+<p><strong>代码块</strong> 以如下方式呈现:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mapnik</span>
+
+<span class="n">symbolizer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;darkgreen&quot;</span><span class="p">))</span>
+
+<span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbolizer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>当我们希望引起您对代码块中特定部分的注意时，相关的行或项会以 <strong>粗体</strong> 显示：</p>
+<blockquote>
+<div><p>import mapnik</p>
+<p>symbolizer = mapnik.PolygonSymbolizer(mapnik.Color(“darkgreen”))</p>
+<p>rule = mapnik.Rule()  # 粗体代码
+rule.symbols.append(symbolizer)</p>
+</div></blockquote>
+<p>任何 <strong>命令行输入或输出</strong> 以如下方式书写：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>build
+sudo<span class="w"> </span>python.setup.py<span class="w"> </span>install
+</pre></div>
+</div>
+<p><strong>新术语</strong> 和 <strong>重要词汇</strong> 以 <strong>粗体</strong> 显示。您在屏幕、菜单或对话框中看到的词语，举例来说，像这样显示：“点击 <strong>Next</strong> 按钮将您带到下一个屏幕”。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>In this book, you will find a number of styles of text that distinguish between different kinds of information. Here are some examples of these styles, and an explanation of their meaning.</p>
+<p>Code words in text are shown as follows: “ The pyproj Geod class allows you to perform various geodetic calculations based on points on the Earth’s surface.”</p>
+<p>A block of code is set as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mapnik</span>
+
+<span class="n">symbolizer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;darkgreen&quot;</span><span class="p">))</span>
+
+<span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbolizer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When we wish to draw your attention to a particular part of a code block, the relevant lines or items are set in bold:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mapnik</span>
+<span class="n">symbolizer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;darkgreen&quot;</span><span class="p">))</span>
+<span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>  <span class="c1"># blod code</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbolizer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Any command-line input or output is written as follows:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>build
+sudo<span class="w"> </span>python.setup.py<span class="w"> </span>install
+</pre></div>
+</div>
+<p><strong>New terms</strong> and <strong>important words</strong> are shown in bold. Words that you see on the screen, in menus or dialog boxes for example, appear in the text like this: “clicking the <strong>Next</strong> button moves you to the next screen”.</p>
+</div>
+</div>
+</section>
+<section id="id6">
+<h2>读者反馈<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h2>
+<p>Reader feedback</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>我们随时欢迎读者的反馈。让我们知道您对这本书的看法——您喜欢或不喜欢什么。读者反馈对我们开发真正让您受益匪浅的图书非常重要。</p>
+<p>要向我们发送一般反馈，只需发送电子邮件至 <em>feedback&#64;packtpub.com</em>，并在邮件主题中提及书名。</p>
+<p>如果您对某个主题很了解，并且有兴趣撰写或参与撰写书籍，请参阅我们的作者指南 www.packtpub.com/authors。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Feedback from our readers is always welcome. Let us know what you think about this book—what you liked or may have disliked. Reader feedback is important for us to develop titles that you really get the most out of.</p>
+<p>To send us general feedback, simply send an e-mail to <em>feedback&#64;packtpub.com</em>, and mention the book title via the subject of your message.</p>
+<p>If there is a topic that you have expertise in and you are interested in either writing or contributing to a book, see our author guide on www.packtpub.com/authors.</p>
+</div>
+</div>
+</section>
+<section id="id7">
+<h2>客户支持<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h2>
+<p>Customer support</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>现在您已是 Packt 书籍的骄傲拥有者，我们会采取多种措施来帮助您从购买的书籍中获得最大收益。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that you are the proud owner of a Packt book, we have a number of things to help you to get the most from your purchase.</p>
+</div>
+</div>
+</section>
+<section id="id8">
+<h2>下载示例代码<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h2>
+<p>Downloading the example code</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>您可以从 <a class="reference external" href="http://www.packtpub.com">http://www.packtpub.com</a> 上的帐户下载您购买的所有 Packt 书籍的示例代码文件。如果您在其他地方购买了本书，您可以访问 <a class="reference external" href="http://www.packtpub.com/support">http://www.packtpub.com/support</a> 并注册，以便直接通过电子邮件将文件发送给您。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>You can download the example code files for all Packt books you have purchased from your account at <a class="reference external" href="http://www.packtpub.com">http://www.packtpub.com</a>. If you purchased this book elsewhere, you can visit <a class="reference external" href="http://www.packtpub.com/support">http://www.packtpub.com/support</a> and register to have the files e-mailed directly to you.</p>
+</div>
+</div>
+</section>
+<section id="id9">
+<h2>勘误表<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h2>
+<p>Errata</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>尽管我们已尽一切努力确保内容的准确性，但错误还是难免。如果您在我们的书中发现错误（可能是文本或代码中的错误），我们将非常感激您向我们报告此错误。这样做可以避免其他读者感到沮丧，并帮助我们改进本书的后续版本。如果您发现任何勘误，请访问 <a class="reference external" href="http://www.packtpub.com/submit-errata">http://www.packtpub.com/submit-errata</a> ，选择您的书，单击 <strong>勘误表提交表单链接</strong> ，然后输入您的勘误表详细信息，以进行报告。一旦您的勘误表得到验证，您的提交将被接受，勘误表将上传到我们的网站，或添加到该书名的勘误表部分下的任何现有勘误表列表中。从 <a class="reference external" href="http://www.packtpub.com/support">http://www.packtpub.com/support</a> 选择您的书名即可查看任何现有勘误表。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>Although we have taken every care to ensure the accuracy of our content, mistakes do happen. If you find a mistake in one of our books—maybe a mistake in the text or the code—we would be grateful if you would report this to us. By doing so, you can save other readers from frustration and help us improve subsequent versions of this book. If you find any errata, please report them by visiting <a class="reference external" href="http://www.packtpub">http://www.packtpub</a>. com/submit-errata, selecting your book, clicking on the <strong>errata submission form link</strong>, and entering the details of your errata. Once your errata are verified, your submission will be accepted and the errata will be uploaded on our website, or added to any list of existing errata, under the Errata section of that title. Any existing errata can be viewed by selecting your title from <a class="reference external" href="http://www.packtpub.com/support">http://www.packtpub.com/support</a>.</p>
+</div>
+</div>
+</section>
+<section id="id10">
+<h2>盗版<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h2>
+<p>Piracy</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>互联网上版权材料的盗版是所有媒体中持续存在的问题。在 Packt，我们非常重视对版权和许可的保护。如果您在互联网上发现任何形式的我们作品的非法副本，请立即向我们提供位置地址或网站名称，以便我们采取补救措施。</p>
+<p>请通过 <a class="reference external" href="mailto:copyright&#37;&#52;&#48;packtpub&#46;com">copyright<span>&#64;</span>packtpub<span>&#46;</span>com</a> 与我们联系，并提供疑似盗版材料的链接。</p>
+<p>我们感谢您帮助保护我们的作者，并感谢您让我们能够为您带来有价值的内容。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>Piracy of copyright material on the Internet is an ongoing problem across all media. At Packt, we take the protection of our copyright and licenses very seriously. If you come across any illegal copies of our works, in any form, on the Internet, please provide us with the location address or website name immediately so that we can pursue a remedy.</p>
+<p>Please contact us at <a class="reference external" href="mailto:copyright&#37;&#52;&#48;packtpub&#46;com">copyright<span>&#64;</span>packtpub<span>&#46;</span>com</a> with a link to the suspected pirated material.</p>
+<p>We appreciate your help in protecting our authors, and our ability to bring you valuable content.</p>
+</div>
+</div>
+</section>
+<section id="id11">
+<h2>问题<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h2>
+<p>Questions</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>如果您对本书的任何方面有疑问，可以通过 <a class="reference external" href="mailto:questions&#37;&#52;&#48;packtpub&#46;com">questions<span>&#64;</span>packtpub<span>&#46;</span>com</a> 联系我们，我们将尽力解决。</p>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>You can contact us at <a class="reference external" href="mailto:questions&#37;&#52;&#48;packtpub&#46;com">questions<span>&#64;</span>packtpub<span>&#46;</span>com</a> if you are having a problem with any aspect of the book, and we will do our best to address it.</p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="ch1/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">1 使用 Python 进行地理空间开发</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="about_reviewers.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">审稿人简介</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">前言</a><ul>
+<li><a class="reference internal" href="#id2">本书涵盖的内容</a></li>
+<li><a class="reference internal" href="#id3">本书的阅读需求</a></li>
+<li><a class="reference internal" href="#id4">本书的读者对象</a></li>
+<li><a class="reference internal" href="#id5">惯例</a></li>
+<li><a class="reference internal" href="#id6">读者反馈</a></li>
+<li><a class="reference internal" href="#id7">客户支持</a></li>
+<li><a class="reference internal" href="#id8">下载示例代码</a></li>
+<li><a class="reference internal" href="#id9">勘误表</a></li>
+<li><a class="reference internal" href="#id10">盗版</a></li>
+<li><a class="reference internal" href="#id11">问题</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/tabs.js"></script>
+    <script src="_static/translations.js"></script>
+    </body>
+</html>

@@ -1,0 +1,1574 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="小结" href="summary.html" /><link rel="prev" title="实现 DISTAL 应用程序" href="implementing.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>应用程序审查和改进 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">7 使用空间数据</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="id1">
+<h1>应用程序审查和改进<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>Application review and improvements</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>在这个阶段，我们已经完成了DISTAL系统的实现，并且它按预期工作：用户可以选择一个国家，输入一个以英里为单位的搜索半径，点击一个起始点，然后查看一张显示所有位于所选搜索半径内的地点名称的高分辨率地图。我们已经解决了距离问题，并且拥有了搜索全球任何地方名称所需的所有数据。</p>
+<p>当然，我们还没有完成。我们的DISTAL应用程序在以下几个方面仍然存在一些问题：</p>
+<ul class="simple">
+<li><p>可用性</p></li>
+<li><p>质量</p></li>
+<li><p>性能</p></li>
+</ul>
+<p>让我们来看看这些问题，并探讨如何改进DISTAL系统的设计和实现。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>At this stage, we have a complete implementation of the DISTAL system that works
+as advertised: a user can choose a country, enter a search radius in miles, click on a
+starting point, and see a high-resolution map showing all the place names within the
+desired search radius. We have solved the distance problem, and have all the data
+needed to search for place names anywhere in the world.</p>
+<p>Of course, we aren’t finished yet. There are several areas where our DISTAL
+application doesn’t work as it should, including the following:</p>
+<ul class="simple">
+<li><p>Usability</p></li>
+<li><p>Quality</p></li>
+<li><p>Performance</p></li>
+</ul>
+<p>Let’s take a look at each of these issues, and see how we could improve our design
+and implementation of the DISTAL system.</p>
+</div>
+</div>
+<section id="id2">
+<h2>可用性<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Usability</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你探索DISTAL应用程序，你很快会发现某些国家存在一个主要的可用性问题。例如，如果你点击 <strong>美国</strong> （United States）在 <strong>选择国家</strong> 页面上，你将看到以下地图来点击：</p>
+<a class="with-border reference internal image-reference" href="../_images/279-0.png"><img alt="../_images/279-0.png" class="with-border align-center" src="../_images/279-0.png" style="width: 616.0px; height: 193.0px;" /></a>
+<p>使用这张地图准确点击一个所需的点几乎是不可能的。</p>
+<p>问题出在哪里呢？问题在于两个方面：</p>
+<ul class="simple">
+<li><p>美国的轮廓不仅包括了美国本土，还包括了偏远的阿拉斯加和夏威夷州。这大大增加了地图的大小。</p></li>
+<li><p>阿拉斯加跨越了180度经线——阿拉斯加半岛超出了180度西，经由阿留申群岛一直延伸到阿图岛，后者的经度为172度东。由于跨越了180度经线，阿拉斯加出现在世界地图的左右两侧。</p></li>
+</ul>
+<p>因此，美国的地图从-180度到+180度经度，以及+18度到+72度纬度。这张地图大到几乎无法使用。</p>
+<p>即使是那些没有被分割成独立的偏远州，且不跨越180度经线的国家，我们也不能确保这些地图足够详细，能让用户准确点击。例如，这里是 <strong>加拿大</strong> （Canada）的地图：</p>
+<a class="with-border reference internal image-reference" href="../_images/280-0.png"><img alt="../_images/280-0.png" class="with-border align-center" src="../_images/280-0.png" style="width: 616.0px; height: 388.0px;" /></a>
+<p>由于加拿大宽度超过3,000英里，准确地通过点击地图上的一个点来选择10英里的搜索半径将是令人沮丧的体验。</p>
+<p>一个显而易见的解决方案是，让用户在点击选择搜索起始点之前，可以先在大比例地图上“放大”所需的区域。因此，对于这些较大的国家，用户可以先选择国家，选择要搜索的部分，然后再点击所需的起始点。</p>
+<p>但这并不能解决180度经线的问题，这个问题相对复杂。理想情况下，你需要识别那些跨越180度经线的国家，并将它们重新投影到另一个坐标系统中，使得它们的多边形能够连续绘制。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>If you explore the DISTAL application, you will soon discover a major usability problem with some of the countries. For example, if you click on the <strong>United States</strong> in the <strong>Select Country</strong> page, you will be presented with the following map to click on:</p>
+<a class="with-border reference internal image-reference" href="../_images/279-0.png"><img alt="../_images/279-0.png" class="with-border align-center" src="../_images/279-0.png" style="width: 616.0px; height: 193.0px;" /></a>
+<p>Accurately clicking on a desired point using this map would be almost impossible.</p>
+<p>What has gone wrong? The problem here is twofold:</p>
+<ul class="simple">
+<li><p>The United States outline doesn’t just cover the mainland US, but also includes the outlying states of Alaska and Hawaii. This increases the size of the map considerably.</p></li>
+<li><p>Alaska crosses the 180th meridian—the Alaska Peninsula extends beyond 180 degree west, and continues across the Aleutian Islands to finish at Attu Island with a longitude of 172 degree east. Because it crosses the 180th meridian, Alaska appears on both the left and right sides of the world map.</p></li>
+</ul>
+<p>Because of this, the United States map goes from -180 degree to +180 degree longitude and +18 degree to +72 degree latitude. This map is far too big to be usable.</p>
+<p>Even for countries which aren’t split into separate outlying states, and which don’t cross the 180th meridian, we can’t be assured that the maps will be detailed enough to click on accurately. For example, here is the map for <strong>Canada</strong>:</p>
+<a class="with-border reference internal image-reference" href="../_images/280-0.png"><img alt="../_images/280-0.png" class="with-border align-center" src="../_images/280-0.png" style="width: 616.0px; height: 388.0px;" /></a>
+<p>Because Canada is over 3,000 miles wide, accurately selecting a 10-mile search radius
+by clicking on a point on this map would be an exercise in frustration.</p>
+<p>An obvious solution to these usability issues would be to let the user “zoom in” on a
+desired area of the large-scale map before clicking to select the starting point for the
+search. Thus, for these larger countries, the user would select the country, choose
+which portion of the country to search on, and then click on the desired starting point.</p>
+<p>This doesn’t solve the 180th meridian problem, which is somewhat more difficult.
+Ideally, you would identify those countries which cross the 180th meridian and
+reproject them into some other coordinate system that allows their polygons to
+be drawn contiguously.</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>质量<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p>Quality</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>在使用DISTAL系统时，你很快会注意到一些与所使用的基础数据相关的质量问题。我们将考虑两个这样的问提：名称数据的问题，以及地点名称的经纬度坐标问题。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>As you use the DISTAL system, you will quickly notice some quality issues related
+to the underlying data that is being used. We are going to consider two such issues:
+problems with the name data, and problems with the place name lat/long coordinates.</p>
+</div>
+</div>
+<section id="id4">
+<h3>地名问题<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h3>
+<p>Place name issues</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你查看地点名称列表，你会注意到一些名称周围有双括号，如下所示：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>…
+(( Shinavlash ))
+(( Pilur ))
+(( Kaçarat ))
+(( Kaçaj ))
+(( Goricë ))
+(( Lilaj ))
+…
+</pre></div>
+</div>
+<p>这些是被认为不再存在的地方的名称。此外，你还会注意到一些名称中包含了“historical”一词，并被方括号或圆括号包围：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>…
+Fairbank (historical)
+Kopiljača [historical]
+Hardyville (historical)
+Dorčol (historical)
+Sotos Crossing (historical)
+Dušanovac (historical)
+…
+</pre></div>
+</div>
+<p>显然，这些也应该被删除。过滤掉应该从DISTAL数据库中排除的名称是相对简单的，可以在我们将NationalFile和Geonames文件导入数据库时将其添加到导入逻辑中。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>If you look through the list of place names, you’ll notice that some of the names have
+double parentheses around them, like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>…
+(( Shinavlash ))
+(( Pilur ))
+(( Kaçarat ))
+(( Kaçaj ))
+(( Goricë ))
+(( Lilaj ))
+…
+</pre></div>
+</div>
+<p>These are names for places which are thought to no longer exist. Also, you will notice
+that some names have the word “historical” in them, surrounded by either square
+brackets or parentheses:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>…
+Fairbank (historical)
+Kopiljača [historical]
+Hardyville (historical)
+Dorčol (historical)
+Sotos Crossing (historical)
+Dušanovac (historical)
+…
+</pre></div>
+</div>
+<p>Obviously, these should also be removed. Filtering out the names, which should
+be excluded from the DISTAL database is relatively straightforward, and could be
+added to our import logic as we read the NationalFile and Geonames files into
+the database.</p>
+</div>
+</div>
+</section>
+<section id="id5">
+<h3>纬度/经度坐标问题<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h3>
+<p>Lat/Long coordinate problems</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>考虑以下覆盖荷兰一部分的DISTAL地图：</p>
+<a class="with-border reference internal image-reference" href="../_images/282-0.png"><img alt="../_images/282-0.png" class="with-border align-center" src="../_images/282-0.png" style="width: 625.1999999999999px; height: 388.2px;" /></a>
+<p>城市的布局看起来异常规则，仿佛城市被整齐地排列成行和列。用网格覆盖这张地图证实了这种怀疑：</p>
+<a class="with-border reference internal image-reference" href="../_images/282-1.png"><img alt="../_images/282-1.png" class="with-border align-center" src="../_images/282-1.png" style="width: 586.4px; height: 364.0px;" /></a>
+<p>当然，城镇和城市本身并不像这样规律地分布——问题似乎是由于国际地点名称数据中经度和纬度坐标的不准确四舍五入造成的。</p>
+<p>这不会影响DISTAL应用程序的运行，但用户可能会对当地点名称如此规律地绘制在地图上时，对结果的质量产生怀疑。解决这个问题的唯一方法是找到一个更准确的国际地点名称坐标数据来源。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Consider the following DISTAL map, covering a part of Netherlands:</p>
+<a class="with-border reference internal image-reference" href="../_images/282-0.png"><img alt="../_images/282-0.png" class="with-border align-center" src="../_images/282-0.png" style="width: 625.1999999999999px; height: 388.2px;" /></a>
+<p>The placement of the cities look suspiciously regular, as if the cities are neatly stacked into rows and columns. Drawing a grid over this map confirms this suspicion:</p>
+<a class="with-border reference internal image-reference" href="../_images/282-1.png"><img alt="../_images/282-1.png" class="with-border align-center" src="../_images/282-1.png" style="width: 586.4px; height: 364.0px;" /></a>
+<p>The towns and cities themselves aren’t as regularly spaced as this, of course—the
+problem appears to be caused by inaccurately rounded lat/long coordinates within
+the international place name data.</p>
+<p>This doesn’t affect the operation of the DISTAL application, but users may be
+suspicious about the quality of the results when the place names are drawn so
+regularly onto the map. The only solution to this problem would be to find a
+source of more accurate coordinate data for international place names.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id6">
+<h2>性能<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h2>
+<p>Performance</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>我们的DISTAL应用程序肯定在运行，但它的性能还有待提高。虽然`selectCountry.py`和`selectArea.py`脚本运行得很快，但`showResults.py`的执行可能需要长达三秒钟。这显然还不够好：这样的延迟对用户来说是令人烦恼的，一旦服务器每分钟收到超过二十个请求，它就会处理不过来，造成灾难性的后果。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Our DISTAL application is certainly working, but its performance leaves something
+to be desired. While the selectCountry.py and selectArea.py scripts run quickly,
+it can take up to three seconds for showResults.py to complete. Clearly, this isn’t
+good enough: a delay like this is annoying to the user, and would be disastrous for
+the server as soon as it receives more than twenty requests per minute, as it would
+be receiving more requests than it could process.</p>
+</div>
+</div>
+<section id="id7">
+<h3>查找问题<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h3>
+<p>Finding the problem</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>让我们来看看这里发生了什么。我们可以很容易地在`showResults.py`中添加一些基本的计时代码，如下所示：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Operation took </span><span class="si">%0.4f</span><span class="s2"> seconds&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>注意，这里使用了Python的标准模块`logging`来保存计时结果。由于CGI脚本使用stdout进行HTML输出，我们不能使用`print`语句来打印结果。如果你想为自己的代码添加计时功能，确保首先配置好日志记录器（例如，使用`logging.FileHandler`）。</p>
+</div>
+<p>运行这段代码后，可以看到脚本大部分时间花费的地方：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>计算经纬度坐标花费了0.0110秒
+确定地点名称花费了0.0088秒
+生成地图花费了3.0208秒
+构建HTML页面花费了0.0000秒
+</pre></div>
+</div>
+<p>显然，生成地图的过程是瓶颈。由于在`selectArea.py`脚本中生成地图只花费了不到一秒钟，因此地图生成过程本身并没有导致这个瓶颈。那么，是什么变化导致了这种情况呢？</p>
+<p>可能是显示地点名称花费了时间，但这不太可能。更可能的原因是我们显示的地图数据量太大： <cite>showResults.py</cite> 脚本使用了来自GSHHS数据集的高分辨率海岸线轮廓，而不是来自世界边界数据集的低分辨率国家轮廓。为了验证这个理论，我们可以将生成地图时使用的数据改为低分辨率的国家表，而不是高分辨率的海岸线表。</p>
+<p>结果是，速度有了显著提高：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>生成地图花费了0.1729秒
+</pre></div>
+</div>
+<p>那么，我们如何使 <cite>showResults.py</cite> 中的地图生成更快呢？答案在于海岸线数据的性质以及我们如何使用它。考虑一下在法国勒阿弗尔周围10英里内查找地点的情况：</p>
+<a class="with-border reference internal image-reference" href="../_images/284-0.png"><img alt="../_images/284-0.png" class="with-border align-center" src="../_images/284-0.png" style="width: 553.0px; height: 375.5px;" /></a>
+<p>高分辨率的海岸线图像会是这样的：</p>
+<a class="with-border reference internal image-reference" href="../_images/285-0.png"><img alt="../_images/285-0.png" class="with-border align-center" src="../_images/285-0.png" style="width: 577.0px; height: 403.0px;" /></a>
+<p>但是这段海岸线实际上属于以下GSHHS海岸线特征的一部分：</p>
+<a class="with-border reference internal image-reference" href="../_images/285-1.png"><img alt="../_images/285-1.png" class="with-border align-center" src="../_images/285-1.png" style="width: 686.0px; height: 285.0px;" /></a>
+<p>这个海岸线多边形非常庞大，包含超过110万个点，而我们实际上只显示了其中的一小部分。</p>
+<p>由于这些海岸线多边形非常大，地图生成器需要读取整个巨大的多边形，然后丢弃99%的数据，才能获得所需的海岸线部分。而且，由于多边形的边界框非常大，许多无关的多边形在生成地图时被处理（然后过滤掉）。这就是为什么`showResults.py`执行得这么慢的原因。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>Let’s take a look at what is going on here. It’s easy to add some basic timing code to showResults.py, like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>import time
+import logging
+logger = logging.getLogger(...)
+
+start_time = time.time()
+...
+end_time = time.time()
+logger.debug(&quot;Operation took %0.4f seconds&quot; % (end_time – start_time)
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that this uses the logging Python standard module to save
+the timing results. Because CGI scripts use stdout for the HTML
+output, we can’t use the print statement to print out the results.
+If you want to time your own code, make sure you configure your
+logger (for example, to use a logging.FileHandler) first.</p>
+</div>
+<p>Running this code reveals where the script is taking most of its time:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Calculating lat/long coordinate took 0.0110 seconds
+Identifying place names took 0.0088 seconds
+Generating map took 3.0208 seconds
+Building HTML page took 0.0000 seconds
+</pre></div>
+</div>
+<p>Clearly the map-generation process is the bottleneck here. Since it only took a
+fraction of a second to generate a map within the selectArea.py script, there’s
+nothing inherent in the map-generation process that causes this bottleneck.
+So what has changed?</p>
+<p>It could be that displaying the place names takes a while, but that’s unlikely.
+It’s far more likely to be caused by the amount of map data that we are displaying:
+the showResults.py script is using high-resolution shoreline outlines taken from
+the GSHHS dataset, rather than the low-resolution country outline taken from the
+World Borders Dataset. To test this theory, we can change the map data being used
+to generate the map, altering showResults.py to use the low-resolution countries
+table instead of the high-resolution shorelines table.</p>
+<p>The result is a dramatic improvement in speed:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Generating map took 0.1729 seconds
+</pre></div>
+</div>
+<p>So how can we make the map generation in showResults.py faster? The answer lies
+in the nature of the shoreline data and how we are using it. Consider the situation
+where you are identifying points within 10 miles of Le Havre in France:</p>
+<a class="with-border reference internal image-reference" href="../_images/284-0.png"><img alt="../_images/284-0.png" class="with-border align-center" src="../_images/284-0.png" style="width: 553.0px; height: 375.5px;" /></a>
+<p>The high-resolution shoreline image would look like this:</p>
+<a class="with-border reference internal image-reference" href="../_images/285-0.png"><img alt="../_images/285-0.png" class="with-border align-center" src="../_images/285-0.png" style="width: 577.0px; height: 403.0px;" /></a>
+<p>But this section of coastline is actually part of the following GSHHS shoreline feature:</p>
+<a class="with-border reference internal image-reference" href="../_images/285-1.png"><img alt="../_images/285-1.png" class="with-border align-center" src="../_images/285-1.png" style="width: 686.0px; height: 285.0px;" /></a>
+<p>This shoreline polygon is enormous, consisting of over 1.1 million points, and we’re
+only displaying a very small part of it.</p>
+<p>Because these shoreline polygons are so big, the map generator needs to read in the
+entire huge polygon and then discard 99 percent of it to get the desired section of
+shoreline. Also, because the polygon bounding boxes are so large, many irrelevant
+polygons are being processed (and then filtered out) when generating the map.
+This is why showResults.py is so slow.</p>
+</div>
+</div>
+</section>
+<section id="id8">
+<h3>提高性能<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h3>
+<p>Improving performance</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>当然，改善 <cite>showResults.py</cite> 脚本的性能是完全可能的。正如我们在前一章的最佳实践部分中提到的，空间索引在处理相对较小的几何图形时效果最佳——然而，我们的海岸线多边形可远不算小。不过，由于DISTAL应用只显示一定距离范围内的地点，我们可以将这些巨大的多边形分割成“瓦片”，然后在数据库中预先计算并存储它们。</p>
+<p>假设我们设置搜索半径为100英里。我们还任意定义瓦片的大小为1度的纬度高和1度的经度宽：</p>
+<a class="with-border reference internal image-reference" href="../_images/286-0.png"><img alt="../_images/286-0.png" class="with-border align-center" src="../_images/286-0.png" style="width: 508.8px; height: 503.20000000000005px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>注意，我们可以选择任何瓦片大小，但选择整度的经纬度是为了便于计算给定经纬度坐标位于哪个瓦片内。每个瓦片将分配一个整数纬度和经度值，我们称之为iLat和iLong。然后，我们可以通过以下方式计算给定经纬度所在的瓦片：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iLat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">latitude</span><span class="p">))</span>
+<span class="n">iLong</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">longitude</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>然后我们可以简单地查找具有给定 iLat 和 iLong 值的瓦片。</p>
+</div>
+<p>对于每个瓦片，我们将使用之前的方法来确定搜索半径的边界框，以定义一个矩形区域，该区域位于瓦片的100英里以北、以东、以西和以南的位置：</p>
+<a class="with-border reference internal image-reference" href="../_images/287-0.png"><img alt="../_images/287-0.png" class="with-border align-center" src="../_images/287-0.png" style="width: 480.8px; height: 483.20000000000005px;" /></a>
+<p>使用边界框，我们可以计算海岸线数据与该边界框的交集：</p>
+<a class="with-border reference internal image-reference" href="../_images/287-1.png"><img alt="../_images/287-1.png" class="with-border align-center" src="../_images/287-1.png" style="width: 338.0px; height: 340.0px;" /></a>
+<p>在瓦片的边界内进行的任何搜索，最多100英里范围内的结果，只会显示该边界框内的海岸线。我们只需将这个交集海岸线存储到数据库中，并存储瓦片的经纬度坐标，然后告诉地图生成器使用适当的瓦片轮廓来显示所需的海岸线。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>It is certainly possible to improve the performance of the showResults.py script.
+As we mentioned in the best practices section of the previous chapter, spatial indexes
+work best when working with relatively small geometries—and our shoreline
+polygons are anything but small. However, because the DISTAL application only
+shows points within a certain distance, we can split these enormous polygons into
+“tiles” which are then precalculated and stored in the database.</p>
+<p>Let’s say that we’re going to impose a limit of 100 miles to the search radius.
+We’ll also arbitrarily define the tiles to be one whole degree of latitude high,
+and one whole degree of longitude wide:</p>
+<a class="with-border reference internal image-reference" href="../_images/286-0.png"><img alt="../_images/286-0.png" class="with-border align-center" src="../_images/286-0.png" style="width: 636.0px; height: 629.0px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that we could choose any tile size we like, but have selected
+whole degrees of longitude and latitude to make it easy to
+calculate which tile a given lat/long coordinate is inside. Each tile
+will be given an integer latitude and longitude value, which we’ll
+call iLat and iLong. We can then calculate the tile to use for any
+given latitude and longitude like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iLat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">latitude</span><span class="p">))</span>
+<span class="n">iLong</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">longitude</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We can then simply look up the tile with the given iLat and iLong value.</p>
+</div>
+<p>For each tile, we will use the same technique we used earlier to identify the bounding box of the search radius, to define a rectangle 100 miles north, east, west, and south of the tile:</p>
+<a class="with-border reference internal image-reference" href="../_images/287-0.png"><img alt="../_images/287-0.png" class="with-border align-center" src="../_images/287-0.png" style="width: 601.0px; height: 604.0px;" /></a>
+<p>Using the bounding box, we can calculate the intersection of the shoreline data with this bounding box:</p>
+<a class="with-border reference internal image-reference" href="../_images/287-1.png"><img alt="../_images/287-1.png" class="with-border align-center" src="../_images/287-1.png" style="width: 338.0px; height: 340.0px;" /></a>
+<p>Any search done within the tile’s boundary, up to a maximum of 100 miles in any direction, will only display shorelines within this bounding box. We simply store this intersected shoreline into the database, along with the lat/long coordinates for the tile, and tell the map generator to use the appropriate tile’s outline to display the desired shoreline.</p>
+</div>
+</div>
+</section>
+<section id="id9">
+<h3>计算平铺海岸线<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h3>
+<p>Calculating the tiled shorelines</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>我们来编写一个程序来计算这些瓦片化的海岸线。我们将把这个程序存储为 <cite>tileShorelines.py</cite>。首先在这个文件中输入以下内容：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">cascaded_union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely.wkt</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">database</span>
+
+<span class="c1">############################################################</span>
+
+<span class="n">MAX_DISTANCE</span> <span class="o">=</span> <span class="mi">100000</span> <span class="c1"># 最大搜索半径，单位：米。</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请注意，我们正在导入 <cite>database.py</cite> 模块。由于 <cite>database.py</cite> 位于 <cite>cgi-bin</cite> 目录中，您应该将 <cite>tileShorelines.py</cite> 文件放在此目录下。</p>
+</div>
+<p>接下来，我们需要一个函数来计算瓦片的边界框。这个函数 <cite>expandRect()</cite> 应该接受一个用纬度/经度坐标定义的矩形，并在每个方向上按给定的米数扩展它。使用我们已经学过的技术，这很简单：我们可以使用 <cite>pyproj</cite> 执行反向大圆计算，以计算给定米数的四个点，分别是起始点以北、以东、以南和以西的点。这将给我们所需的边界框。我们的函数将如下所示：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">expandRect</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">minLong</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">maxLong</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+    <span class="n">geod</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Geod</span><span class="p">(</span><span class="n">ellps</span><span class="o">=</span><span class="s2">&quot;WGS84&quot;</span><span class="p">)</span>
+    <span class="n">midLat</span> <span class="o">=</span> <span class="p">(</span><span class="n">minLat</span> <span class="o">+</span> <span class="n">maxLat</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">midLong</span> <span class="o">=</span> <span class="p">(</span><span class="n">minLong</span> <span class="o">+</span> <span class="n">maxLong</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">availDistance</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">midLong</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">midLong</span><span class="p">,</span>
+                                    <span class="o">+</span><span class="mi">90</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">availDistance</span> <span class="o">&gt;=</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">angle</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">midLong</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
+            <span class="n">maxLat</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">maxLat</span> <span class="o">=</span> <span class="o">+</span><span class="mi">90</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">maxLat</span> <span class="o">=</span> <span class="o">+</span><span class="mi">90</span> <span class="c1"># 无法向北扩展。</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">availDistance</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">maxLong</span><span class="p">,</span> <span class="n">midLat</span><span class="p">,</span> <span class="o">+</span><span class="mi">180</span><span class="p">,</span>
+                                    <span class="n">midLat</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">availDistance</span> <span class="o">&gt;=</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">angle</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">maxLong</span><span class="p">,</span> <span class="n">midLat</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span>
+                                    <span class="n">distance</span><span class="p">)</span>
+            <span class="n">maxLong</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">maxLong</span> <span class="o">=</span> <span class="o">+</span><span class="mi">180</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">maxLong</span> <span class="o">=</span> <span class="o">+</span><span class="mi">180</span> <span class="c1"># 无法向东扩展。</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">availDistance</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">midLong</span><span class="p">,</span> <span class="n">minLat</span><span class="p">,</span> <span class="n">midLong</span><span class="p">,</span>
+                                    <span class="o">-</span><span class="mi">90</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">availDistance</span> <span class="o">&gt;=</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">angle</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">midLong</span><span class="p">,</span> <span class="n">minLat</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span>
+                                    <span class="n">distance</span><span class="p">)</span>
+            <span class="n">minLat</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">minLat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">minLat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span> <span class="c1"># 无法向南扩展。</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">availDistance</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">maxLong</span><span class="p">,</span> <span class="n">midLat</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">,</span>
+                                    <span class="n">midLat</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">availDistance</span> <span class="o">&gt;=</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">angle</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">minLong</span><span class="p">,</span> <span class="n">midLat</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span>
+                                    <span class="n">distance</span><span class="p">)</span>
+            <span class="n">minLong</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">minLong</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">minLong</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span> <span class="c1"># 无法向西扩展。</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">minLong</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">maxLong</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请注意，我们在这里添加了错误检查，以允许接近南极或北极的矩形。</p>
+</div>
+<p>使用这个函数，我们将能够以以下方式计算给定瓦片的边界矩形：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minLat</span><span class="p">,</span><span class="n">minLong</span><span class="p">,</span><span class="n">maxLat</span><span class="p">,</span><span class="n">maxLong</span> <span class="o">=</span> <span class="n">expandRect</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span>
+                                            <span class="n">iLat</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">iLong</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+                                            <span class="n">MAX_DISTANCE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>将 <cite>expandRect()</cite> 函数输入到您的 <cite>tileShorelines.py</cite> 脚本中，将其直接放置在最后一个导入语句下方。完成此操作后，我们可以开始创建瓦片化的海岸线。</p>
+<p>像往常一样，我们将使用 <cite>database.py</cite> 模块来处理程序中特定于数据库的部分。我们将从加载海岸线多边形到内存的函数开始。在您的 <cite>database.py</cite> 模块的末尾添加以下内容：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_shorelines</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_cursor</span>
+
+    <span class="n">shorelines</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;MySQL&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT AsText(outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;FROM shorelines WHERE level=1&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT ST_AsText(outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;FROM shorelines WHERE level=1&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;SpatiaLite&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT ST_AsText(outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;FROM shorelines WHERE level=1&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">_cursor</span><span class="p">:</span>
+        <span class="n">outline</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">shorelines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outline</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">shorelines</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>这个海岸线瓦片化算法的实现使用了大量的内存。如果您的计算机内存小于2GB，您可能需要将临时结果存储在数据库中。这样做虽然会减慢瓦片化过程，但仍然可以正常工作。</p>
+</div>
+<p>现在我们可以从 <cite>tileShorelines.py</cite> 脚本中调用这个函数，将海岸线多边形加载到内存中。在您的程序末尾添加以下几行：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">database</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+<span class="n">shorelines</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">load_shorelines</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>现在我们已经加载了海岸线多边形，可以开始计算每个瓦片的内容。让我们创建一个列表的列表来保存每个瓦片中（可能被裁剪过的）多边形；在您的 <cite>tileShorelines.py</cite> 脚本的末尾添加以下内容：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tilePolys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">iLat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">+</span><span class="mi">90</span><span class="p">):</span>
+    <span class="n">tilePolys</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+<span class="k">for</span> <span class="n">iLong</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">+</span><span class="mi">180</span><span class="p">):</span>
+    <span class="n">tilePolys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+</pre></div>
+</div>
+<p>对于给定的 iLat/iLong 组合，<cite>tilePolys[iLat][iLong]</cite> 将包含出现在该瓦片内的海岸线多边形的列表。</p>
+<p>接下来，我们想要填充 <cite>tilePolys</cite> 数组，其中包含将出现在每个瓦片中的海岸线部分。显而易见的做法是计算多边形的交集，如下所示：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">shorelineInTile</span> <span class="o">=</span> <span class="n">shoreline</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">tileBounds</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>不幸的是，这种方法计算起来会非常慢——就像生成地图需要大约2-3秒计算出海岸线的可见部分一样，计算一个巨大的海岸线多边形的交集也需要大约2-3秒。因为有 360 x 180 = 64,800 个瓦片，使用这种朴素的方法来完成计算可能需要几天时间。</p>
+<p>一个更快的解决方案是通过“分而治之”来处理这些大多边形。我们首先将巨大的海岸线多边形分割成垂直条带，如下所示：</p>
+<img alt="../_images/292-0.png" class="with-border align-center" src="../_images/292-0.png" />
+<p>然后，我们将每个垂直条带水平切割，以便获得多边形的各个部分，这些部分可以合并到各个瓦片中：</p>
+<img alt="../_images/292-1.png" class="with-border align-center" src="../_images/292-1.png" />
+<p>通过将巨大的多边形分割成条带，然后进一步分割每个条带，交集计算的过程变得更快。以下是执行该交集操作的代码；我们首先遍历每个海岸线多边形并计算多边形的边界：</p>
+<p>对于每个 <cite>shoreline</cite> in <cite>shorelines</cite>：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minLong</span><span class="p">,</span><span class="n">minLat</span><span class="p">,</span><span class="n">maxLong</span><span class="p">,</span><span class="n">maxLat</span> <span class="o">=</span> <span class="n">shoreline</span><span class="o">.</span><span class="n">bounds</span>
+<span class="n">minLong</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">minLong</span><span class="p">))</span>
+<span class="n">minLat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">minLat</span><span class="p">))</span>
+<span class="n">maxLong</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">maxLong</span><span class="p">))</span>
+<span class="n">maxLat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">maxLat</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>然后我们将多边形分割成垂直条带：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vStrips</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">iLong</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">minLong</span><span class="p">,</span> <span class="n">maxLong</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+
+    <span class="n">stripMinLat</span> <span class="o">=</span> <span class="n">minLat</span>
+    <span class="n">stripMaxLat</span> <span class="o">=</span> <span class="n">maxLat</span>
+    <span class="n">stripMinLong</span> <span class="o">=</span> <span class="n">iLong</span>
+    <span class="n">stripMaxLong</span> <span class="o">=</span> <span class="n">iLong</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">bMinLat</span><span class="p">,</span><span class="n">bMinLong</span><span class="p">,</span><span class="n">bMaxLat</span><span class="p">,</span><span class="n">bMaxLong</span> <span class="o">=</span> \
+    <span class="n">expandRect</span><span class="p">(</span><span class="n">stripMinLat</span><span class="p">,</span> <span class="n">stripMinLong</span><span class="p">,</span>
+                <span class="n">stripMaxLat</span><span class="p">,</span> <span class="n">stripMaxLong</span><span class="p">,</span>
+                <span class="n">MAX_DISTANCE</span><span class="p">)</span>
+
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMaxLat</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">bMaxLong</span><span class="p">,</span> <span class="n">bMaxLat</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">bMaxLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">)])</span>
+
+<span class="n">strip</span> <span class="o">=</span> <span class="n">shoreline</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
+<span class="n">vStrips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strip</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>接下来，我们处理每个垂直条带，将条带分割成瓦片大小的块，并将其存储到 <cite>tilePolys</cite> 中：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stripNum</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">iLong</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">minLong</span><span class="p">,</span> <span class="n">maxLong</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">vStrip</span> <span class="o">=</span> <span class="n">vStrips</span><span class="p">[</span><span class="n">stripNum</span><span class="p">]</span>
+    <span class="n">stripNum</span> <span class="o">=</span> <span class="n">stripNum</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">iLat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">bMinLat</span><span class="p">,</span><span class="n">bMinLong</span><span class="p">,</span><span class="n">bMaxLat</span><span class="p">,</span><span class="n">bMaxLong</span> <span class="o">=</span> \
+            <span class="n">expandRect</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">iLat</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">iLong</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="n">MAX_DISTANCE</span><span class="p">)</span>
+
+        <span class="n">bounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">),</span>
+                            <span class="p">(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMaxLat</span><span class="p">),</span>
+                            <span class="p">(</span><span class="n">bMaxLong</span><span class="p">,</span> <span class="n">bMaxLat</span><span class="p">),</span>
+                            <span class="p">(</span><span class="n">bMaxLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">),</span>
+                            <span class="p">(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">)])</span>
+
+        <span class="n">polygon</span> <span class="o">=</span> <span class="n">vStrip</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">polygon</span><span class="o">.</span><span class="n">is_empty</span><span class="p">:</span>
+            <span class="n">tilePolys</span><span class="p">[</span><span class="n">iLat</span><span class="p">][</span><span class="n">iLong</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>现在我们准备将瓦片化的海岸线保存回数据库。在此之前，我们需要创建相应的数据库表。为此，在 <cite>database.py</cite> 模块中添加以下函数：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_tile_tables</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_cursor</span><span class="p">,</span> <span class="n">_connection</span>
+
+    <span class="k">if</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;MySQL&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            CREATE TABLE IF NOT EXISTS tiled_shorelines (</span>
+<span class="s2">                intLat INTEGER,</span>
+<span class="s2">                intLong INTEGER,</span>
+<span class="s2">                outline GEOMETRY,</span>
+
+<span class="s2">                PRIMARY KEY (intLat, intLong))</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;tiled_shorelines&quot;</span><span class="p">)</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            CREATE TABLE tiled_shorelines (</span>
+<span class="s2">                intLat INTEGER,</span>
+<span class="s2">                intLong INTEGER,</span>
+
+<span class="s2">                PRIMARY KEY (intLat, intLong))</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT AddGeometryColumn(&#39;tiled_shorelines&#39;,</span>
+<span class="s2">                                        &#39;outline&#39;, 4326,</span>
+<span class="s2">                                        &#39;GEOMETRY&#39;, 2)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            CREATE INDEX tiledShorelineIndex</span>
+<span class="s2">                ON tiled_shorelines</span>
+<span class="s2">                USING GIST(outline)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;SpatiaLite&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;tiled_shorelines&quot;</span><span class="p">)</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            CREATE TABLE tiled_shorelines (</span>
+<span class="s2">                intLat INTEGER,</span>
+<span class="s2">                intLong INTEGER,</span>
+<span class="s2">                PRIMARY KEY (intLat, intLong))</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT AddGeometryColumn(&#39;tiled_shorelines&#39;,</span>
+<span class="s2">                                        &#39;outline&#39;, 4326,</span>
+<span class="s2">                                        &#39;GEOMETRY&#39;, 2)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT CreateSpatialIndex(&#39;tiled_shorelines&#39;,</span>
+<span class="s2">                                        &#39;outline&#39;)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">_connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>我们使用与之前创建 <cite>countries</cite> 和 <cite>shorelines</cite> 表相同的技术来创建新的 <cite>tiled_shorelines</cite> 表。现在我们可以从 <cite>tileShorelines.py</cite> 程序中调用它：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">database</span><span class="o">.</span><span class="n">create_tile_tables</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>因为我们将把几何体（多边形或多重多边形）存储到这个新表中，所以我们需要为每种类型的数据库定义一个函数来执行此操作。在您的 <cite>database.py</cite> 模块的末尾添加以下内容：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">save_tiled_shoreline</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">outline_wkt</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">_cursor</span><span class="p">,</span> <span class="n">_connection</span>
+
+    <span class="k">if</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;MySQL&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO tiled_shorelines &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;(intLat, intLong, outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, GeomFromText(</span><span class="si">%s</span><span class="s2">))&quot;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">outline_wkt</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO tiled_shorelines &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;(intLat, intLong, outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;ST_GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326))&quot;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">outline_wkt</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;SpatiaLite&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO tiled_shorelines &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;(intLat, intLong, outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;VALUES (?, ?, &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;ST_GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326))&quot;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">outline_wkt</span><span class="p">))</span>
+    <span class="n">_connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>最后，我们可以将每个瓦片中的多边形列表合并为一个几何对象，并将结果保存到数据库中。在 <cite>tileShorelines.py</cite> 的末尾添加以下内容：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">iLat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">+</span><span class="mi">90</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">iLong</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">+</span><span class="mi">180</span><span class="p">):</span>
+        <span class="n">polygons</span> <span class="o">=</span> <span class="n">tilePolys</span><span class="p">[</span><span class="n">iLat</span><span class="p">][</span><span class="n">iLong</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">outline</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">outline</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">cascaded_union</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">outline</span><span class="p">)</span>
+
+        <span class="n">database</span><span class="o">.</span><span class="n">save_tiled_shoreline</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">wkt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这完成了我们的海岸线瓦片化程序。您可以通过在命令行中输入以下命令来运行它：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tileShorelines.py
+</pre></div>
+</div>
+<p>请注意，由于需要处理大量的海岸线数据，第一次运行该程序可能需要一个小时或更长时间才能完成。</p>
+<p>第一次运行程序时，您可能希望将以下这一行替换为：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>shoreline<span class="w"> </span><span class="k">in</span><span class="w"> </span>shorelines:
+</pre></div>
+</div>
+<p>改为：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>shoreline<span class="w"> </span><span class="k">in</span><span class="w"> </span>shorelines<span class="o">[</span><span class="m">1</span>:2<span class="o">]</span>:
+</pre></div>
+</div>
+<p>这将使程序在几分钟内完成，以便您可以确保它正常工作，然后再去掉 <cite>[1:2]</cite>，并在整个海岸线数据库上运行它。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>Let’s write the program that calculates these tiled shorelines. We’ll store this program
+as tileShorelines.py. Start by entering the following into this file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">cascaded_union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely.wkt</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">database</span>
+
+<span class="c1">############################################################</span>
+
+<span class="n">MAX_DISTANCE</span> <span class="o">=</span> <span class="mi">100000</span> <span class="c1"># Maximum search radius, in meters.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that we’re importing the database.py module. Because database.py is within the cgi-bin directory, you should place your tileShorelines.py file in this directory.</p>
+</div>
+<p>We next need a function to calculate the tile bounding boxes. This function,
+<em>expandRect()</em>, should take a rectangle defined using lat/long coordinates, and
+expand it in each direction by a given number of meters. Using the techniques we
+have learned, this is straightforward: we can use pyproj to perform an inverse great
+circle calculation to calculate four points the given number of meters north, east,
+south, and west of the starting point. This will give us the desired bounding box.
+Here’s what our function will look like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">expandRect</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">minLong</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">maxLong</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+    <span class="n">geod</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Geod</span><span class="p">(</span><span class="n">ellps</span><span class="o">=</span><span class="s2">&quot;WGS84&quot;</span><span class="p">)</span>
+    <span class="n">midLat</span> <span class="o">=</span> <span class="p">(</span><span class="n">minLat</span> <span class="o">+</span> <span class="n">maxLat</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="n">midLong</span> <span class="o">=</span> <span class="p">(</span><span class="n">minLong</span> <span class="o">+</span> <span class="n">maxLong</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">availDistance</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">midLong</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">midLong</span><span class="p">,</span>
+                                 <span class="o">+</span><span class="mi">90</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">availDistance</span> <span class="o">&gt;=</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">angle</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">midLong</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
+            <span class="n">maxLat</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">maxLat</span> <span class="o">=</span> <span class="o">+</span><span class="mi">90</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">maxLat</span> <span class="o">=</span> <span class="o">+</span><span class="mi">90</span> <span class="c1"># Can&#39;t expand north.</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">availDistance</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">maxLong</span><span class="p">,</span> <span class="n">midLat</span><span class="p">,</span> <span class="o">+</span><span class="mi">180</span><span class="p">,</span>
+                                 <span class="n">midLat</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">availDistance</span> <span class="o">&gt;=</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">angle</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">maxLong</span><span class="p">,</span> <span class="n">midLat</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span>
+                                 <span class="n">distance</span><span class="p">)</span>
+            <span class="n">maxLong</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">maxLong</span> <span class="o">=</span> <span class="o">+</span><span class="mi">180</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">maxLong</span> <span class="o">=</span> <span class="o">+</span><span class="mi">180</span> <span class="c1"># Can&#39;t expand east.</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">availDistance</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">midLong</span><span class="p">,</span> <span class="n">minLat</span><span class="p">,</span> <span class="n">midLong</span><span class="p">,</span>
+                                 <span class="o">-</span><span class="mi">90</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">availDistance</span> <span class="o">&gt;=</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">angle</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">midLong</span><span class="p">,</span> <span class="n">minLat</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span>
+                                 <span class="n">distance</span><span class="p">)</span>
+            <span class="n">minLat</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">minLat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">minLat</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span> <span class="c1"># Can&#39;t expand south.</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">availDistance</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">maxLong</span><span class="p">,</span> <span class="n">midLat</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">,</span>
+                                 <span class="n">midLat</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">availDistance</span> <span class="o">&gt;=</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">angle</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">minLong</span><span class="p">,</span> <span class="n">midLat</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span>
+                                 <span class="n">distance</span><span class="p">)</span>
+            <span class="n">minLong</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">minLong</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">minLong</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span> <span class="c1"># Can&#39;t expand west.</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">minLong</span><span class="p">,</span> <span class="n">maxLat</span><span class="p">,</span> <span class="n">maxLong</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that we’ve added error-checking here, to allow rectangles close to the north or south pole.</p>
+</div>
+<p>Using this function, we will be able to calculate the bounding rectangle for a given tile in the following way:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minLat</span><span class="p">,</span><span class="n">minLong</span><span class="p">,</span><span class="n">maxLat</span><span class="p">,</span><span class="n">maxLong</span> <span class="o">=</span> <span class="n">expandRect</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span>
+                                           <span class="n">iLat</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">iLong</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+                                           <span class="n">MAX_DISTANCE</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Type the expandRect() function into your tileShorelines.py script, placing it
+immediately below the last import statement. With this in place, we’re now ready
+to start creating the tiled shorelines.</p>
+<p>As always, we’ll be using the database.py module to handle the database-specific
+portions of our program. We’ll start with a function to load the shoreline polygons
+into memory. Add the following to the end of your database.py module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_shorelines</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_cursor</span>
+
+    <span class="n">shorelines</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;MySQL&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT AsText(outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;FROM shorelines WHERE level=1&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT ST_AsText(outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;FROM shorelines WHERE level=1&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;SpatiaLite&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT ST_AsText(outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;FROM shorelines WHERE level=1&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">_cursor</span><span class="p">:</span>
+        <span class="n">outline</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">shorelines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outline</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">shorelines</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This implementation of the shoreline tiling algorithm uses a lot of memory. If your computer has less than 2 gigabytes of RAM, you may need to store temporary results in the database. Doing this will of course slow down the tiling process, but it will still work.</p>
+</div>
+<p>We can now call this function from the tileShorelines.py script to load the
+shoreline polygons into memory. Add the following lines to the end of your program:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">database</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+<span class="n">shorelines</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">load_shorelines</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now that we’ve loaded the shoreline polygons, we can start calculating the contents
+of each tile. Let’s create a list-of-lists which will hold the (possibly clipped) polygons
+that appear within each tile; add the following to the end of your tileShorelines.
+py script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tilePolys</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">iLat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">+</span><span class="mi">90</span><span class="p">):</span>
+    <span class="n">tilePolys</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+<span class="k">for</span> <span class="n">iLong</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">+</span><span class="mi">180</span><span class="p">):</span>
+    <span class="n">tilePolys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+</pre></div>
+</div>
+<p>For a given iLat/iLong combination, tilePolys[iLat][iLong] will contain a list
+of the shoreline polygons which appear inside that tile.</p>
+<p>We now want to fill the tilePolys array with the portions of the shorelines that
+will appear within each tile. The obvious way to do this is to calculate the polygon
+intersections, like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">shorelineInTile</span> <span class="o">=</span> <span class="n">shoreline</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">tileBounds</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Unfortunately, this approach would take a very long time to calculate—just as the
+map generation takes about 2-3 seconds to calculate the visible portion of a shoreline,
+it takes about 2-3 seconds to perform this intersection on a huge shoreline polygon.
+Because there are 360 x 180 = 64,800 tiles, it would take several days to complete this
+calculation using this naive approach.</p>
+<p>A much faster solution would be to “divide and conquer” the large polygons. We first split the huge shoreline polygon into vertical strips, like this:</p>
+<img alt="../_images/292-0.png" class="with-border align-center" src="../_images/292-0.png" />
+<p>We then split each vertical strip horizontally to give us the individual parts of the polygon, which can be merged into the individual tiles:</p>
+<img alt="../_images/292-1.png" class="with-border align-center" src="../_images/292-1.png" />
+<p>By dividing the huge polygons into strips, and then further dividing each strip,
+the intersection process is much faster. Here is the code which performs this
+intersection; we start by iterating over each shoreline polygon and calculating
+the polygon’s bounds:</p>
+<p>For shoreline in shorelines:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">minLong</span><span class="p">,</span><span class="n">minLat</span><span class="p">,</span><span class="n">maxLong</span><span class="p">,</span><span class="n">maxLat</span> <span class="o">=</span> <span class="n">shoreline</span><span class="o">.</span><span class="n">bounds</span>
+<span class="n">minLong</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">minLong</span><span class="p">))</span>
+<span class="n">minLat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">minLat</span><span class="p">))</span>
+<span class="n">maxLong</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">maxLong</span><span class="p">))</span>
+<span class="n">maxLat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">maxLat</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We then split the polygon into vertical strips:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vStrips</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">iLong</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">minLong</span><span class="p">,</span> <span class="n">maxLong</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+
+    <span class="n">stripMinLat</span> <span class="o">=</span> <span class="n">minLat</span>
+    <span class="n">stripMaxLat</span> <span class="o">=</span> <span class="n">maxLat</span>
+    <span class="n">stripMinLong</span> <span class="o">=</span> <span class="n">iLong</span>
+    <span class="n">stripMaxLong</span> <span class="o">=</span> <span class="n">iLong</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="n">bMinLat</span><span class="p">,</span><span class="n">bMinLong</span><span class="p">,</span><span class="n">bMaxLat</span><span class="p">,</span><span class="n">bMaxLong</span> <span class="o">=</span> \
+    <span class="n">expandRect</span><span class="p">(</span><span class="n">stripMinLat</span><span class="p">,</span> <span class="n">stripMinLong</span><span class="p">,</span>
+               <span class="n">stripMaxLat</span><span class="p">,</span> <span class="n">stripMaxLong</span><span class="p">,</span>
+               <span class="n">MAX_DISTANCE</span><span class="p">)</span>
+
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">),</span>
+                  <span class="p">(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMaxLat</span><span class="p">),</span>
+                  <span class="p">(</span><span class="n">bMaxLong</span><span class="p">,</span> <span class="n">bMaxLat</span><span class="p">),</span>
+                  <span class="p">(</span><span class="n">bMaxLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">),</span>
+                  <span class="p">(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">)])</span>
+
+<span class="n">strip</span> <span class="o">=</span> <span class="n">shoreline</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
+<span class="n">vStrips</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">strip</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, we process each vertical strip, splitting the strip into tile-sized blocks and
+storing it into tilePolys:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">stripNum</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">iLong</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">minLong</span><span class="p">,</span> <span class="n">maxLong</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">vStrip</span> <span class="o">=</span> <span class="n">vStrips</span><span class="p">[</span><span class="n">stripNum</span><span class="p">]</span>
+    <span class="n">stripNum</span> <span class="o">=</span> <span class="n">stripNum</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">iLat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">minLat</span><span class="p">,</span> <span class="n">maxLat</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">bMinLat</span><span class="p">,</span><span class="n">bMinLong</span><span class="p">,</span><span class="n">bMaxLat</span><span class="p">,</span><span class="n">bMaxLong</span> <span class="o">=</span> \
+            <span class="n">expandRect</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">iLat</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">iLong</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+                       <span class="n">MAX_DISTANCE</span><span class="p">)</span>
+
+        <span class="n">bounds</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">),</span>
+                           <span class="p">(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMaxLat</span><span class="p">),</span>
+                           <span class="p">(</span><span class="n">bMaxLong</span><span class="p">,</span> <span class="n">bMaxLat</span><span class="p">),</span>
+                           <span class="p">(</span><span class="n">bMaxLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">),</span>
+                           <span class="p">(</span><span class="n">bMinLong</span><span class="p">,</span> <span class="n">bMinLat</span><span class="p">)])</span>
+
+        <span class="n">polygon</span> <span class="o">=</span> <span class="n">vStrip</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">polygon</span><span class="o">.</span><span class="n">is_empty</span><span class="p">:</span>
+            <span class="n">tilePolys</span><span class="p">[</span><span class="n">iLat</span><span class="p">][</span><span class="n">iLong</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We’re now ready to save the tiled shorelines back into the database. Before we can do that, we have to create the appropriate database tables. To do this, add the following function to your database.py module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_tile_tables</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">_cursor</span><span class="p">,</span> <span class="n">_connection</span>
+
+    <span class="k">if</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;MySQL&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            CREATE TABLE IF NOT EXISTS tiled_shorelines (</span>
+<span class="s2">                intLat INTEGER,</span>
+<span class="s2">                intLong INTEGER,</span>
+<span class="s2">                outline GEOMETRY,</span>
+
+<span class="s2">                PRIMARY KEY (intLat, intLong))</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;tiled_shorelines&quot;</span><span class="p">)</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            CREATE TABLE tiled_shorelines (</span>
+<span class="s2">                intLat INTEGER,</span>
+<span class="s2">                intLong INTEGER,</span>
+
+<span class="s2">                PRIMARY KEY (intLat, intLong))</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            SELECT AddGeometryColumn(&#39;tiled_shorelines&#39;,</span>
+<span class="s2">                                     &#39;outline&#39;, 4326,</span>
+<span class="s2">                                     &#39;GEOMETRY&#39;, 2)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            CREATE INDEX tiledShorelineIndex</span>
+<span class="s2">                ON tiled_shorelines</span>
+<span class="s2">                USING GIST(outline)</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;SpatiaLite&quot;</span><span class="p">:</span>
+            <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS &quot;</span> <span class="o">+</span>
+                            <span class="s2">&quot;tiled_shorelines&quot;</span><span class="p">)</span>
+            <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                CREATE TABLE tiled_shorelines (</span>
+<span class="s2">                    intLat INTEGER,</span>
+<span class="s2">                    intLong INTEGER,</span>
+<span class="s2">                    PRIMARY KEY (intLat, intLong))</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)</span>
+            <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                SELECT AddGeometryColumn(&#39;tiled_shorelines&#39;,</span>
+<span class="s2">                                         &#39;outline&#39;, 4326,</span>
+<span class="s2">                                         &#39;GEOMETRY&#39;, 2)</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)</span>
+            <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                SELECT CreateSpatialIndex(&#39;tiled_shorelines&#39;,</span>
+<span class="s2">                                          &#39;outline&#39;)</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">_connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We’re using the same technique we used earlier to create the countries and
+shorelines tables to create our new tiled_shorelines table. We can now
+call this from our tileShorelines.py program:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">database</span><span class="o">.</span><span class="n">create_tile_tables</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Because we’ll be storing geometries (Polygons or MultiPolygons) into this
+new table, we’ll want to define a function to do this for each type of database.
+Add the following to the end of your database.py module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">save_tiled_shoreline</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">outline_wkt</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">_cursor</span><span class="p">,</span> <span class="n">_connection</span>
+
+    <span class="k">if</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;MySQL&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO tiled_shorelines &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;(intLat, intLong, outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, GeomFromText(</span><span class="si">%s</span><span class="s2">))&quot;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">outline_wkt</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO tiled_shorelines &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;(intLat, intLong, outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">, &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;ST_GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326))&quot;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">outline_wkt</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;SpatiaLite&quot;</span><span class="p">:</span>
+        <span class="n">_cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO tiled_shorelines &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;(intLat, intLong, outline) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;VALUES (?, ?, &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;ST_GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326))&quot;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">outline_wkt</span><span class="p">))</span>
+    <span class="n">_connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Finally, we can combine the list of polygons within each tile into a single Geometry
+object, and save the results into the database. Add the following to the end of
+tileShorelines.py:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">iLat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="o">+</span><span class="mi">90</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">iLong</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">+</span><span class="mi">180</span><span class="p">):</span>
+        <span class="n">polygons</span> <span class="o">=</span> <span class="n">tilePolys</span><span class="p">[</span><span class="n">iLat</span><span class="p">][</span><span class="n">iLong</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">outline</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">outline</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">cascaded_union</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">outline</span><span class="p">)</span>
+
+        <span class="n">database</span><span class="o">.</span><span class="n">save_tiled_shoreline</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">,</span> <span class="n">wkt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This completes our program to tile the shorelines. You can run it by typing the
+following command from the command line:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tileShorelines.py
+</pre></div>
+</div>
+<p>Note that it may take an hour or more to complete, because of all the shoreline data
+that needs to be processed.</p>
+<p>The first time you run the program, you might want to replace this line:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>shoreline<span class="w"> </span><span class="k">in</span><span class="w"> </span>shorelines:
+</pre></div>
+</div>
+<p>with the following line:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span>shoreline<span class="w"> </span><span class="k">in</span><span class="w"> </span>shorelines<span class="o">[</span><span class="m">1</span>:2<span class="o">]</span>:
+</pre></div>
+</div>
+<p>This will let the program finish in only a few minutes so you can make
+sure it’s working, before removing the [1:2] and running it over the
+entire shoreline database.</p>
+</div>
+</div>
+</section>
+<section id="id10">
+<h3>使用平铺海岸线<a class="headerlink" href="#id10" title="此标题的永久链接">#</a></h3>
+<p>Using tiled shorelines</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>以下是翻译后的内容，保持了原有的格式：</p>
+<p>所有这些为我们提供了一个新的数据库表 <cite>tiled_shorelines</cite>，该表存储了分成部分重叠瓦片的海岸线数据：</p>
+<a class="reference internal image-reference" href="../_images/297-0.png"><img alt="../_images/297-0.png" class="align-center" src="../_images/297-0.png" style="width: 490.0px; height: 633.0px;" /></a>
+<p>由于我们可以保证给定搜索结果的所有海岸线数据将位于单个 <cite>tiled_shoreline</cite> 记录中，因此我们可以修改 <cite>showResults.py`（以及 `database.py</cite>）来使用瓦片化的海岸线数据，而不是原始的海岸线数据。</p>
+<p>为了实现这一点，我们需要修改我们的数据源字典，以便 Mapnik 知道使用哪些海岸线瓦片。我们来定义一个新的版本的 <cite>get_shoreline_datasource()</cite> 函数，该函数返回一个能够处理瓦片化海岸线数据的数据源。将以下内容添加到 <cite>database.py</cite> 模块的末尾：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_tiled_shoreline_datasource</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;MySQL&quot;</span><span class="p">:</span>
+        <span class="n">vrtFile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                                <span class="s2">&quot;shorelines.vrt&quot;</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="n">vrtFile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;OGRVRTDataSource&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; &lt;OGRVRTLayer name=&quot;shorelines&quot;&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span>
+        <span class="o">&lt;</span><span class="n">SrcDataSource</span><span class="o">&gt;</span><span class="n">MYSQL</span><span class="p">:</span><span class="s1">&#39; + MYSQL_DBNAME)</span>
+        <span class="k">if</span> <span class="n">MYSQL_USERNAME</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;,user=&quot;</span> <span class="o">+</span> <span class="n">MYSQL_USERNAME</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">MYSQL_PASSWORD</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;,passwd=&quot;</span> <span class="o">+</span> <span class="n">MYSQL_PASSWORD</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,tables=tiled_shorelines&lt;/SrcDataSource&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;   &lt;SrcSQL&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;   SELECT outline &#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;FROM tiled_shorelines WHERE &#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;(intLat=</span><span class="si">%d</span><span class="s1">) AND (intlong=</span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;   &lt;/SrcSQL&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; &lt;/OGRVRTLayer&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;/OGRVRTDataSource&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span> <span class="p">:</span> <span class="s2">&quot;OGR&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;file&#39;</span> <span class="p">:</span> <span class="n">vrtFile</span><span class="p">,</span>
+                <span class="s1">&#39;layer&#39;</span> <span class="p">:</span> <span class="s2">&quot;shorelines&quot;</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;(SELECT outline FROM tiled_shorelines&quot;</span> \
+            <span class="o">+</span> <span class="s2">&quot; WHERE (intLat=</span><span class="si">%d</span><span class="s2">) AND (intLong=</span><span class="si">%d</span><span class="s2">)) &quot;</span> \
+            <span class="o">%</span> <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;AS shorelines&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;distal&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="n">sql</span><span class="p">,</span>
+                <span class="s1">&#39;extent_from_subquery&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">POSTGIS_USERNAME</span><span class="p">,</span>
+                <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">POSTGIS_PASSWORD</span><span class="p">}</span>
+
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;SpatiaLite&quot;</span><span class="p">:</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;(SELECT outline FROM tiled_shorelines&quot;</span> \
+            <span class="o">+</span> <span class="s2">&quot; WHERE (intLat=</span><span class="si">%d</span><span class="s2">) AND (intLong=</span><span class="si">%d</span><span class="s2">)) &quot;</span> \
+            <span class="o">%</span> <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;AS shorelines&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;SQLite&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">SPATIALITE_DBNAME</span><span class="p">,</span>
+                <span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="n">sql</span><span class="p">,</span>
+                <span class="s1">&#39;geometry_field&#39;</span> <span class="p">:</span> <span class="s2">&quot;outline&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;key_field&#39;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>现在我们可以在 <cite>showResults.py</cite> 脚本中使用这个方法来使用瓦片化的海岸线数据。为此，替换掉原来这行代码：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">datasource</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_shoreline_datasource</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>改为以下代码：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iLat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">latitude</span><span class="p">))</span>
+
+<span class="n">iLong</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">longitude</span><span class="p">))</span>
+<span class="n">datasource</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_tiled_shoreline_datasource</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>通过这些修改， <cite>showResults.py</cite> 脚本将使用瓦片化的海岸线数据，而不是从 GSHHS 下载的完整海岸线数据。现在，让我们看看这些瓦片化的海岸线带来了多大的性能提升。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>All this gives us a new database table, tiled_shorelines, which holds the shoreline
+data split into partly-overlapping tiles:</p>
+<a class="reference internal image-reference" href="../_images/297-0.png"><img alt="../_images/297-0.png" class="align-center" src="../_images/297-0.png" style="width: 490.0px; height: 633.0px;" /></a>
+<p>Since we can guarantee that all the shoreline data for a given set of search results
+will be within a single tiled_shoreline record, we can modify showResults.py
+(and database.py) to use the tiled shoreline rather than the raw shoreline data.</p>
+<p>To do this, we’ll need to modify our datasource dictionary so that Mapnik will know
+which of the shoreline tiles to use. Let’s define a new version of the <a href="#id12"><span class="problematic" id="id13">get_shoreline_</span></a>
+datasource() function which returns a data source which can handle our tiled
+shorelines. Add the following to the end of your database.py module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_tiled_shoreline_datasource</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;MySQL&quot;</span><span class="p">:</span>
+        <span class="n">vrtFile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                               <span class="s2">&quot;shorelines.vrt&quot;</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="n">vrtFile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;OGRVRTDataSource&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; &lt;OGRVRTLayer name=&quot;shorelines&quot;&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span>
+        <span class="o">&lt;</span><span class="n">SrcDataSource</span><span class="o">&gt;</span><span class="n">MYSQL</span><span class="p">:</span><span class="s1">&#39; + MYSQL_DBNAME)</span>
+        <span class="k">if</span> <span class="n">MYSQL_USERNAME</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;,user=&quot;</span> <span class="o">+</span> <span class="n">MYSQL_USERNAME</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">MYSQL_PASSWORD</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;,passwd=&quot;</span> <span class="o">+</span> <span class="n">MYSQL_PASSWORD</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,tables=tiled_shorelines&lt;/SrcDataSource&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;   &lt;SrcSQL&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;   SELECT outline &#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;FROM tiled_shorelines WHERE &#39;</span> <span class="o">+</span>
+                    <span class="s1">&#39;(intLat=</span><span class="si">%d</span><span class="s1">) AND (intlong=</span><span class="si">%d</span><span class="s1">)&#39;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;   &lt;/SrcSQL&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; &lt;/OGRVRTLayer&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;&lt;/OGRVRTDataSource&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span> <span class="p">:</span> <span class="s2">&quot;OGR&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;file&#39;</span> <span class="p">:</span> <span class="n">vrtFile</span><span class="p">,</span>
+                <span class="s1">&#39;layer&#39;</span> <span class="p">:</span> <span class="s2">&quot;shorelines&quot;</span><span class="p">}</span>
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;(SELECT outline FROM tiled_shorelines&quot;</span> \
+            <span class="o">+</span> <span class="s2">&quot; WHERE (intLat=</span><span class="si">%d</span><span class="s2">) AND (intLong=</span><span class="si">%d</span><span class="s2">)) &quot;</span> \
+            <span class="o">%</span> <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;AS shorelines&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;dbname&#39;</span><span class="p">:</span> <span class="s2">&quot;distal&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="n">sql</span><span class="p">,</span>
+                <span class="s1">&#39;extent_from_subquery&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">POSTGIS_USERNAME</span><span class="p">,</span>
+                <span class="s1">&#39;password&#39;</span><span class="p">:</span> <span class="n">POSTGIS_PASSWORD</span><span class="p">}</span>
+
+    <span class="k">elif</span> <span class="n">DB_TYPE</span> <span class="o">==</span> <span class="s2">&quot;SpatiaLite&quot;</span><span class="p">:</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;(SELECT outline FROM tiled_shorelines&quot;</span> \
+            <span class="o">+</span> <span class="s2">&quot; WHERE (intLat=</span><span class="si">%d</span><span class="s2">) AND (intLong=</span><span class="si">%d</span><span class="s2">)) &quot;</span> \
+            <span class="o">%</span> <span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;AS shorelines&quot;</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s2">&quot;SQLite&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">SPATIALITE_DBNAME</span><span class="p">,</span>
+                <span class="s1">&#39;table&#39;</span><span class="p">:</span> <span class="n">sql</span><span class="p">,</span>
+                <span class="s1">&#39;geometry_field&#39;</span> <span class="p">:</span> <span class="s2">&quot;outline&quot;</span><span class="p">,</span>
+                <span class="s1">&#39;key_field&#39;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>We can now use this within our showResults.py script to use the tiled shorelines. To do this, replace the line that says:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">datasource</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_shoreline_datasource</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>with the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iLat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">latitude</span><span class="p">))</span>
+
+<span class="n">iLong</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">longitude</span><span class="p">))</span>
+<span class="n">datasource</span> <span class="o">=</span> <span class="n">database</span><span class="o">.</span><span class="n">get_tiled_shoreline_datasource</span><span class="p">(</span><span class="n">iLat</span><span class="p">,</span> <span class="n">iLong</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With these changes, the showResults.py script will use the tiled shorelines rather than the full shoreline data downloaded from GSHHS. Let’s now take a look at how much of a performance improvement these tiled shorelines give us.</p>
+</div>
+</div>
+</section>
+<section id="id11">
+<h3>分析性能改进<a class="headerlink" href="#id11" title="此标题的永久链接">#</a></h3>
+<p>Analyzing performance improvement</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>一旦你运行这个新版本的 DISTAL 应用程序，你会立刻注意到速度有了巨大的提升：<cite>showResults.py</cite> 现在似乎几乎瞬间就返回了结果。之前，地图生成器大约需要 2-3 秒钟生成高分辨率地图，而现在只需要短短的一小部分时间：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Generating map took 0.1074 seconds
+</pre></div>
+</div>
+<p>这是一个显著的性能提升：地图生成器现在比之前快了 15-20 倍，并且 <cite>showResults.py</cite> 脚本总共耗时已经不到四分之一秒。对于我们对底层地图数据进行的相对简单的修改来说，这个结果相当不错。</p>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>As soon as you run this new version of the DISTAL application, you’ll notice a
+huge improvement in speed: showResults.py now seems to return its results
+almost instantly. Where before the map generator was taking about 2-3 seconds
+to generate the high-resolution maps, it’s now only taking a fraction of a second:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Generating map took 0.1074 seconds
+</pre></div>
+</div>
+<p>That’s a dramatic improvement in performance: the map generator is now 15-20
+times faster than it was, and the total time taken by the showResults.py script is
+now less than a quarter of a second. That’s not bad for a relatively simple change
+to our underlying map data.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="summary.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">小结</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="implementing.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">实现 DISTAL 应用程序</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">应用程序审查和改进</a><ul>
+<li><a class="reference internal" href="#id2">可用性</a></li>
+<li><a class="reference internal" href="#id3">质量</a><ul>
+<li><a class="reference internal" href="#id4">地名问题</a></li>
+<li><a class="reference internal" href="#id5">纬度/经度坐标问题</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id6">性能</a><ul>
+<li><a class="reference internal" href="#id7">查找问题</a></li>
+<li><a class="reference internal" href="#id8">提高性能</a></li>
+<li><a class="reference internal" href="#id9">计算平铺海岸线</a></li>
+<li><a class="reference internal" href="#id10">使用平铺海岸线</a></li>
+<li><a class="reference internal" href="#id11">分析性能改进</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

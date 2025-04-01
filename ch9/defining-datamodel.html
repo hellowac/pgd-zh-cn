@@ -1,0 +1,1088 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="玩转管理系统" href="playing.html" /><link rel="prev" title="创建共享应用程序" href="creating-shared.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>定义数据模型 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">9 整合所有要素——完整的地图系统</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="id1">
+<h1>定义数据模型<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>Defining the data models</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>我们已经知道需要哪些数据库对象来存储上传的 shapefile：</p>
+<ul class="simple">
+<li><p><strong>Shapefile 对象</strong> 将代表单个上传的 shapefile。</p></li>
+<li><p>每个 shapefile 将有多个 <strong>Attribute 对象</strong>，提供 shapefile 内每个属性的名称、数据类型和其他信息。</p></li>
+<li><p>每个 shapefile 将有多个 <strong>Feature 对象</strong>，保存 shapefile 每个要素的几何信息。</p></li>
+<li><p>每个要素将有一组 <strong>AttributeValue 对象</strong>，保存该要素每个属性的值。</p></li>
+</ul>
+<p>让我们更详细地看看这些对象，并思考每个对象需要存储的确切信息。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>We already know which database objects we are going to need to store the
+uploaded shapefiles:</p>
+<ul class="simple">
+<li><p>The Shapefile object will represent a single uploaded shapefile.</p></li>
+<li><p>Each shapefile will have a number of Attribute objects, giving the name, data type, and other information about each attribute within the shapefile.</p></li>
+<li><p>Each shapefile will have a number of Feature objects, which hold the geometry for each of the shapefile’s features.</p></li>
+<li><p>Each feature will have a set of AttributeValue objects, which hold the value for each of the feature’s attributes.</p></li>
+</ul>
+<p>Let’s look at each of these in more detail, and think about exactly what information will need to be stored in each object.</p>
+</div>
+</div>
+<section id="shapefile">
+<h2>Shapefile<a class="headerlink" href="#shapefile" title="此标题的永久链接">#</a></h2>
+<p>Shapefile</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>当我们导入一个 shapefile 时，有几件事情需要记住：</p>
+<ul class="simple">
+<li><p>上传文件的原始名称。我们将在“列出 shapefile”视图中显示此名称，以便用户可以在该列表中识别 shapefile。</p></li>
+<li><p>shapefile 数据所使用的空间参考系统。导入 shapefile 时，我们将把它转换为使用 WGS84 基准面（EPSG 4326）的纬度和经度坐标，但我们需要记住 shapefile 的原始空间参考系统，以便在导出要素时再次使用。为了简单起见，我们将以 WKT 格式存储空间参考系统。</p></li>
+<li><p>shapefile 中存储的几何类型。我们需要这个信息来知道 Feature 对象中的哪个字段保存了几何信息。</p></li>
+<li><p>shapefile 属性所使用的字符编码。Shapefile 并不总是采用 UTF-8 字符编码，虽然在导入数据时我们会将属性值转换为 Unicode，但我们确实需要知道文件的原始字符编码，因此我们也会将此信息存储在 shapefile 中。这允许我们在再次导出 shapefile 时使用相同的字符编码。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>When we import a shapefile, there are a few things we need to remember:</p>
+<ul class="simple">
+<li><p>The original name of the uploaded file. We will display this in the “list shapefiles” view, so that the user can identify the shapefile within this list.</p></li>
+<li><p>The spatial reference system used by the shapefile’s data is present. When we import the shapefile, we will convert it to use latitude and longitude coordinates using the WGS84 datum (EPSG 4326), but we need to remember the shapefile’s original spatial reference system so that we can use it again when exporting the features. For simplicity, we’re going to store the spatial reference system in WKT format.</p></li>
+<li><p>What type of geometry was stored in the shapefile. We’ll need this to know which field in the Feature object holds the geometry.</p></li>
+<li><p>The character encoding used for the shapefile’s attributes. Shapefiles don’t always come in UTF-8 character encoding, and while we’ll convert the attribute values to Unicode when importing the data, we do need to know which character encoding the file was in, so we’ll store this information in the shapefile as well. This allows us to use the same character encoding when exporting the shapefile again.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>属性<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Attribute</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>当我们导出一个 shapefile 时，它必须具有与原始导入文件相同的属性。因此，我们必须记住 shapefile 的属性。这就是 <cite>Attribute</cite> 对象的作用。我们需要为每个属性记住以下信息：</p>
+<ul class="simple">
+<li><p>属性所属的 shapefile</p></li>
+<li><p>属性的名称</p></li>
+<li><p>此属性中存储的数据类型（字符串、浮点数等）</p></li>
+<li><p>属性的字段宽度（以字符为单位）</p></li>
+<li><p>对于浮点属性，小数点后显示的位数</p></li>
+</ul>
+<p>所有这些信息都直接来自 shapefile 的图层定义。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>When we export a shapefile, it has to have the same attributes as the original imported file. Because of this, we have to remember the shapefile’s attributes. This is what the Attribute object does. We will need to remember the following information for each attribute:</p>
+<ul class="simple">
+<li><p>The shapefile the attribute belongs to</p></li>
+<li><p>The name of the attribute</p></li>
+<li><p>The type of data stored in this attribute (string, floating-point number, and so on)</p></li>
+<li><p>The field width of the attribute, in characters</p></li>
+<li><p>For floating-point attributes, the number of digits to display after the decimal point</p></li>
+</ul>
+<p>All of this information comes directly from the shapefile’s layer definition.</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>特征<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p>Feature</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>导入的 shapefile 中的每个要素都需要存储在数据库中。由于 PostGIS（和 GeoDjango）对不同的几何类型使用不同的字段类型，我们需要为每种几何类型定义单独的字段。因此，<cite>Feature</cite> 对象需要存储以下信息：</p>
+<ul class="simple">
+<li><p>要素所属的 shapefile</p></li>
+<li><p>如果 shapefile 存储这种类型的几何体，则存储点几何体（Point）</p></li>
+<li><p>如果 shapefile 存储这种类型的几何体，则存储多点几何体（MultiPoint）</p></li>
+<li><p>如果 shapefile 存储这种类型的几何体，则存储多线几何体（MultiLineString）</p></li>
+<li><p>如果 shapefile 存储这种类型的几何体，则存储多边形几何体（MultiPolygon）</p></li>
+<li><p>如果 shapefile 存储这种类型的几何体，则存储几何体集合（GeometryCollection）</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>是不是漏了点什么？</p>
+<p>如果您一直在关注，可能已经注意到一些几何类型缺失了。多边形（Polygons）或线串（LineStrings）呢？由于数据在 shapefile 中的存储方式，无法预先知道一个 shapefile 到底包含多边形还是多多边形，线串还是多线串。shapefile 的内部结构并不区分这些几何类型。因此，一个 shapefile 可能声称存储的是多边形，而实际上包含的是多多边形，线串也是如此。</p>
+<p>有关更多信息，请参见 <a class="reference external" href="http://code.djangoproject.com/ticket/7218">http://code.djangoproject.com/ticket/7218</a>。</p>
+<p>为了克服这个限制，我们将所有的多边形存储为多多边形，所有的线串存储为多线串。这就是为什么我们在 <cite>Feature</cite> 对象中不需要多边形或线串字段的原因。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>Each feature in the imported shapefile will need to be stored in the database. Because
+PostGIS (and GeoDjango) uses different field types for different types of geometries,
+we need to define separate fields for each geometry type. Because of this, the
+Feature object will need to store the following information:</p>
+<ul class="simple">
+<li><p>The shapefile the feature belongs to</p></li>
+<li><p>The Point geometry, if the shapefile stores this type of geometry</p></li>
+<li><p>The MultiPoint geometry, if the shapefile stores this type of geometry</p></li>
+<li><p>The MultLineString geometry, if the shapefile stores this type of geometry</p></li>
+<li><p>The MultiPolygon geometry, if the shapefile stores this type of geometry</p></li>
+<li><p>The GeometryCollection geometry, if the shapefile stores this type of geometry</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Isn’t something missing?</p>
+<p>If you’ve been paying attention, you’ve probably noticed that some of
+the geometry types are missing. What about Polygons or LineStrings?
+Because of the way data is stored in a shapefile, it is impossible to know
+in advance whether a shapefile holds Polygons or MultiPolygons, and
+similarly if it holds LineStrings or MultiLineStrings. The shapefile’s
+internal structure makes no distinction between these geometry types.
+Because of this, a shapefile may claim to store Polygons when it really
+contains MultiPolygons, and similarly for LineString geometries.
+For more information, see <a class="reference external" href="http://code.djangoproject.com/ticket/7218">http://code.djangoproject.com/ticket/7218</a>.</p>
+<p>To work around this limitation, we store all Polygons as MultiPolygons,
+and all LineStrings as MultiLineStrings. This is why we don’t need
+Polygon or LineString fields in the Feature object.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>属性值<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p>AttributeValue</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p><cite>AttributeValue</cite> 对象保存每个要素属性的值。这个对象相当简单，存储以下信息：</p>
+<ul class="simple">
+<li><p>属性值所属的要素</p></li>
+<li><p>该值所属的属性</p></li>
+<li><p>属性的值（以字符串形式）</p></li>
+</ul>
+<p>为了简单起见，我们将所有属性值都存储为字符串。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>The AttributeValue object holds the value for each of the feature’s attributes.
+This object is quite straightforward, storing the following information:</p>
+<ul class="simple">
+<li><p>The feature the attribute value is for</p></li>
+<li><p>The attribute this value is for</p></li>
+<li><p>The attribute’s value, as a string</p></li>
+</ul>
+<p>For simplicity, we’ll be storing all attribute values as strings.</p>
+</div>
+</div>
+</section>
+<section id="models-py">
+<h2>models.py 文件<a class="headerlink" href="#models-py" title="此标题的永久链接">#</a></h2>
+<p>The models.py file</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>现在我们已经知道了要在数据库中存储哪些信息，因此定义各种模型对象就变得很容易。为此，请编辑 <cite>shapeEditor.shared</cite> 目录中的 <cite>models.py</cite> 文件，确保它如下所示:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.gis.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Shapefile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">filename</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">srs_wkt</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">geom_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">encoding</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Attribute</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Shapefile</span><span class="p">)</span>
+    <span class="n">name</span>      <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="nb">type</span>      <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">width</span>     <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Feature</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">shapefile</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Shapefile</span><span class="p">)</span>
+    <span class="n">geom_point</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PointField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                    <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">geom_multipoint</span> <span class="o">=</span> \
+                <span class="n">models</span><span class="o">.</span><span class="n">MultiPointField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                        <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">geom_multilinestring</span> <span class="o">=</span> \
+                <span class="n">models</span><span class="o">.</span><span class="n">MultiLineStringField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                        <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">geom_multipolygon</span> <span class="o">=</span> \
+                <span class="n">models</span><span class="o">.</span><span class="n">MultiPolygonField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                        <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">geom_geometrycollection</span> <span class="o">=</span> \
+                <span class="n">models</span><span class="o">.</span><span class="n">GeometryCollectionField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                                <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GeoManager</span><span class="p">()</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">AttributeValue</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+        <span class="n">feature</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Feature</span><span class="p">)</span>
+        <span class="n">attribute</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Attribute</span><span class="p">)</span>
+        <span class="n">value</span>     <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+                                    <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>在这里有几个需要注意的地方：</p>
+<ul class="simple">
+<li><p>注意，顶部的 <cite>from…import</cite> 语句已经改变。我们导入的是 GeoDjango 模型，而不是标准的 Django 模型。</p></li>
+<li><p>我们使用 <cite>models.CharField</cite> 对象来表示字符数据，使用 <cite>models.IntegerField</cite> 对象来表示整数值。Django 提供了很多不同类型的字段供你使用。GeoDjango 还添加了自己的字段类型来存储几何字段，正如你在 <cite>Feature</cite> 对象的定义中看到的那样。</p></li>
+<li><p>要表示两个对象之间的关系，我们使用 <cite>models.ForeignKey</cite> 对象。</p></li>
+<li><p>由于 <cite>Feature</cite> 对象将存储几何数据，我们希望允许 GeoDjango 对这些数据进行空间查询。为了实现这一点，我们为 <cite>Feature</cite> 类定义了一个 <cite>GeoManager()</cite> 实例。</p></li>
+<li><p>注意，多个字段（特别是 <cite>Feature</cite> 对象中的 <cite>geom_XXX</cite> 字段）都同时设置了 <cite>blank=True</cite> 和 <cite>null=True</cite>。这实际上是两个不同的设置：<cite>blank=True</cite> 表示管理界面允许用户将该字段留空，而 <cite>null=True</cite> 告诉数据库这些字段可以在数据库中设置为 NULL。对于 <cite>Feature</cite> 对象，我们需要这两者，以避免在通过管理界面输入几何数据时出现验证错误。</p></li>
+</ul>
+<p>这就是我们目前需要做的（定义数据库模型）。在做出这些更改后，保存文件，进入项目的最上层目录，然后输入:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">syncdb</span>
+</pre></div>
+</div>
+<p>此命令会告诉 Django 检查模型并根据需要创建新的数据库表。由于新项目的默认设置自动包含了 <cite>auth</cite> 应用，因此系统还会询问你是否要创建超级用户账户。创建一个超级用户吧；在下一节中我们将探索 GeoDjango 的内置管理界面。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Django 1.4 中有一个 bug，导致地理空间字段不会自动创建。你会看到如下错误信息:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Failed to install index for shared.Feature model:
+operator class &quot;gist_geometry_ops&quot; does not exist for
+access method &quot;gist&quot;
+</pre></div>
+</div>
+<p>不用担心；如果你看到这个错误，你只需要手动创建空间字段。接下来我们将看到如何操作。</p>
+</div>
+<p>现在，您应该已经设置了一个空间数据库，包含了您创建的各种数据库表。让我们通过输入以下命令来更详细地查看这个数据库:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psql</span> <span class="n">geodjango</span>
+</pre></div>
+</div>
+<p>输入 <cite>d</cite> 并按回车，您应该会看到所有已创建的数据库表的列表：</p>
+<div class="table-wrapper docutils container" id="id5">
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text"><strong>关系列表</strong></span><a class="headerlink" href="#id5" title="此表格的永久链接">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Schema</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Owner</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_group</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_group_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_group_permissions</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_group_permissions_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_message</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_message_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_permission</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_permission_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_user</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_user_groups</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_user_groups_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_user_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_user_user_permissions</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_user_user_permissions_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>django_content_type</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>django_content_type_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>django_session</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>django_site</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>django_site_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>geography_columns</p></td>
+<td><p>view</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>geometry_columns</p></td>
+<td><p>view</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>raster_columns</p></td>
+<td><p>view</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>raster_overviews</p></td>
+<td><p>view</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>shared_attribute</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>shared_attribute_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>shared_attributevalue</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>shared_attributevalue_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>shared_feature</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>shared_feature_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>shared_shapefile</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>shared_shapefile_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>spatial_ref_sys</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>(30 rows)</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>为了确保每个应用的数据库表名是唯一的，Django 会在表名的开始加上应用名称。这意味着我们创建的模型的表实际上叫做 <cite>shared_shapefile</cite>、<cite>shared_feature</cite> 等等。稍后我们将直接操作这些数据库表，当我们想使用 Mapnik 生成使用导入的 Shapefile 数据的地图时。如果你遇到了防止 Django 创建空间字段的 bug，你可以通过输入以下 SQL 命令手动创建它们：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_point</span>
+<span class="w">    </span><span class="n">geometry</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_multipoint</span>
+<span class="w">    </span><span class="n">geometry</span><span class="p">(</span><span class="n">MultiPoint</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_</span>
+<span class="w">    </span><span class="n">multilinestring</span><span class="w"> </span><span class="n">geometry</span><span class="p">(</span><span class="n">MultiLineString</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_multipolygon</span>
+<span class="w">    </span><span class="n">geometry</span><span class="p">(</span><span class="n">MultiPolygon</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_</span>
+<span class="w">    </span><span class="n">geometrycollection</span><span class="w"> </span><span class="n">geometry</span><span class="p">(</span><span class="n">GeometryCollection</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we know what information we want to store in our database, it’s easy
+to define our various model objects. To do this, edit the models.py file in the
+shapeEditor.shared directory, and make sure it looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.gis.db</span><span class="w"> </span><span class="kn">import</span> <span class="n">models</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Shapefile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">filename</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">srs_wkt</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">geom_type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">encoding</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Attribute</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Shapefile</span><span class="p">)</span>
+    <span class="n">name</span>      <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="nb">type</span>      <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">width</span>     <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Feature</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">shapefile</span>  <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Shapefile</span><span class="p">)</span>
+    <span class="n">geom_point</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PointField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                   <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">geom_multipoint</span> <span class="o">=</span> \
+                <span class="n">models</span><span class="o">.</span><span class="n">MultiPointField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                       <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">geom_multilinestring</span> <span class="o">=</span> \
+                <span class="n">models</span><span class="o">.</span><span class="n">MultiLineStringField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                       <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">geom_multipolygon</span> <span class="o">=</span> \
+                <span class="n">models</span><span class="o">.</span><span class="n">MultiPolygonField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                       <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">geom_geometrycollection</span> <span class="o">=</span> \
+                <span class="n">models</span><span class="o">.</span><span class="n">GeometryCollectionField</span><span class="p">(</span><span class="n">srid</span><span class="o">=</span><span class="mi">4326</span><span class="p">,</span>
+                                               <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                               <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GeoManager</span><span class="p">()</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">AttributeValue</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+        <span class="n">feature</span>   <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Feature</span><span class="p">)</span>
+        <span class="n">attribute</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Attribute</span><span class="p">)</span>
+        <span class="n">value</span>     <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span>
+                                    <span class="n">blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There are a few things to be aware of here:</p>
+<ul class="simple">
+<li><p>Note that the from…import statement at the top has changed. We’re importing the GeoDjango models, rather than the standard Django ones.</p></li>
+<li><p>We use models.CharField objects to represent character data, and models. IntegerField objects to represent integer values. Django provides a whole raft of field types for you to use. GeoDjango also adds its own field types to store geometry fields, as you can see from the definition of the Feature object.</p></li>
+<li><p>To represent relations between two objects, we use a models.ForeignKey object.</p></li>
+<li><p>Because the Feature object will store geometry data, we want to allow GeoDjango to perform spatial queries on this data. To enable this, we define a GeoManager() instance for the Feature class.</p></li>
+<li><p>Note that several fields (in particular, the geom_XXX fields in the Feature object) have both blank=True and null=True. These are actually quite distinct: blank=True means that the admin interface allows the user to leave the field blank, while null=True tells the database that these fields can be set to NULL in the database. For the Feature object, we’ll need both so that we don’t get validation errors when entering geometries via the admin interface.</p></li>
+</ul>
+<p>That’s all we need to do (for now) to define our database model. After you’ve made
+these changes, save the file, cd into the topmost project directory, and type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">syncdb</span>
+</pre></div>
+</div>
+<p>This command tells Django to check the models and create new database tables as
+required. Because the default settings for a new project automatically include the
+auth application, you will also be asked if you want to create a superuser account.
+Go ahead and create one; we’ll need a superuser for the next section, where we
+explore GeoDjango’s built-in admin interface.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>There is bug in Django 1.4, which means that geospatial fields aren’t
+created automatically. Instead, you’ll see the following error message:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Failed to install index for shared.Feature model:
+operator class &quot;gist_geometry_ops&quot; does not exist for
+access method &quot;gist&quot;
+</pre></div>
+</div>
+<p>Don’t worry; if you see this error, you just need to create the spatial
+fields by hand. We are about to see how to do this.</p>
+</div>
+<p>You should now have a spatial database set up with the various database tables you have created. Let’s take a closer look at this database by typing:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">psql</span> <span class="n">geodjango</span>
+</pre></div>
+</div>
+<p>When you type d and press Return, you should see a list of all the database tables that have been created:</p>
+<div class="table-wrapper docutils container" id="id6">
+<table class="docutils align-default" id="id6">
+<caption><span class="caption-text"><strong>List of relations</strong></span><a class="headerlink" href="#id6" title="此表格的永久链接">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Schema</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Owner</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_group</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_group_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_group_permissions</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_group_permissions_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_message</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_message_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_permission</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_permission_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_user</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_user_groups</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_user_groups_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_user_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>auth_user_user_permissions</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>auth_user_user_permissions_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>django_content_type</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>django_content_type_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>django_session</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>django_site</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>django_site_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>geography_columns</p></td>
+<td><p>view</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>geometry_columns</p></td>
+<td><p>view</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>raster_columns</p></td>
+<td><p>view</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>raster_overviews</p></td>
+<td><p>view</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>shared_attribute</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>shared_attribute_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>shared_attributevalue</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>shared_attributevalue_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>shared_feature</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>shared_feature_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>shared_shapefile</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>public</p></td>
+<td><p>shared_shapefile_id_seq</p></td>
+<td><p>sequence</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-odd"><td><p>public</p></td>
+<td><p>spatial_ref_sys</p></td>
+<td><p>table</p></td>
+<td><p>user</p></td>
+</tr>
+<tr class="row-even"><td><p>(30 rows)</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>To make sure that each application’s database tables are unique, Django adds the application name to the start of the table name. This means that the table names for the models we have created are actually called shared_shapefile, shared_feature, and so on. We’ll be working with these database tables directly later on, when we want to use Mapnik to generate maps using the imported Shapefile data. If you ran into the bug that prevents Django from creating the spatial fields, you can create them yourself by typing the following commands into pgsql:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_point</span>
+<span class="w">    </span><span class="n">geometry</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_multipoint</span>
+<span class="w">    </span><span class="n">geometry</span><span class="p">(</span><span class="n">MultiPoint</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_</span>
+<span class="w">    </span><span class="n">multilinestring</span><span class="w"> </span><span class="n">geometry</span><span class="p">(</span><span class="n">MultiLineString</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_multipolygon</span>
+<span class="w">    </span><span class="n">geometry</span><span class="p">(</span><span class="n">MultiPolygon</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">shared_feature</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">geom_</span>
+<span class="w">    </span><span class="n">geometrycollection</span><span class="w"> </span><span class="n">geometry</span><span class="p">(</span><span class="n">GeometryCollection</span><span class="p">,</span><span class="w"> </span><span class="mi">4326</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="playing.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">玩转管理系统</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="creating-shared.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">创建共享应用程序</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">定义数据模型</a><ul>
+<li><a class="reference internal" href="#shapefile">Shapefile</a></li>
+<li><a class="reference internal" href="#id2">属性</a></li>
+<li><a class="reference internal" href="#id3">特征</a></li>
+<li><a class="reference internal" href="#id4">属性值</a></li>
+<li><a class="reference internal" href="#models-py">models.py 文件</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

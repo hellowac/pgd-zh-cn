@@ -1,0 +1,1008 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="小结" href="summary.html" /><link rel="prev" title="导入 Shapefile" href="importing.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>导出 shapefiles - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="shapefiles">
+<h1>导出 shapefiles<a class="headerlink" href="#shapefiles" title="此标题的永久链接">#</a></h1>
+<p>Exporting shapefiles</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>接下来我们需要实现导出shapefile的功能。导出shapefile的过程基本上是”导入”逻辑的反向操作，包含以下步骤：</p>
+<ol class="arabic simple">
+<li><p>创建OGR shapefile接收导出数据</p></li>
+<li><p>将要素保存到shapefile</p></li>
+<li><p>将属性保存到shapefile</p></li>
+<li><p>将shapefile压缩为ZIP存档</p></li>
+<li><p>删除临时文件</p></li>
+<li><p>将ZIP文件发送回用户浏览器</p></li>
+</ol>
+<p>这些工作将在shapefileIO应用中完成，并借助一些utils.py函数。首先我们在shapefileIO目录下创建exporter.py模块，初始只包含一个占位函数:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">export_data</span><span class="p">(</span><span class="n">shapefile</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;More to come...&quot;</span>
+</pre></div>
+</div>
+<p>该函数接收一个Shapefile对象，返回可被视图函数返回的HttpResponse对象，用于将导出的shapefile内容发送到用户浏览器以便保存。</p>
+<p>然后在editor应用的views.py中添加视图函数:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">export_shapefile</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">shapefile_id</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shapefile</span> <span class="o">=</span> <span class="n">Shapefile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">shapefile_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Shapefile</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseNotFound</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">exporter</span><span class="o">.</span><span class="n">export_data</span><span class="p">(</span><span class="n">shapefile</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>该视图函数通过shapefile的ID加载对象，传递给export_data()处理，返回的HttpResponse对象可使导出文件下载到用户电脑。</p>
+<p>同时添加必要的导入语句:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpResponseNotFound</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shapefileIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">exporter</span>
+</pre></div>
+</div>
+<p>注意export_shapefile()视图接收shapefile_id参数，该参数来自URL。例如访问 <a class="reference external" href="http://127.0.0.1:8000/editor/export/1">http://127.0.0.1:8000/editor/export/1</a> 时，shapefile_id将被设为1。</p>
+<p>这需要在editor应用的urls.py中添加URL模式:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^export/(?P&lt;shapefile_id&gt;\d+)$&#39;</span><span class="p">,</span> <span class="s1">&#39;export_shapefile&#39;</span><span class="p">),</span>
+</pre></div>
+</div>
+<p>list_shapefiles.html模板已使用该URL，在用户点击导出链接时附加shapefile的ID:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/editor/export/{{ shapefile.id }}&quot;</span><span class="o">&gt;</span>
+    <span class="n">Export</span>
+<span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>完成视图函数后，我们就可以开始在exporter.py模块中实现导出和下载shapefile的后台逻辑。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Next, we need to implement the ability to export a shapefile. The process of
+exporting a shapefile is basically the reverse of the “import” logic, and involves
+the following steps:</p>
+<ol class="arabic simple">
+<li><p>Create an OGR shapefile to receive the exported data.</p></li>
+<li><p>Save the features into the shapefile.</p></li>
+<li><p>Save the attributes into the shapefile.</p></li>
+<li><p>Compress the shapefile into a ZIP archive.</p></li>
+<li><p>Delete our temporary files.</p></li>
+<li><p>Send the ZIP file back to the user’s web browser.</p></li>
+</ol>
+<p>All this work will take place in the shapefileIO application, with help from some
+utils.py functions. Before we begin, let’s create an exporter module to handle the
+exporting process. Go to the shapefileIO directory, and create a new module named
+exporter.py. Initially, we’re just going to add a dummy function to this module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">export_data</span><span class="p">(</span><span class="n">shapefile</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;More to come...&quot;</span>
+</pre></div>
+</div>
+<p>This function will take a desired Shapefile object, and return an HttpResponse
+that can be returned by the view function. This HttpResponse object will send the
+contents of the exported shapefile back to the user’s web browser, where it can be
+saved to disk.</p>
+<p>Now let’s create the view function that will call the exporter and return the HTTP
+response back to the caller. Go to the editor application’s views.py module, and
+add the following new function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">export_shapefile</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">shapefile_id</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shapefile</span> <span class="o">=</span> <span class="n">Shapefile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">shapefile_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Shapefile</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseNotFound</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">exporter</span><span class="o">.</span><span class="n">export_data</span><span class="p">(</span><span class="n">shapefile</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This view function takes the record ID of the desired shapefile, loads the Shapefile
+object into memory, and passes it to the export_data() function for processing. The
+resulting HttpResponse object is then returned to the caller, allowing the exported
+file to be downloaded to the user’s computer.</p>
+<p>While we are editing this file, add the following additional import statements
+to the top:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpResponseNotFound</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shapefileIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">exporter</span>
+</pre></div>
+</div>
+<p>Note that the export_shapefile() view function takes an additional parameter,
+named shapefile_id. This parameter will be taken from the URL used to access
+the view, so that for example if the user accesses the URL <a class="reference external" href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a>
+editor/export/1, the shapefile_id parameter will be set to the value 1.</p>
+<p>This is done by adding a special type of entry to the editor applications urls.py
+module. Edit this file, and add the following entry to the urlpatterns list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^export/(?P&lt;shapefile_id&gt;\d+)$&#39;</span><span class="p">,</span> <span class="s1">&#39;export_shapefile&#39;</span><span class="p">),</span>
+</pre></div>
+</div>
+<p>Our list_shapefiles.html template already makes use of this URL, adding the
+shapefile’s record ID to the URL when the user clicks on the Export hyperlink:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/editor/export/{{ shapefile.id }}&quot;</span><span class="o">&gt;</span>
+    <span class="n">Export</span>
+<span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Now that we’ve written our view function, we can start to implement the
+behind-the-scenes logic required to export and download the shapefile.
+All of this will be implemented in the exporter.py module.</p>
+</div>
+</div>
+<section id="ogr-shapefile">
+<h2>定义 OGR Shapefile<a class="headerlink" href="#ogr-shapefile" title="此标题的永久链接">#</a></h2>
+<p>Defining the OGR shapefile</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>我们将使用OGR创建用于存储导出要素的新shapefile。首先创建一个临时目录来存放shapefile内容，替换原来的占位函数export_data()为以下实现:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">export_data</span><span class="p">(</span><span class="n">shapefile</span><span class="p">):</span>
+    <span class="n">dst_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>  <span class="c1"># 创建临时目录</span>
+    <span class="n">dst_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>  <span class="c1"># 生成shapefile路径</span>
+</pre></div>
+</div>
+<p>创建好存储位置后，我们需要为shapefile设置空间参考系，并初始化数据源和图层:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dst_spatial_ref</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>  <span class="c1"># 创建空间参考对象</span>
+<span class="n">dst_spatial_ref</span><span class="o">.</span><span class="n">ImportFromWkt</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">srs_wkt</span><span class="p">)</span>  <span class="c1"># 从WKT导入参考系</span>
+
+<span class="n">driver</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s2">&quot;ESRI Shapefile&quot;</span><span class="p">)</span>  <span class="c1"># 获取shapefile驱动</span>
+<span class="n">datasource</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">CreateDataSource</span><span class="p">(</span><span class="n">dst_file</span><span class="p">)</span>  <span class="c1"># 创建数据源</span>
+<span class="n">layer</span> <span class="o">=</span> <span class="n">datasource</span><span class="o">.</span><span class="n">CreateLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">filename</span><span class="p">),</span>  <span class="c1"># 创建图层</span>
+                            <span class="n">dst_spatial_ref</span><span class="p">)</span>  <span class="c1"># 指定空间参考</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>注意我们使用str()将shapefile文件名转为ASCII字符串。因为Django使用Unicode字符串，而OGR无法处理Unicode文件名。属性名也需要同样处理。</p>
+</div>
+<p>接下来为shapefile定义存储属性的各个字段:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">attribute_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>  <span class="c1"># 遍历所有属性</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c1"># 创建字段定义</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">SetWidth</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>  <span class="c1"># 设置字段宽度</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">SetPrecision</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span>  <span class="c1"># 设置字段精度</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>  <span class="c1"># 在图层中创建字段</span>
+</pre></div>
+</div>
+<p>字段定义所需的信息直接来自Attribute对象，Django使遍历shapefile属性变得简单。</p>
+<p>至此已完成shapefile的定义，接下来可以开始向新建的shapefile中保存数据。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>We’ll use OGR to create the new shapefile that will hold the exported features.
+Let’s start by creating a temporary directory to hold the shapefile’s contents;
+replace your placeholder version of export_data() with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">exportData</span><span class="p">(</span><span class="n">shapefile</span><span class="p">):</span>
+    <span class="n">dst_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="n">dst_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now that we’ve got somewhere to store the shapefile (and a filename for it),
+we’ll create a spatial reference for the shapefile to use, and set up the shapefile’s
+datasource and layer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dst_spatial_ref</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
+<span class="n">dst_spatial_ref</span><span class="o">.</span><span class="n">ImportFromWkt</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">srs_wkt</span><span class="p">)</span>
+
+<span class="n">driver</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s2">&quot;ESRI Shapefile&quot;</span><span class="p">)</span>
+<span class="n">datasource</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">CreateDataSource</span><span class="p">(</span><span class="n">dst_file</span><span class="p">)</span>
+<span class="n">layer</span> <span class="o">=</span> <span class="n">datasource</span><span class="o">.</span><span class="n">CreateLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">filename</span><span class="p">),</span>
+                                   <span class="n">dst_spatial_ref</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that we’re using str() to convert the shapefile’s filename to an ASCII string. This is because Django uses Unicode strings, but OGR can’t handle unicode filenames. We’ll need to do the same thing for the attribute names.</p>
+</div>
+<p>Now that we’ve created the shapefile itself, we next need to define the various fields which will hold the shapefile’s attributes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">attribute_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">FieldDefn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">SetWidth</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+    <span class="n">field</span><span class="o">.</span><span class="n">SetPrecision</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span>
+    <span class="n">layer</span><span class="o">.</span><span class="n">CreateField</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note how the information needed to define the field is taken directly from the
+Attribute object; Django makes iterating over the shapefile’s attributes easy.</p>
+<p>That completes the definition of the shapefile. We’re now ready to start saving
+data into the newly-created shapefile.</p>
+</div>
+</div>
+</section>
+<section id="shapefile">
+<h2>将特征保存到 Shapefile<a class="headerlink" href="#shapefile" title="此标题的永久链接">#</a></h2>
+<p>Saving the features into the shapefile</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>由于shapefile可以使用任意有效的空间参考系，我们需要将要素从内部使用的空间参考系(EPSG 4326)转换到shapefile自身的空间参考系。首先需要创建osr.CoordinateTransformation对象来实现这一转换:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src_spatial_ref</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
+<span class="n">src_spatial_ref</span><span class="o">.</span><span class="n">ImportFromEPSG</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>  <span class="c1"># 设置源坐标系为WGS84</span>
+
+<span class="n">coord_transform</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">CoordinateTransformation</span><span class="p">(</span>
+                    <span class="n">src_spatial_ref</span><span class="p">,</span> <span class="n">dst_spatial_ref</span><span class="p">)</span>  <span class="c1"># 创建坐标转换器</span>
+</pre></div>
+</div>
+<p>我们还需要知道Feature对象中哪个几何字段存储了要素的几何数据:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geom_field</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">geom_type</span><span class="p">)</span>  <span class="c1"># 计算几何字段名</span>
+</pre></div>
+</div>
+<p>准备好这些信息后，就可以开始导出shapefile的要素了:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">feature_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>  <span class="c1"># 遍历所有要素</span>
+    <span class="n">geometry</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">geom_field</span><span class="p">)</span>  <span class="c1"># 获取几何数据</span>
+</pre></div>
+</div>
+<p>但这里我们遇到了一个问题。回想导入shapefile时，我们将Polygon和LineString几何体”包装”成了MultiPolygon和MultiLineString以保证数据库中几何类型一致。现在导出时，我们需要”解包”这些几何体，使只包含单个Polygon或LineString的几何体能够以原始类型导出。我们将使用utils.py函数来完成解包:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geometry</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">unwrap_geos_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>  <span class="c1"># 解包几何体</span>
+</pre></div>
+</div>
+<p>这个utils.py函数我们稍后实现。</p>
+<p>解包几何体后，我们可以将其转换回OGR几何体，转换到shapefile的空间参考系，并创建OGR要素:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dst_geometry</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">CreateGeometryFromWkt</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">wkt</span><span class="p">)</span>  <span class="c1"># 从WKT创建OGR几何体</span>
+<span class="n">dst_geometry</span><span class="o">.</span><span class="n">Transform</span><span class="p">(</span><span class="n">coord_transform</span><span class="p">)</span>  <span class="c1"># 坐标转换</span>
+
+<span class="n">dst_feature</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Feature</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetLayerDefn</span><span class="p">())</span>  <span class="c1"># 创建OGR要素</span>
+<span class="n">dst_feature</span><span class="o">.</span><span class="n">SetGeometry</span><span class="p">(</span><span class="n">dst_geometry</span><span class="p">)</span>  <span class="c1"># 设置几何体</span>
+</pre></div>
+</div>
+<p>最后将要素添加到图层并调用Destroy()方法保存要素(以及图层)到shapefile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">layer</span><span class="o">.</span><span class="n">CreateFeature</span><span class="p">(</span><span class="n">dst_feature</span><span class="p">)</span>  <span class="c1"># 将要素添加到图层</span>
+<span class="n">dst_feature</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>  <span class="c1"># 销毁要素释放资源</span>
+
+<span class="n">datasource</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>  <span class="c1"># 销毁数据源释放资源</span>
+</pre></div>
+</div>
+<p>在继续之前，让我们在utils.py中添加unwrap_geos_geometry()函数。这个函数很简单，当MultiPolygon或MultiLineString只包含一个几何体时，将其解包为单个Polygon或LineString:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">unwrap_geos_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">geom_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MultiPolygon&quot;</span><span class="p">,</span> <span class="s2">&quot;MultiLineString&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># 如果只包含一个几何体</span>
+            <span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 提取第一个几何体</span>
+    <span class="k">return</span> <span class="n">geometry</span>
+</pre></div>
+</div>
+<p>到目前为止进展顺利：我们已经创建了OGR要素，解包了几何体，并将所有内容存储到shapefile中。接下来准备保存要素的属性值。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>Because the shapefile can use any valid spatial reference, we’ll need to transform
+the shapefile’s features from the spatial reference used internally (EPSG 4326) into
+the shapefile’s own spatial reference. Before we can do this, we’ll need to set up an
+osr.CoordinateTransformation object to do the transformation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src_spatial_ref</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
+<span class="n">src_spatial_ref</span><span class="o">.</span><span class="n">ImportFromEPSG</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>
+
+<span class="n">coord_transform</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">CoordinateTransformation</span><span class="p">(</span>
+                    <span class="n">src_spatial_ref</span><span class="p">,</span> <span class="n">dst_spatial_ref</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We’ll also need to know which geometry field in the Feature object holds the
+feature’s geometry data:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geom_field</span> <span class="o">=</span> \
+    <span class="n">utils</span><span class="o">.</span><span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">geom_type</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With this information, we’re ready to start exporting the shapefile’s features:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">feature_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="n">geometry</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">geom_field</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Right away, however, we encounter a problem. If you remember when we
+imported the shapefile, we had to “wrap” a Polygon or a LineString geometry into
+a MultiPolygon or MultiLineString so that the geometry types would be consistent
+in the database. Now that we’re exporting the shapefile, we need to unwrap
+the geometry so that features that have only one Polygon or LineString in their
+geometries are saved as Polygons and LineStrings rather than MultiPolygons and
+MultiLineStrings. We’ll use a utils.py function to do this unwrapping:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geometry</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">unwrap_geos_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We’ll implement this utils.py function shortly.</p>
+<p>Now that we’ve unwrapped the feature’s geometry, we can go ahead and convert
+it back into an OGR geometry again, transform it into the shapefile’s own spatial
+reference system, and create an OGR feature using that geometry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dst_geometry</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">CreateGeometryFromWkt</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">wkt</span><span class="p">)</span>
+<span class="n">dst_geometry</span><span class="o">.</span><span class="n">Transform</span><span class="p">(</span><span class="n">coord_transform</span><span class="p">)</span>
+
+<span class="n">dst_feature</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Feature</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetLayerDefn</span><span class="p">())</span>
+<span class="n">dst_feature</span><span class="o">.</span><span class="n">SetGeometry</span><span class="p">(</span><span class="n">dst_geometry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we need to add the feature to the layer and call the Destroy() method to
+save the feature (and then the layer) into the shapefile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">layer</span><span class="o">.</span><span class="n">CreateFeature</span><span class="p">(</span><span class="n">dst_feature</span><span class="p">)</span>
+<span class="n">dst_feature</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
+
+<span class="n">datasource</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Before we move on, let’s add our new unwrap_geos_geometry() function to utils.
+py. This code is quite straightforward, pulling a single Polygon or LineString object
+out of a MultiPolygon or MultiLineString if they contain only one geometry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">unwrap_geos_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">geom_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MultiPolygon&quot;</span><span class="p">,</span>
+                              <span class="s2">&quot;MultiLineString&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">geometry</span>
+</pre></div>
+</div>
+<p>So far so good; we’ve created the OGR feature, unwrapped the feature’s geometry,
+and stored everything into the shapefile. Now we’re ready to save the feature’s
+attribute values.</p>
+</div>
+</div>
+</section>
+<section id="id1">
+<h2>将属性保存到 Shapefile<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>Saving the attributes into the shapefile</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>接下来我们需要保存每个要素关联的属性值。在导入shapefile时，我们曾使用utils.get_ogr_feature_attribute()函数从各种OGR数据类型中提取属性值并转为字符串存入数据库。现在需要执行相反的操作：将字符串值存入OGR属性字段。同样地，我们将通过utils.py函数处理复杂逻辑，在export_data()函数末尾添加以下代码:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="n">dst_feature</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Feature</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetLayerDefn</span><span class="p">())</span>
+<span class="n">dst_feature</span><span class="o">.</span><span class="n">SetGeometry</span><span class="p">(</span><span class="n">dst_geometry</span><span class="p">)</span>
+
+<span class="c1"># 遍历要素所有属性值</span>
+<span class="k">for</span> <span class="n">attr_value</span> <span class="ow">in</span> <span class="n">feature</span><span class="o">.</span><span class="n">attributevalue_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">set_ogr_feature_attribute</span><span class="p">(</span>
+        <span class="n">attr_value</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span>  <span class="c1"># 属性定义</span>
+        <span class="n">attr_value</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>      <span class="c1"># 属性值字符串</span>
+        <span class="n">dst_feature</span><span class="p">,</span>           <span class="c1"># 目标OGR要素</span>
+        <span class="n">shapefile</span><span class="o">.</span><span class="n">encoding</span>     <span class="c1"># 字符编码</span>
+    <span class="p">)</span>
+
+<span class="n">layer</span><span class="o">.</span><span class="n">CreateFeature</span><span class="p">(</span><span class="n">dst_feature</span><span class="p">)</span>
+<span class="n">dst_feature</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
+
+<span class="n">datasource</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>feature.attributevalue_set.all()使用了Django的反向外键查询机制。由于AttributeValue模型通过外键关联Feature，Django会自动为Feature实例添加attributevalue_set管理器，用于访问关联的所有属性值。更多细节参考Django文档关于关联对象的说明。</p>
+</div>
+<p>现在在 utils.py 中实现 set_ogr_feature_attribute() 函数。该函数需要处理各种OGR数据类型，将字符串值转换为适当类型后调用对应的SetField()方法:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">set_ogr_feature_attribute</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
+    <span class="n">attr_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">UnsetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTInteger</span><span class="p">:</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTIntegerList</span><span class="p">:</span>
+        <span class="n">integers</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetFieldIntegerList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">integers</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTReal</span><span class="p">:</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTRealList</span><span class="p">:</span>
+        <span class="n">floats</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">floats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetFieldDoubleList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">floats</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">:</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">encoding</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTStringList</span><span class="p">:</span>
+        <span class="n">strings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">encoding</span><span class="p">))</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetFieldStringList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">strings</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTDate</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">year</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">day</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">tzone</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span>
+                         <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzone</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTTime</span><span class="p">:</span>
+        <span class="n">parts</span>  <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">hour</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">second</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">tzone</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">tzone</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTDateTime</span><span class="p">:</span>
+        <span class="n">parts</span>  <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">year</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">month</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">day</span>    <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">hour</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">second</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">tzone</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span>
+                     <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">tzone</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>Our next task is to save the attribute values associated with each feature. When we
+imported the shapefile, we extracted the attribute values from the various OGR data
+types and converted them into strings so they could be stored into the database. This
+was done using the utils.get_ogr_feature_attribute() function. We now have
+to do the opposite: storing the string value into the OGR attribute field. As before,
+we’ll use a utils.py function to do the hard work; add the following highlighted
+lines to the bottom of your export_data() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="n">dst_feature</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Feature</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetLayerDefn</span><span class="p">())</span>
+<span class="n">dst_feature</span><span class="o">.</span><span class="n">SetGeometry</span><span class="p">(</span><span class="n">dst_geometry</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">attr_value</span> <span class="ow">in</span> <span class="n">feature</span><span class="o">.</span><span class="n">attributevalue_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">set_ogr_feature_attribute</span><span class="p">(</span>
+                            <span class="n">attr_value</span><span class="o">.</span><span class="n">attribute</span><span class="p">,</span>
+                            <span class="n">attr_value</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                            <span class="n">dst_feature</span><span class="p">,</span>
+                            <span class="n">shapefile</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+
+<span class="n">layer</span><span class="o">.</span><span class="n">CreateFeature</span><span class="p">(</span><span class="n">dst_feature</span><span class="p">)</span>
+<span class="n">dst_feature</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
+
+<span class="n">datasource</span><span class="o">.</span><span class="n">Destroy</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>You may be wondering what feature.attributevalue_set.
+all() does. Because the AttributeValue object includes a foreign
+key linking each attribute value to the associated Feature object, the
+Feature object can refer to the set of attribute values that link back
+to it, using attributevalue_set. Using this technique, we can
+scan through the list of attribute values for a feature using feature.
+attributevalue_set.all().</p>
+<p>If you want to learn more about these “reverse” foreign key lookups,
+see <a class="reference external" href="https://docs.djangoproject.com/en/dev/topics/db/queries/#related-objects">https://docs.djangoproject.com/en/dev/topics/db/queries/#related-objects</a>.</p>
+</div>
+<p>Now let’s implement the set_ogr_feature_attribute() function within utils.
+py. As with the get_ogr_feature_attribute() function, <a href="#id4"><span class="problematic" id="id5">set_ogr_feature_</span></a>
+attribute() is rather tedious but straightforward: we have to deal with each OGR
+data type in turn, processing the string representation of the attribute value and calling
+the appropriate SetField() method to set the field’s value. Here is the relevant code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">set_ogr_feature_attribute</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
+    <span class="n">attr_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">UnsetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTInteger</span><span class="p">:</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTIntegerList</span><span class="p">:</span>
+        <span class="n">integers</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetFieldIntegerList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">integers</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTReal</span><span class="p">:</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTRealList</span><span class="p">:</span>
+        <span class="n">floats</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">floats</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetFieldDoubleList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">floats</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">:</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">encoding</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTStringList</span><span class="p">:</span>
+        <span class="n">strings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">eval</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">encoding</span><span class="p">))</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetFieldStringList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">strings</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTDate</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">year</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">day</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">tzone</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span>
+                         <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tzone</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTTime</span><span class="p">:</span>
+        <span class="n">parts</span>  <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">hour</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">second</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">tzone</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                        <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">tzone</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTDateTime</span><span class="p">:</span>
+        <span class="n">parts</span>  <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">year</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">month</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">day</span>    <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">hour</span>   <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+        <span class="n">second</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="n">tzone</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+    <span class="n">feature</span><span class="o">.</span><span class="n">SetField</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span>
+                     <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">tzone</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>压缩 Shapefile<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Compressing the shapefile</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>现在我们已经将所需的数据导出为 OGR shapefile，我们可以将其压缩成一个 ZIP 压缩包。返回到 <cite>exporter.py</cite> 模块，并在 <cite>export_data()</cite> 函数的末尾添加以下内容:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">()</span>
+<span class="nb">zip</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span><span class="p">)</span>
+
+<span class="n">shapefile_base</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">dstFile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">shapefile_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">fName</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">):</span>
+    <span class="nb">zip</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">fName</span><span class="p">),</span> <span class="n">fName</span><span class="p">)</span>
+
+<span class="nb">zip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>注意，我们使用一个临时文件（命名为 <cite>temp</cite>）来存储 ZIP 压缩包的内容。导出过程完成后，我们将把 <cite>temp</cite> 返回给用户的 Web 浏览器。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we’ve exported the desired data into an OGR shapefile, we can compress
+it into a ZIP archive. Go back to the exporter.py module and add the following to
+the end of your export_data() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">()</span>
+<span class="nb">zip</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span><span class="p">)</span>
+
+<span class="n">shapefile_base</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">dstFile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">shapefile_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">fName</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">):</span>
+    <span class="nb">zip</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">fName</span><span class="p">),</span> <span class="n">fName</span><span class="p">)</span>
+
+<span class="nb">zip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that we use a temporary file, named temp, to store the ZIP archive’s
+contents. We’ll be returning temp to the user’s web browser once the export
+process has finished.</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>删除临时文件<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p>Deleting temporary files</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>接下来，我们必须通过删除我们之前创建的shapefile来清理:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>shutil.rmtree（dst_dir）
+</pre></div>
+</div>
+<p>请注意，我们不必删除临时的ZIP存档，因为当文件关闭时，tempfile模块会自动为我们完成此操作。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>We next have to clean up after ourselves by deleting the shapefile that we
+created earlier:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that we don’t have to remove the temporary ZIP archive, as that’s done
+automatically for us by the tempfile module when the file is closed.</p>
+</div>
+</div>
+</section>
+<section id="zip">
+<h2>将 ZIP 存档返回给用户<a class="headerlink" href="#zip" title="此标题的永久链接">#</a></h2>
+<p>Returning the ZIP archive to the user</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>导出 shapefile 的最后一步是将 ZIP 压缩包发送到用户的 Web 浏览器，以便它可以被下载到用户的计算机上。为此，我们将创建一个 <cite>HttpResponse</cite> 对象，并使用 Django 的 <cite>FileWrapper</cite> 对象将 ZIP 压缩包附加到 HTTP 响应中:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">FileWrapper</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;application/zip&quot;</span><span class="p">)</span>
+<span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> \
+            <span class="s2">&quot;attachment; filename=&quot;</span> <span class="o">+</span> <span class="n">shapefileName</span> <span class="o">+</span> <span class="s2">&quot;.zip&quot;</span>
+<span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="n">temp</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p>如您所见，我们设置 HTTP 响应，表明我们正在返回一个文件附件。这会强制用户的浏览器下载该文件，而不是尝试显示它。我们还使用原始 shapefile 的名称作为下载文件的名称。</p>
+<p>至此，<cite>export_data()</cite> 函数的定义已完成。还有一件事要做：在 <cite>exporter.py</cite> 模块的顶部添加以下导入语句:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.core.servers.basehttp</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileWrapper</span>
+</pre></div>
+</div>
+<p>我们终于完成了 “导出 Shapefile” 功能的实现。通过运行服务器并点击其中一个 shapefile 旁边的 <strong>Export</strong> 超链接来进行测试。正常情况下，系统会稍作暂停，并提示您保存 shapefile 的 ZIP 压缩包到磁盘：</p>
+<img alt="../_images/438-0.png" class="align-center" src="../_images/438-0.png" />
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>The last step in exporting the shapefile is to send the ZIP archive to the user’s web
+browser so that it can be downloaded onto the user’s computer. To do this, we’ll
+create an HttpResponse object which includes a Django FileWrapper object to
+attach the ZIP archive to the HTTP response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">FileWrapper</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s2">&quot;application/zip&quot;</span><span class="p">)</span>
+<span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> \
+         <span class="s2">&quot;attachment; filename=&quot;</span> <span class="o">+</span> <span class="n">shapefileName</span> <span class="o">+</span> <span class="s2">&quot;.zip&quot;</span>
+<span class="n">response</span><span class="p">[</span><span class="s1">&#39;Content-Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="n">temp</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">response</span>
+</pre></div>
+</div>
+<p>As you can see, we set up the HTTP response to indicate that we’re returning a
+file attachment. This forces the user’s browser to download the file rather than
+trying to display it. We also use the original shapefile’s name as the name of the
+downloaded file.</p>
+<p>This completes the definition of the export_data() function. There’s only one
+more thing to do: add the following import statements to the top of the exporter.
+py module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.core.servers.basehttp</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileWrapper</span>
+</pre></div>
+</div>
+<p>We’ve finally finished implementing the “Export Shapefile” feature. Test it out
+by running the server and clicking on the <strong>Export</strong> hyperlink beside one of your
+shapefiles. All going well, there’ll be a slight pause and you’ll be prompted to
+save your shapefile’s ZIP archive to disk:</p>
+<img alt="../_images/438-0.png" class="align-center" src="../_images/438-0.png" />
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="summary.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">小结</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="importing.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">导入 Shapefile</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">导出 shapefiles</a><ul>
+<li><a class="reference internal" href="#ogr-shapefile">定义 OGR Shapefile</a></li>
+<li><a class="reference internal" href="#shapefile">将特征保存到 Shapefile</a></li>
+<li><a class="reference internal" href="#id1">将属性保存到 Shapefile</a></li>
+<li><a class="reference internal" href="#id2">压缩 Shapefile</a></li>
+<li><a class="reference internal" href="#id3">删除临时文件</a></li>
+<li><a class="reference internal" href="#zip">将 ZIP 存档返回给用户</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

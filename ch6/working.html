@@ -1,0 +1,1107 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="小结" href="summary.html" /><link rel="prev" title="建议的最佳做法" href="recommended.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>使用 Python 处理地理空间数据库 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">6 数据库中的 GIS</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="python">
+<h1>使用 Python 处理地理空间数据库<a class="headerlink" href="#python" title="此标题的永久链接">#</a></h1>
+<p>Working with geospatial databases using python</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>在本节中，我们将基于目前所学的知识编写一个简短的程序来 (i) 创建地理空间数据库、(ii) 从 Shapefile 导入数据、(iii) 对该数据执行空间查询以及 (iv) 以 WKT 格式保存结果。我们将使用本章中探讨的三个数据库编写相同的程序，以便您了解使用每个特定数据库所涉及的差异和问题。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>In this section, we will build on what we’ve learned so far by writing a short program to (i) create a geospatial database, (ii) import data from a shapefile, (iii) perform a spatial query on that data, and (iv) save the results in WKT format. We will write the same program using each of the three databases we have explored in this chapter, so that you can see the differences and issues involved with using each particular database.</p>
+</div>
+</div>
+<section id="id1">
+<h2>先决条件<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>Prerequisites</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>在运行这些示例之前，你需要做以下几件事：</p>
+<ol class="arabic">
+<li><p>如果你还没有安装 MySQL、PostGIS 和 SpatiaLite，请按照本章之前给出的安装说明进行安装。</p></li>
+<li><p>我们将使用《第4章：地理空间数据源》中的 GSHHS 海岸线数据集。如果你还没有下载此数据集，可以从以下链接下载 shapefile 文件：</p>
+<p><a class="reference external" href="http://www.ngdc.noaa.gov/mgg/shorelines/gshhs.html">GSHHS 数据集</a></p>
+</li>
+<li><p>从 GSHHS 海岸线数据集中获取低分辨率 (l) 的 shapefile 文件，并将它们放在一个方便的目录中（我们将此目录称为 GSHHS_l，代码示例中会用到这个目录）。</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>我们将使用低分辨率的 shapefile 文件，以便管理数据量，并避免在 MySQL 中处理大多边形时触发 “Got a packet bigger than max_allowed_packet bytes” 错误。虽然 MySQL 确实支持大多边形（通过增加 <cite>max_allowed_packet</cite> 设置），但这样做超出了本章的范围。我们将在下一章学习更多关于该设置的内容。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>Before you can run these examples, you will need to do the following:</p>
+<ol class="arabic">
+<li><p>If you haven’t already done so, follow the instructions given earlier in this chapter to install MySQL, PostGIS, and SpatiaLite onto your computer.</p></li>
+<li><p>We will be working with the GSHHS shoreline dataset from Chapter 4, Sources of Geospatial Data. If you haven’t already downloaded this dataset, you can download the shapefiles from:</p>
+<p><a class="reference external" href="http://www.ngdc.noaa.gov/mgg/shorelines/gshhs.html">http://www.ngdc.noaa.gov/mgg/shorelines/gshhs.html</a></p>
+</li>
+<li><p>Take a copy of the l (low-resolution) shapefiles from the GSHHS shoreline dataset and place them in a convenient directory (we will call this directory GSHHS_l in the code samples shown here).</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>We will use the low-resolution shapefiles to keep the amount of data manageable, and to avoid problems with large polygons triggering a “Got a packet bigger than max_allowed_packet bytes” error in MySQL. Large polygons are certainly supported by MySQL (by increasing the max_allowed_packet setting), but doing so is beyond the scope of this chapter. We’ll learn more about this setting in the next chapter.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="mysql">
+<h2>使用 MySQL<a class="headerlink" href="#mysql" title="此标题的永久链接">#</a></h2>
+<p>Working with MySQL</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>在这里，我们已经看到如何连接到 MySQL 并创建数据库表：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">MySQLdb</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="n">MySQLdb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s2">&quot;...&quot;</span> <span class="n">passwd</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP DATABASE IF EXISTS spatialTest&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE DATABASE spatialTest&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;USE spatialTest&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE gshhs (</span>
+<span class="s2">                    id      INTEGER AUTO_INCREMENT,</span>
+<span class="s2">                    level   INTEGER,</span>
+<span class="s2">                    geom    POLYGON NOT NULL,</span>
+
+<span class="s2">                    PRIMARY KEY (id)</span>
+<span class="s2">                    INDEX (level),</span>
+<span class="s2">                    SPATIAL INDEX (geom)) ENGINE=MyISAM</span>
+<span class="s2">                &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>接下来，我们需要从 GSHHS shapefiles 中读取要素，并将其插入到数据库中：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+
+<span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+    <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;GSHHS_l&quot;</span><span class="p">,</span> <span class="s2">&quot;GSHHS_l_L&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">level</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.shp&quot;</span><span class="p">)</span>
+
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()):</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">()</span>
+
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO gshhs (level, geom) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326))&quot;</span><span class="p">,</span>
+                        <span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">wkt</span><span class="p">))</span>
+    <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请注意，在将要素导入数据库时，我们给它们分配了 SRID 值 (4326)。即使 MySQL 中没有 <cite>spatial_ref_sys</cite> 表，我们仍然遵循最佳实践，在数据库中存储 SRID 值。</p>
+</div>
+<p>现在我们希望查询数据库，查找我们想要的海岸线信息。在这种情况下，我们将获取伦敦的坐标，并搜索一个包含此点的 1 级（海洋边界）多边形。这将为我们提供英国的海岸线：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shapely.wkt</span>
+
+<span class="n">LONDON</span> <span class="o">=</span> <span class="s1">&#39;POINT(-0.1263 51.4980)&#39;</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id,AsText(geom) FROM gshhs &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;WHERE (level=</span><span class="si">%s</span><span class="s2">) AND &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;(MBRContains(geom, GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326)))&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">LONDON</span><span class="p">))</span>
+
+<span class="n">shoreline</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">for</span> <span class="nb">id</span><span class="p">,</span><span class="n">wkt</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+    <span class="n">polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">wkt</span><span class="p">)</span>
+    <span class="n">point</span>   <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">LONDON</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">polygon</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+        <span class="n">shoreline</span> <span class="o">=</span> <span class="n">wkt</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请记住，MySQL 仅支持边界矩形查询，因此我们必须使用 Shapely 来确定点是否实际上在多边形内，而不仅仅是在其最小边界矩形内。</p>
+</div>
+<p>为了检查这个查询是否能够高效地运行，我们将按照推荐的最佳实践，询问 MySQL 查询优化器它将如何处理此查询：</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">% </span>/usr/local/mysql/bin/mysql
+<span class="go">mysql&gt; use myDatabase;</span>
+<span class="go">mysql&gt; EXPLAIN SELECT id,AsText(geom) FROM gshhs</span>
+<span class="go">        WHERE (level=1) AND (MBRContains(geom,</span>
+<span class="go">        GeomFromText(&#39;POINT(-0.1263 51.4980)&#39;,</span>
+<span class="go">        4326)))\G</span>
+
+<span class="go">*********************** 1. row ***********************</span>
+<span class="go">            id: 1</span>
+<span class="go">    select_type: SIMPLE</span>
+<span class="go">        table: gshhs</span>
+<span class="go">            type: range</span>
+<span class="go">possible_keys: level,geom</span>
+<span class="go">            key: geom</span>
+<span class="go">        key_len: 34</span>
+<span class="go">            ref: NULL</span>
+<span class="go">            rows: 1</span>
+<span class="go">        Extra: Using where</span>
+<span class="go">1 row in set (0.00 sec)</span>
+</pre></div>
+</div>
+<p>正如你所看到的，我们只是重新输入了查询，在前面加上了 <cite>EXPLAIN</cite> 并填写了参数，形成了一个有效的 SQL 语句。结果告诉我们，SELECT 查询确实在使用索引的 <cite>geom</cite> 列，这使得它能够快速找到所需的特征。</p>
+<p>现在我们有了一个可以快速检索所需几何体的工作程序，我们将英国海岸线多边形保存到一个文本文件中：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="s2">&quot;uk-shoreline.wkt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">shoreline</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>运行此程序将英国海岸线的低分辨率轮廓保存到 <cite>uk-shoreline.wkt</cite> 文件中：</p>
+<a class="with-border reference internal image-reference" href="../_images/215-0.png"><img alt="../_images/215-0.png" class="with-border align-center" src="../_images/215-0.png" style="width: 417.0px; height: 445.0px;" /></a>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>We have already seen how to connect to MySQL and create a database table:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">MySQLdb</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="n">MySQLdb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s2">&quot;...&quot;</span> <span class="n">passwd</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP DATABASE IF EXISTS spatialTest&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE DATABASE spatialTest&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;USE spatialTest&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE gshhs (</span>
+<span class="s2">                    id      INTEGER AUTO_INCREMENT,</span>
+<span class="s2">                    level   INTEGER,</span>
+<span class="s2">                    geom    POLYGON NOT NULL,</span>
+
+<span class="s2">                    PRIMARY KEY (id)</span>
+<span class="s2">                    INDEX (level),</span>
+<span class="s2">                    SPATIAL INDEX (geom)) ENGINE=MyISAM</span>
+<span class="s2">                &quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We next need to read the features from the GSHHS shapefiles and insert them into the database:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+
+<span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+    <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;GSHHS_l&quot;</span><span class="p">,</span> <span class="s2">&quot;GSHHS_l_L&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">level</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.shp&quot;</span><span class="p">)</span>
+
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()):</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">()</span>
+
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO gshhs (level, geom) &quot;</span> <span class="o">+</span>
+                       <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326))&quot;</span><span class="p">,</span>
+                       <span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">wkt</span><span class="p">))</span>
+    <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that we are assigning an SRID value (4326) to the features
+as we import them into the database. Even though we don’t have
+a spatial_ref_sys table in MySQL, we are following the best
+practices by storing SRID values in the database.</p>
+</div>
+<p>We now want to query the database to find the shoreline information we want.
+In this case, we’ll take the coordinate for London and search for a level 1 (ocean
+boundary) polygon that contains this point. This will give us the shoreline for the
+United Kingdom:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shapely.wkt</span>
+
+<span class="n">LONDON</span> <span class="o">=</span> <span class="s1">&#39;POINT(-0.1263 51.4980)&#39;</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id,AsText(geom) FROM gshhs &quot;</span> <span class="o">+</span>
+               <span class="s2">&quot;WHERE (level=</span><span class="si">%s</span><span class="s2">) AND &quot;</span> <span class="o">+</span>
+               <span class="s2">&quot;(MBRContains(geom, GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326)))&quot;</span><span class="p">,</span>
+               <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">LONDON</span><span class="p">))</span>
+
+<span class="n">shoreline</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">for</span> <span class="nb">id</span><span class="p">,</span><span class="n">wkt</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+    <span class="n">polygon</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">wkt</span><span class="p">)</span>
+    <span class="n">point</span>   <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">LONDON</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">polygon</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+        <span class="n">shoreline</span> <span class="o">=</span> <span class="n">wkt</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Remember that MySQL only supports bounding-rectangle
+queries, so we have to use Shapely to identify if the point
+is actually within the polygon, rather than just within its
+minimum bounding rectangle.</p>
+</div>
+<p>To check that this query can be run efficiently, we will follow the recommended best practice of asking the MySQL Query Optimizer what it will do with the query:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">% </span>/usr/local/mysql/bin/mysql
+<span class="go">mysql&gt; use myDatabase;</span>
+<span class="go">mysql&gt; EXPLAIN SELECT id,AsText(geom) FROM gshhs</span>
+<span class="go">        WHERE (level=1) AND (MBRContains(geom,</span>
+<span class="go">        GeomFromText(&#39;POINT(-0.1263 51.4980)&#39;,</span>
+<span class="go">        4326)))\G</span>
+
+<span class="go">*********************** 1. row ***********************</span>
+<span class="go">           id: 1</span>
+<span class="go">  select_type: SIMPLE</span>
+<span class="go">        table: gshhs</span>
+<span class="go">         type: range</span>
+<span class="go">possible_keys: level,geom</span>
+<span class="go">          key: geom</span>
+<span class="go">      key_len: 34</span>
+<span class="go">          ref: NULL</span>
+<span class="go">         rows: 1</span>
+<span class="go">        Extra: Using where</span>
+<span class="go">1 row in set (0.00 sec)</span>
+</pre></div>
+</div>
+<p>As you can see, we simply retyped the query, adding the word EXPLAIN to the front
+and filling in the parameters to make a valid SQL statement. The result tells us that
+the SELECT query is indeed using the indexed geom column, allowing it to quickly
+find the desired feature.</p>
+<p>Now that we have a working program that can quickly retrieve the desired
+geometry, let’s save the UK shoreline polygon to a text file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="s2">&quot;uk-shoreline.wkt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">shoreline</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Running this program saves a low-resolution outline of the United Kingdom’s shoreline into the uk-shoreline.wkt file:</p>
+<a class="with-border reference internal image-reference" href="../_images/215-0.png"><img alt="../_images/215-0.png" class="with-border align-center" src="../_images/215-0.png" style="width: 417.0px; height: 445.0px;" /></a>
+</div>
+</div>
+</section>
+<section id="postgis">
+<h2>使用 PostGIS<a class="headerlink" href="#postgis" title="此标题的永久链接">#</a></h2>
+<p>Working with PostGIS</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>让我们重写这个程序以使用 PostGIS。第一部分，我们打开数据库并定义 <cite>gshhs</cite> 表，几乎是完全相同的：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">psycopg2</span>
+
+<span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;dbname=... user=...&quot;</span><span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS gshhs&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE gshhs (</span>
+<span class="s2">                id</span>
+<span class="s2">                SERIAL,</span>
+<span class="s2">                level</span>
+<span class="s2">                INTEGER,</span>
+<span class="s2">                PRIMARY KEY (id))</span>
+<span class="s2">                &quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX levelIndex ON gshhs(level)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT AddGeometryColumn(&#39;gshhs&#39;, &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;&#39;geom&#39;, 4326, &#39;POLYGON&#39;, 2)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX geomIndex ON gshhs &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;USING GIST (geom)&quot;</span><span class="p">)</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>唯一的区别是我们必须使用 <cite>psycopg2</cite> 数据库适配器，并且我们必须将几何列（和空间索引）与 <cite>CREATE TABLE</cite> 语句分开创建。</p>
+<p>第二部分，我们将数据从 shapefile 导入数据库，几乎与 MySQL 版本相同：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+
+<span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+    <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;GSHHS_l&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;GSHHS_l_L&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">level</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.shp&quot;</span><span class="p">)</span>
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()):</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO gshhs (level, geom) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, ST_GeomFromText(</span><span class="si">%s</span><span class="s2">, &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;4326))&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">wkt</span><span class="p">))</span>
+    <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>现在我们已经将 shapefile 的内容导入数据库，我们需要在 PostGIS 中执行一项 MySQL 或 SpatiaLite 中不需要做的操作：我们需要运行 <cite>VACUUM ANALYZE</cite> 命令，以便 PostGIS 能够收集统计信息，帮助它优化我们的数据库查询：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">old_level</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">isolation_level</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">set_isolation_level</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;VACUUM ANALYZE&quot;</span><span class="p">)</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">set_isolation_level</span><span class="p">(</span><span class="n">old_level</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>接下来，我们想根据伦敦的坐标搜索英国的海岸线。由于 PostGIS 会自动先进行边界框检查，再进行完整的多边形检查，所以这段代码比 MySQL 版本更简洁，我们不需要手动执行这些操作：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LONDON</span> <span class="o">=</span> <span class="s1">&#39;POINT(-0.1263 51.4980)&#39;</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id,ST_AsText(geom) FROM gshhs &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;WHERE (level=</span><span class="si">%s</span><span class="s2">) AND &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;(ST_Contains(geom, ST_GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326)))&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">LONDON</span><span class="p">))</span>
+
+<span class="n">shoreline</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">for</span> <span class="nb">id</span><span class="p">,</span><span class="n">wkt</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+    <span class="n">shoreline</span> <span class="o">=</span> <span class="n">wkt</span>
+</pre></div>
+</div>
+<p>按照推荐的最佳实践，我们将请求 PostGIS 告诉我们它认为如何执行这个查询：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">pgsql</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">userName</span> <span class="o">-</span><span class="n">d</span> <span class="n">dbName</span>
+<span class="n">psql</span><span class="o">&gt;</span> <span class="n">EXPLAIN</span> <span class="n">SELECT</span> <span class="nb">id</span><span class="p">,</span><span class="n">ST_AsText</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span> <span class="n">FROM</span> <span class="n">gshhs</span>
+<span class="n">WHERE</span> <span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="n">AND</span> <span class="p">(</span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span>
+<span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(-0.1263 51.4980)&#39;</span><span class="p">,</span> <span class="mi">4326</span><span class="p">)));</span>
+
+                        <span class="n">QUERY</span> <span class="n">PLAN</span>
+<span class="o">---------------------------------------------------------</span>
+<span class="n">Index</span> <span class="n">Scan</span> <span class="n">using</span> <span class="n">geomindex</span> <span class="n">on</span> <span class="n">gshhs</span> <span class="p">(</span><span class="n">cost</span><span class="o">=</span><span class="mf">0.00</span><span class="o">.</span><span class="mf">.8.53</span> <span class="n">rows</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">width</span><span class="o">=</span><span class="mi">673</span><span class="p">)</span>
+<span class="n">Index</span> <span class="n">Cond</span><span class="p">:</span> <span class="p">(</span><span class="n">geom</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;0101000020E6100000ED0DBE30992AC0BF39B4C876BEB</span>
+    <span class="n">F4940</span><span class="s1">&#39;::geometry)</span>
+<span class="n">Filter</span><span class="p">:</span> <span class="p">((</span><span class="n">level</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">AND</span> <span class="n">_st_contains</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;0101000020E6100000ED0D</span>
+    <span class="n">BE30992AC0BF39B4C876BEBF4940</span><span class="s1">&#39;::geometry))</span>
+<span class="p">(</span><span class="mi">3</span> <span class="n">rows</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这告诉我们，PostGIS 将通过扫描 <cite>geomindex</cite> 空间索引来回答此查询，首先使用 <cite>&amp;&amp;</cite> 操作符按边界框过滤，然后调用 <cite>ST_Contains()</cite> 来检查多边形是否实际包含所需的点。</p>
+<p>这正是我们希望看到的；数据库正在尽可能快速地处理此查询，同时仍然提供完全准确的结果。</p>
+<p>现在我们已经得到了所需的海岸线多边形，让我们通过将该多边形的 WKT 表示保存到磁盘来完成我们的程序：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="s2">&quot;uk-shoreline.wkt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">shoreline</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>与 MySQL 版本相同，运行此程序将创建 <cite>uk-shoreline.wkt</cite> 文件，其中包含英国海岸线的相同低分辨率轮廓。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>Let’s rewrite this program to use PostGIS. The first part, where we open the database and define our gshhs table, is almost identical:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">psycopg2</span>
+
+<span class="n">connection</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;dbname=... user=...&quot;</span><span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS gshhs&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE gshhs (</span>
+<span class="s2">                id</span>
+<span class="s2">                SERIAL,</span>
+<span class="s2">                level</span>
+<span class="s2">                INTEGER,</span>
+<span class="s2">                PRIMARY KEY (id))</span>
+<span class="s2">                &quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX levelIndex ON gshhs(level)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT AddGeometryColumn(&#39;gshhs&#39;, &quot;</span> <span class="o">+</span>
+               <span class="s2">&quot;&#39;geom&#39;, 4326, &#39;POLYGON&#39;, 2)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX geomIndex ON gshhs &quot;</span> <span class="o">+</span>
+               <span class="s2">&quot;USING GIST (geom)&quot;</span><span class="p">)</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The only difference is that we have to use the psycopg2 database adapter, and the
+fact that we have to create the geometry column (and spatial index) separately from
+the <em>CREATE TABLE</em> statement itself.</p>
+<p>The second part of this program where we import the data from the shapefile into
+the database is once again almost identical to the MySQL version:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+
+<span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+    <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;GSHHS_l&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;GSHHS_l_L&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">level</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.shp&quot;</span><span class="p">)</span>
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()):</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO gshhs (level, geom) &quot;</span> <span class="o">+</span>
+                       <span class="s2">&quot;VALUES (</span><span class="si">%s</span><span class="s2">, ST_GeomFromText(</span><span class="si">%s</span><span class="s2">, &quot;</span> <span class="o">+</span>
+                       <span class="s2">&quot;4326))&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">wkt</span><span class="p">))</span>
+    <span class="n">connection</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now that we have brought the shapefile’s contents into the database, we need to do
+something in PostGIS that isn’t necessary with MySQL or SpatiaLite: we need to run
+a VACUUM ANALYZE command so that PostGIS can gather statistics to help it optimize
+our database queries:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">old_level</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">isolation_level</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">set_isolation_level</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;VACUUM ANALYZE&quot;</span><span class="p">)</span>
+<span class="n">connection</span><span class="o">.</span><span class="n">set_isolation_level</span><span class="p">(</span><span class="n">old_level</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We next want to search for the UK shoreline based upon the coordinate for
+London. This code is simpler than the MySQL version, thanks to the fact that
+PostGIS automatically does the bounding box check followed by the full
+polygon check, so we don’t have to do this by hand:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LONDON</span> <span class="o">=</span> <span class="s1">&#39;POINT(-0.1263 51.4980)&#39;</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id,ST_AsText(geom) FROM gshhs &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;WHERE (level=</span><span class="si">%s</span><span class="s2">) AND &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;(ST_Contains(geom, ST_GeomFromText(</span><span class="si">%s</span><span class="s2">, 4326)))&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">LONDON</span><span class="p">))</span>
+
+<span class="n">shoreline</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">for</span> <span class="nb">id</span><span class="p">,</span><span class="n">wkt</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+    <span class="n">shoreline</span> <span class="o">=</span> <span class="n">wkt</span>
+</pre></div>
+</div>
+<p>Following the recommended best practices, we will ask PostGIS to tell us how it thinks this query will be performed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">pgsql</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">psql</span> <span class="o">-</span><span class="n">U</span> <span class="n">userName</span> <span class="o">-</span><span class="n">d</span> <span class="n">dbName</span>
+<span class="n">psql</span><span class="o">&gt;</span> <span class="n">EXPLAIN</span> <span class="n">SELECT</span> <span class="nb">id</span><span class="p">,</span><span class="n">ST_AsText</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span> <span class="n">FROM</span> <span class="n">gshhs</span>
+<span class="n">WHERE</span> <span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="n">AND</span> <span class="p">(</span><span class="n">ST_Contains</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span>
+<span class="n">ST_GeomFromText</span><span class="p">(</span><span class="s1">&#39;POINT(-0.1263 51.4980)&#39;</span><span class="p">,</span> <span class="mi">4326</span><span class="p">)));</span>
+
+                        <span class="n">QUERY</span> <span class="n">PLAN</span>
+<span class="o">---------------------------------------------------------</span>
+<span class="n">Index</span> <span class="n">Scan</span> <span class="n">using</span> <span class="n">geomindex</span> <span class="n">on</span> <span class="n">gshhs</span> <span class="p">(</span><span class="n">cost</span><span class="o">=</span><span class="mf">0.00</span><span class="o">.</span><span class="mf">.8.53</span> <span class="n">rows</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">width</span><span class="o">=</span><span class="mi">673</span><span class="p">)</span>
+<span class="n">Index</span> <span class="n">Cond</span><span class="p">:</span> <span class="p">(</span><span class="n">geom</span> <span class="o">&amp;&amp;</span> <span class="s1">&#39;0101000020E6100000ED0DBE30992AC0BF39B4C876BEB</span>
+    <span class="n">F4940</span><span class="s1">&#39;::geometry)</span>
+<span class="n">Filter</span><span class="p">:</span> <span class="p">((</span><span class="n">level</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">AND</span> <span class="n">_st_contains</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="s1">&#39;0101000020E6100000ED0D</span>
+    <span class="n">BE30992AC0BF39B4C876BEBF4940</span><span class="s1">&#39;::geometry))</span>
+<span class="p">(</span><span class="mi">3</span> <span class="n">rows</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This tells us that PostGIS will answer this query by scanning through the geomindex
+spatial index, first filtering by bounding box (using the &amp;&amp; operator), and then calling
+ST_Contains() to see if the polygon actually contains the desired point.</p>
+<p>This is exactly what we were hoping to see; the database is processing this query as
+quickly as possible while still giving us completely accurate results.</p>
+<p>Now that we have the desired shoreline polygon, let’s finish our program by saving
+the polygon’s WKT representation to disk:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="s2">&quot;uk-shoreline.wkt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">shoreline</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>As with the MySQL version, running this program will create the uk-shoreline.wkt file containing the same low-resolution outline of the United Kingdom’s shoreline.</p>
+</div>
+</div>
+</section>
+<section id="spatialite">
+<h2>使用 SpatiaLite<a class="headerlink" href="#spatialite" title="此标题的永久链接">#</a></h2>
+<p>Working with SpatiaLite</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>让我们再次重写这个程序，这次使用 SpatiaLite。正如前面讨论的，我们将创建一个数据库文件，然后调用 <cite>InitSpatialMetaData()</cite> 函数。这将创建并设置我们的空间数据库。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysqlite2</span><span class="w"> </span><span class="kn">import</span> <span class="n">dbapi2</span> <span class="k">as</span> <span class="n">sqlite</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;gshhs-spatialite.db&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;gshhs-spatialite.db&quot;</span><span class="p">)</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;gshhs-spatialite.db&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">enable_load_extension</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT load_extension(&quot;libspatialite.dll&quot;)&#39;</span><span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT InitSpatialMetaData()&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果你正在使用 Mac OS X，你可以跳过 <cite>db.enable_load_extension(…)</cite> 和 <cite>db.execute(‘SELECT load_extension(…)’)</cite> 语句。</p>
+</div>
+<p>接下来，我们需要创建我们的数据库表。这与 PostGIS 版本几乎相同：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS gshhs&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE gshhs (&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;id INTEGER PRIMARY KEY AUTOINCREMENT, &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;level INTEGER)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX gshhs_level on gshhs(level)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT AddGeometryColumn(&#39;gshhs&#39;, &#39;geom&#39;, &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;4326, &#39;POLYGON&#39;, 2)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT CreateSpatialIndex(&#39;gshhs&#39;, &#39;geom&#39;)&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>将 shapefile 的内容加载到数据库中几乎与其他版本的程序相同：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+
+<span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+    <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;GSHHS_l&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;GSHHS_l_L&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">level</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.shp&quot;</span><span class="p">)</span>
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()):</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">()</span>
+
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO gshhs (level, geom) &quot;</span> <span class="o">+</span>
+                        <span class="s2">&quot;VALUES (?, GeomFromText(?, 4326))&quot;</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">wkt</span><span class="p">))</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>我们现在到达了想要在数据库中搜索所需多边形的部分。以下是如何在 SpatiaLite 中执行此操作：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shapely.wkt</span>
+
+<span class="n">LONDON</span> <span class="o">=</span> <span class="s1">&#39;POINT(-0.1263 51.4980)&#39;</span>
+
+<span class="n">pt</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">LONDON</span><span class="p">)</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id,level,AsText(geom) &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;FROM gshhs WHERE id IN &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;(SELECT pkid FROM idx_gshhs_geom&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; WHERE xmin &lt;= ? AND ? &lt;= xmax&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; AND ymin &lt;= ? and ? &lt;= ymax) &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;AND Contains(geom, GeomFromText(?, 4326))&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">LONDON</span><span class="p">))</span>
+
+<span class="n">shoreline</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">for</span> <span class="nb">id</span><span class="p">,</span><span class="n">level</span><span class="p">,</span><span class="n">wkt</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">shoreline</span> <span class="o">=</span> <span class="n">wkt</span>
+</pre></div>
+</div>
+<p>由于 SpatiaLite 的查询优化器默认不使用空间索引，我们必须在查询中显式地包含 <cite>idx_gshhs_geom</cite> 索引。不过，注意这次我们没有使用 Shapely 提取多边形来检查点是否位于其中。而是直接使用 SpatiaLite 的 <cite>Contains()</cite> 函数，在查询中完成完整的多边形检查，在使用空间索引进行边界框检查之后。</p>
+<p>这个查询比较复杂，但理论上应该能产生快速且准确的结果。按照推荐的最佳实践，我们想通过询问 SpatiaLite 的查询优化器，了解查询是如何被处理的。这将告诉我们是否写对了查询。</p>
+<p>不幸的是，取决于你的 SpatiaLite 安装方式，你可能无法访问 SQLite 命令行。所以我们改为在 Python 中调用 <cite>EXPLAIN QUERY PLAN</cite> 命令：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;EXPLAIN QUERY PLAN &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;SELECT id,level,AsText(geom) &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;FROM gshhs WHERE id IN &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;(SELECT pkid FROM idx_gshhs_geom&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; WHERE xmin &lt;= ? AND ? &lt;= xmax&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; AND ymin &lt;= ? and ? &lt;= ymax) &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;AND Contains(geom, GeomFromText(?, 4326))&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">LONDON</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="n">row</span>
+</pre></div>
+</div>
+<p>运行这段代码会告诉我们，SpatiaLite 查询优化器将使用空间索引（以及表的主键）通过边界框快速识别匹配的特征：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;SEARCH TABLE gshhs USING PRIMARY KEY (rowid=?) (~12 rows)&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;EXECUTE LIST SUBQUERY 1&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;SCAN TABLE idx_gshhs_geom VIRTUAL TABLE INDEX 2:BaDbBcDd (~0</span>
+<span class="n">rows</span><span class="p">)</span><span class="s1">&#39;)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>注意，SpatiaLite 中有一个 bug，导致它在同一查询中无法同时使用空间索引和普通的 B*Tree 索引。这就是为什么我们的 Python 程序要求 SpatiaLite 返回 <cite>level</cite> 值，然后在识别海岸线之前显式检查 <cite>level</cite>，而不是直接在查询中嵌入 <cite>AND (level=1)</cite> 的原因。</p>
+</div>
+<p>现在我们已经得到了海岸线，将其保存到文本文件中再次变得非常简单：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="s2">&quot;uk-shoreline.wkt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">shoreline</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Let’s rewrite this program once more, this time to use SpatiaLite. As discussed earlier, we will create a database file and then call the InitSpatialMetaData() function. This will create and set up our spatial database.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pysqlite2</span><span class="w"> </span><span class="kn">import</span> <span class="n">dbapi2</span> <span class="k">as</span> <span class="n">sqlite</span>
+
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;gshhs-spatialite.db&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;gshhs-spatialite.db&quot;</span><span class="p">)</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">sqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;gshhs-spatialite.db&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">enable_load_extension</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT load_extension(&quot;libspatialite.dll&quot;)&#39;</span><span class="p">)</span>
+<span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT InitSpatialMetaData()&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>If you are running on Mac OS X, you can skip the db.enable_load_extension(…) and db.execute(‘SELECT load_extension(…)’) statements.</p>
+</div>
+<p>We next need to create our database table. This is done in almost exactly the same way as our PostGIS version:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS gshhs&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE TABLE gshhs (&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;id INTEGER PRIMARY KEY AUTOINCREMENT, &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;level INTEGER)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;CREATE INDEX gshhs_level on gshhs(level)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT AddGeometryColumn(&#39;gshhs&#39;, &#39;geom&#39;, &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;4326, &#39;POLYGON&#39;, 2)&quot;</span><span class="p">)</span>
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT CreateSpatialIndex(&#39;gshhs&#39;, &#39;geom&#39;)&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Loading the contents of the shapefile into the database is almost the same as the other versions of our program:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+
+<span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]:</span>
+    <span class="n">fName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;GSHHS_l&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;GSHHS_l_L&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">level</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;.shp&quot;</span><span class="p">)</span>
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">fName</span><span class="p">)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()):</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">()</span>
+
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSERT INTO gshhs (level, geom) &quot;</span> <span class="o">+</span>
+                       <span class="s2">&quot;VALUES (?, GeomFromText(?, 4326))&quot;</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">wkt</span><span class="p">))</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We’ve now reached the point where we want to search through the database for the desired polygon. Here is how we can do this in SpatiaLite:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shapely.wkt</span>
+
+<span class="n">LONDON</span> <span class="o">=</span> <span class="s1">&#39;POINT(-0.1263 51.4980)&#39;</span>
+
+<span class="n">pt</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">wkt</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">LONDON</span><span class="p">)</span>
+
+<span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT id,level,AsText(geom) &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;FROM gshhs WHERE id IN &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;(SELECT pkid FROM idx_gshhs_geom&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; WHERE xmin &lt;= ? AND ? &lt;= xmax&quot;</span> <span class="o">+</span>
+                <span class="s2">&quot; AND ymin &lt;= ? and ? &lt;= ymax) &quot;</span> <span class="o">+</span>
+                <span class="s2">&quot;AND Contains(geom, GeomFromText(?, 4326))&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">LONDON</span><span class="p">))</span>
+
+<span class="n">shoreline</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">for</span> <span class="nb">id</span><span class="p">,</span><span class="n">level</span><span class="p">,</span><span class="n">wkt</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">shoreline</span> <span class="o">=</span> <span class="n">wkt</span>
+</pre></div>
+</div>
+<p>Because SpatiaLite’s query optimizer doesn’t use spatial indexes by default, we have
+to explicitly included the idx_gshhs_geom index in our query. Notice, however, that
+this time we aren’t using Shapely to extract the polygon to see if the point is within
+it. Instead, we are using SpatiaLite’s Contains() function directly to do the full
+polygon check directly within the query itself, after doing the bounding-box check
+using the spatial index.</p>
+<p>This query is complex, but in theory should produce a fast and accurate result.
+Following the recommended best practice, we want to check our query by asking
+SpatiaLite’s query optimizer how the query will be processed. This will tell us if
+we have written the query correctly.</p>
+<p>Unfortunately, depending on how your copy of SpatiaLite was installed, you may
+not have access to the SQLite command line. So instead, let’s call the EXPLAIN QUERY
+PLAN command from Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;EXPLAIN QUERY PLAN &quot;</span> <span class="o">+</span>
+               <span class="s2">&quot;SELECT id,level,AsText(geom) &quot;</span> <span class="o">+</span>
+               <span class="s2">&quot;FROM gshhs WHERE id IN &quot;</span> <span class="o">+</span>
+               <span class="s2">&quot;(SELECT pkid FROM idx_gshhs_geom&quot;</span> <span class="o">+</span>
+               <span class="s2">&quot; WHERE xmin &lt;= ? AND ? &lt;= xmax&quot;</span> <span class="o">+</span>
+               <span class="s2">&quot; AND ymin &lt;= ? and ? &lt;= ymax) &quot;</span> <span class="o">+</span>
+               <span class="s2">&quot;AND Contains(geom, GeomFromText(?, 4326))&quot;</span><span class="p">,</span>
+               <span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">pt</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">LONDON</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="n">row</span>
+</pre></div>
+</div>
+<p>Running this tells us that the SpatiaLite query optimizer will use the spatial index
+(along with the table’s primary key) to quickly identify the features that match by
+bounding box:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;SEARCH TABLE gshhs USING PRIMARY KEY (rowid=?) (~12 rows)&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;EXECUTE LIST SUBQUERY 1&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;SCAN TABLE idx_gshhs_geom VIRTUAL TABLE INDEX 2:BaDbBcDd (~0</span>
+<span class="n">rows</span><span class="p">)</span><span class="s1">&#39;)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that there is a bug in SpatiaLite that prevents it from using both a spatial index and an ordinary B*Tree index in the same query. This is why our Python program asks SpatiaLite to return the level value, and then checks for the level explicitly before identifying the shoreline, rather than simply embedding AND (level=1) in the query itself.</p>
+</div>
+<p>Now that we have the shoreline, saving it to a text file is again trivial:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">file</span><span class="p">(</span><span class="s2">&quot;uk-shoreline.wkt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">shoreline</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>比较数据库<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Comparing the databases</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>现在，我们已经看过了如何使用这三种开源空间数据库来实现我们的程序，我们可以开始对这些数据库做出一些结论：</p>
+<ul class="simple">
+<li><p><strong>MySQL</strong> 设置和使用都非常简便，广泛部署，并且可以作为一个强大的空间数据库使用，尽管它确实存在一些限制，需要通过变通方法来解决。</p></li>
+<li><p><strong>PostGIS</strong> 是开源地理空间数据库的工作马。它快速且具有良好的扩展性，功能比我们审查的其他数据库更强大。同时，PostGIS 因为设置和管理较为复杂而闻名，对于某些应用来说可能是“过度设计”。</p></li>
+<li><p><strong>SpatiaLite</strong> 速度快，功能强大，尽管它使用起来有些复杂，并且有一些缺陷和 bug。</p></li>
+</ul>
+<p>选择使用哪个数据库，当然取决于你想实现的目标，以及你在特定服务器上可以使用的工具等因素，还要考虑你个人对这些数据库的偏好。无论选择哪个数据库，你都可以放心地相信它能够满足你的空间数据库需求。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we have seen how our program is implemented using each of the three open source spatial databases, we can start to draw some conclusions about these databases:</p>
+<ul class="simple">
+<li><p>MySQL is easy to set up and use, is widely deployed, and can be used as a capable spatial database, though it does suffer from some limitations which require work-arounds.</p></li>
+<li><p>PostGIS is the workhorse of open-source geospatial databases. It is fast and scales well, and has more capabilities than any of the other databases we have examined. At the same time, PostGIS has a reputation for being hard to set up and administer, and may be overkill for some applications.</p></li>
+<li><p>SpatiaLite is fast and capable, though it is tricky to use well and has its fair share of quirks and bugs.</p></li>
+</ul>
+<p>Which database you choose to use, of course, depends on what you are trying to achieve, as well as factors such as which tools you have access to on your particular server, and your personal preference for which of these databases you want to work with. Whichever database you choose, you can be confident that it is more than capable of meeting your spatial database needs.</p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="summary.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">小结</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="recommended.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">建议的最佳做法</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">使用 Python 处理地理空间数据库</a><ul>
+<li><a class="reference internal" href="#id1">先决条件</a></li>
+<li><a class="reference internal" href="#mysql">使用 MySQL</a></li>
+<li><a class="reference internal" href="#postgis">使用 PostGIS</a></li>
+<li><a class="reference internal" href="#spatialite">使用 SpatiaLite</a></li>
+<li><a class="reference internal" href="#id2">比较数据库</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

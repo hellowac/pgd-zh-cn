@@ -1,0 +1,674 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="小结" href="summary.html" /><link rel="prev" title="分析和处理地理空间数据" href="analyzing.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>可视化地理空间数据 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">3 用于地理空间开发的 Python 库</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="id1">
+<h1>可视化地理空间数据<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>Visualizing geospatial data</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>除非将地理空间数据转换为视觉形式（即，除非将其渲染为某种图像），否则很难（甚至不可能）理解它。将地理空间数据转换为图像需要合适的工具包。虽然有几种这样的工具包可用，但我们将特别关注其中一种：Mapnik。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>It’s very hard, if not impossible, to understand geospatial data unless it is turned
+into a visual form—that is, until it is rendered as an image of some sort. Converting
+geospatial data into images requires a suitable toolkit. While there are several such
+toolkits available, we will look at one in particular: Mapnik.</p>
+</div>
+</div>
+<section id="mapnik">
+<h2>Mapnik<a class="headerlink" href="#mapnik" title="此标题的永久链接">#</a></h2>
+<p>Mapnik</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>Mapnik 是一个免费的工具包，用于构建地图应用程序。它从 PostGIS 数据库、Shapefile 或任何其他支持的 GDAL/OGR 格式获取地理空间数据，并将其转换为清晰渲染、外观良好的图像。</p>
+<p>渲染地图涉及许多复杂的问题，而 Mapnik 做得很好，它允许应用程序开发人员控制渲染过程。规则控制哪些要素应出现在地图上，而“符号化器”控制这些要素的视觉外观。</p>
+<p>Mapnik 允许开发人员创建 XML 样式表来控制地图创建过程。就像 CSS 样式表一样，Mapnik 的样式表让你完全控制地理空间数据的渲染方式。或者，如果你喜欢，你也可以手动创建样式。</p>
+<p>Mapnik 本身是用 C++ 编写的，但包含了绑定，允许通过 Python 访问几乎所有的 Mapnik 功能。由于这些绑定是包含在主代码库中的，而不是由第三方开发人员添加的，因此对 Python 的支持直接集成在 Mapnik 中。这使得 Python 非常适合开发基于 Mapnik 的应用程序。</p>
+<p>Mapnik 被 OpenStreetMap（<a class="reference external" href="http://openstreetmap.org">http://openstreetmap.org</a>）、EveryBlock（<a class="reference external" href="http://everyblock.com">http://everyblock.com</a>）等广泛使用。由于 Mapnik 的输出只是图像，因此很容易将其作为 Web 应用程序的一部分，或者将输出直接显示在窗口中，作为桌面应用程序的一部分。Mapnik 在桌面和 Web 上都能很好地工作。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>Mapnik is a freely-available toolkit for building mapping applications. It takes
+geospatial data from a PostGIS database, shapefile, or any other format supported
+by GDAL/OGR, and turns it into clearly-rendered, good-looking images.</p>
+<p>There are a lot of complex issues involved in rendering maps well, and Mapnik does
+a good job of allowing the application developer to control the rendering process.
+Rules control which features should appear on the map, while “symbolizers” control
+the visual appearance of these features.</p>
+<p>Mapnik allows developers to create XML stylesheets that control the map-creation
+process. Just as with CSS stylesheets, Mapnik’s stylesheets allow you complete
+control over the way geospatial data is rendered. Alternatively, you can create
+your styles by hand if you prefer.</p>
+<p>Mapnik itself is written in C++, though bindings are included which allow access
+to almost all of the Mapnik functionality via Python. Because these bindings are
+included in the main code base rather than being added by a third party developer,
+support for Python is built right into Mapnik. This makes Python eminently suited
+to developing Mapnik-based applications.</p>
+<p>Mapnik is heavily used by OpenStreetMap (<a class="reference external" href="http://openstreetmap.org">http://openstreetmap.org</a>),
+EveryBlock (<a class="reference external" href="http://everyblock.com">http://everyblock.com</a>), among others. Since the output of Mapnik
+is simply an image, it is easy to include Mapnik as part of a web-based application,
+or you can display the output directly in a window as part of a desktop-based
+application. Mapnik works equally well on the desktop and on the web.</p>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>设计<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Design</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>在使用 Mapnik 时，您主要处理的对象称为 Map。一个 Map 对象包含以下部分：</p>
+<a class="with-border reference internal image-reference" href="../_images/89-0.png"><img alt="../_images/89-0.png" class="with-border align-center" src="../_images/89-0.png" style="width: 346.5px; height: 471.09999999999997px;" /></a>
+<p>在创建 Map 对象时，您需要为以下内容分配值：</p>
+<ul class="simple">
+<li><p>地图的整体 <strong>宽度</strong> 和 <strong>高度</strong> （以像素为单位）。</p></li>
+<li><p>用于地图的 <strong>空间参考</strong>。</p></li>
+<li><p>用于绘制地图内容背景的 <strong>背景颜色</strong>。</p></li>
+</ul>
+<p>然后，您定义一个或多个包含地图内容的 <strong>图层</strong>。每个图层具有以下内容：</p>
+<ul class="simple">
+<li><p><strong>名称</strong>。</p></li>
+<li><p>一个 <strong>Datasource</strong> 对象，定义从哪里获取此图层的数据。数据源可以是对数据库的引用，或是 shapefile 或其他 GDAL/OGR 数据源。</p></li>
+<li><p>用于该图层的 <strong>空间参考</strong>。如果需要，这可以与地图整体使用的空间参考不同。</p></li>
+<li><p>一个 <strong>样式</strong> 列表，应用于该图层。每个样式通过名称引用，因为样式通常在其他地方（通常是 XML 样式表）定义。</p></li>
+</ul>
+<p>最后，您定义一个或多个 <strong>样式</strong>，告诉 Mapnik 如何绘制各种图层。每个样式都有一个 <strong>名称</strong> 和一组 <em>规则</em>，它们构成样式定义的主要部分。每个 <em>规则</em> 具有：</p>
+<ul class="simple">
+<li><p><strong>最小比例</strong> 和 <strong>最大比例</strong> 值（称为“比例分母”）。当地图的比例在此范围内时，<em>规则</em> 才会生效。</p></li>
+<li><p>一个 <strong>过滤器</strong> 表达式。<em>规则</em> 仅会应用于与该过滤器表达式匹配的要素。</p></li>
+<li><p>一组 <strong>符号化器</strong>。这些符号化器定义了如何将匹配的要素绘制到地图上。</p></li>
+</ul>
+<p>Mapnik 实现了多种不同类型的符号化器：</p>
+<ul class="simple">
+<li><p><em>LineSymbolizer</em> 用于沿线、线性环或多边形外部绘制“笔划”。</p></li>
+<li><p><em>LinePatternSymbolizer</em> 使用图像文件（由名称指定）的内容，在线、线性环或多边形外部绘制“笔划”。</p></li>
+<li><p><em>PolygonSymbolizer</em> 用于绘制多边形的内部区域。</p></li>
+<li><p><em>PolygonPatternSymbolizer</em> 使用图像文件（同样由名称指定）的内容，绘制多边形的内部区域。</p></li>
+<li><p><em>PointSymbolizer</em> 使用图像文件（由名称指定）的内容，在一个点上绘制图像。</p></li>
+<li><p><em>TextSymbolizer</em> 绘制要素的文本。要绘制的文本取自要素的属性之一，且有许多选项来控制文本的绘制方式。</p></li>
+<li><p><em>RasterSymbolizer</em> 用于绘制从任何 GDAL 数据集获取的栅格数据。</p></li>
+<li><p><em>ShieldSymbolizer</em> 绘制文本标签和一个点。这类似于使用 <em>PointSymbolizer</em> 绘制图像，使用 <em>TextSymbolizer</em> 绘制标签，但它确保文本和图像一起绘制。</p></li>
+<li><p><em>BuildingSymbolizer</em> 使用伪 3D 效果绘制一个多边形，使其看起来像是三维建筑物。</p></li>
+<li><p><em>MarkersSymbolizer</em> 绘制蓝色方向箭头或 SVG 标记，沿着多边形和线几何体的方向绘制。</p></li>
+</ul>
+<p>当您实例化一个符号化器并将其添加到样式中（无论是通过代码直接进行，还是通过 XML 样式表），您需要提供一些参数来定义符号化器的工作方式。例如，在使用 <em>PolygonSymbolizer</em> 时，您可以指定填充颜色、不透明度和“伽玛”值，后者有助于绘制相邻的相同颜色的多边形而不显示边界:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="mi">127</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">p</span><span class="o">.</span><span class="n">fill_opacity</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">p</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.65</span>
+</pre></div>
+</div>
+<p>如果使用此符号化器的规则匹配一个或多个多边形，则这些多边形将使用给定的颜色、不透明度和伽玛值绘制。</p>
+<p>当然，不同的规则可以有不同的符号化器，也可以有不同的过滤器值。例如，您可以设置规则，根据国家的人口使用不同的颜色来绘制它们。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>When using Mapnik, the main object you are dealing with is called the Map. A Map object has the following parts:</p>
+<a class="with-border reference internal image-reference" href="../_images/89-0.png"><img alt="../_images/89-0.png" class="with-border align-center" src="../_images/89-0.png" style="width: 346.5px; height: 471.09999999999997px;" /></a>
+<p>When creating a Map object, you assign values for the following:</p>
+<ul class="simple">
+<li><p>The overall <strong>width</strong> and <strong>height</strong> of the map, in pixels.</p></li>
+<li><p>The <strong>spatial reference</strong> to use for the map.</p></li>
+<li><p>The <strong>background color</strong> to draw behind the contents of the map.</p></li>
+</ul>
+<p>You then define one or more Layers which hold the map’s contents. Each Layer has the following:</p>
+<ul class="simple">
+<li><p>A <strong>name</strong>.</p></li>
+<li><p>A <strong>Datasource</strong> object defining where to get the data for this layer from. The Datasource can be a reference to a database, or it can be a shapefile or other GDAL/OGR data source.</p></li>
+<li><p>A <strong>spatial reference</strong> to use for this layer. This can be different from the spatial reference used by the map as a whole, if appropriate.</p></li>
+<li><p>A list of <strong>styles</strong> to apply to this layer. Each style is referred to by name, since the styles are actually defined elsewhere (often in an XML stylesheet).</p></li>
+</ul>
+<p>Finally, you define one or more <strong>Styles</strong>, which tell Mapnik how to draw the various layers. Each Style has a <strong>name</strong> and of a list of <em>Rules</em>, which make up the main part of the style’s definition. Each <em>Rule</em> has:</p>
+<ul class="simple">
+<li><p>A <strong>minimum scale</strong> and <strong>maximum scale</strong> value (called the “scale denominator”). The <em>Rule</em> will only apply if the map’s scale is within this range.</p></li>
+<li><p>A <strong>filter</strong> expression. The <em>Rule</em> will only apply to those features which match this filter expression.</p></li>
+<li><p>A list of <strong>Symbolizers</strong>. These define how the matching features will be drawn onto the map.</p></li>
+</ul>
+<p>There are a number of different types of Symbolizers implemented by Mapnik:</p>
+<ul class="simple">
+<li><p><em>LineSymbolizer</em> is used to draw a “stroke” along a line, a linear ring, or around the outside of a polygon.</p></li>
+<li><p><em>LinePatternSymbolizer</em> uses the contents of an image file (specified by name) to draw the “stroke” along a line, a linear ring, or around the outside of a polygon.</p></li>
+<li><p><em>PolygonSymbolizer</em> is used to draw the interior of a polygon.</p></li>
+<li><p><em>PolygonPatternSymbolizer</em> uses the contents of an image file (again specified by name) to draw the interior of a polygon.</p></li>
+<li><p><em>PointSymbolizer</em> uses the contents of an image file (specified by name) to draw an image at a point.</p></li>
+<li><p><em>TextSymbolizer</em> draws a feature’s text. The text to be drawn is taken from one of the feature’s attributes, and there are numerous options to control how the text is to be drawn.</p></li>
+<li><p><em>RasterSymbolizer</em> is used to draw raster data taken from any GDAL dataset.</p></li>
+<li><p><em>ShieldSymbolizer</em> draws a textual label and a point together. This is similar to the use of a <em>PointSymbolizer</em> to draw the image and a <em>TextSymbolizer</em> to draw the label, except that it ensures that both the text and the image are drawn together.</p></li>
+<li><p><em>BuildingSymbolizer</em> uses a pseudo-3D effect to draw a polygon, to make it appear that the polygon is a three-dimensional building.</p></li>
+<li><p><em>MarkersSymbolizer</em> draws blue directional arrows or SVG markers following the direction of polygon and line geometries.</p></li>
+</ul>
+<p>When you instantiate a Symbolizer and add it to a style (either directly in code, or via an XML stylesheet), you provide a number of parameters which define how the Symbolizer should work. For example, when using the <em>PolygonSymbolizer</em>, you can specify the fill color, the opacity, and a “gamma” value that helps draw adjacent polygons of the same color without the boundary being shown:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="mi">127</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">p</span><span class="o">.</span><span class="n">fill_opacity</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">p</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.65</span>
+</pre></div>
+</div>
+<p>If the Rule that uses this Symbolizer matches one or more polygons, those polygons will be drawn using the given color, opacity, and gamma value.</p>
+<p>Different rules can, of course, have different Symbolizers, as well as different filter values. For example, you might set up rules which draw countries in different colors depending on their population.</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>示例代码<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p>Example code</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>以下示例程序使用 Mapnik 显示一个简单的世界地图：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mapnik</span>
+
+<span class="n">symbolizer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;darkgreen&quot;</span><span class="p">))</span>
+
+<span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbolizer</span><span class="p">)</span>
+
+<span class="n">style</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Style</span><span class="p">()</span>
+<span class="n">style</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<span class="n">layer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span><span class="s2">&quot;mapLayer&quot;</span><span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Shapefile</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">&quot;TM_WORLD_BORDERS-0.3.shp&quot;</span><span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;mapStyle&quot;</span><span class="p">)</span>
+
+<span class="nb">map</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="nb">map</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;steelblue&quot;</span><span class="p">)</span>
+<span class="nb">map</span><span class="o">.</span><span class="n">append_style</span><span class="p">(</span><span class="s2">&quot;mapStyle&quot;</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+<span class="nb">map</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
+<span class="nb">map</span><span class="o">.</span><span class="n">zoom_all</span><span class="p">()</span>
+<span class="n">mapnik</span><span class="o">.</span><span class="n">render_to_file</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="s2">&quot;map.png&quot;</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果您正在运行 Mapnik 版本 2.0，您应该将程序第一行的 <cite>import mapnik</cite> 替换为 <cite>import mapnik2 as mapnik</cite>。</p>
+</div>
+<p>注意，程序创建了一个 <code class="docutils literal notranslate"><span class="pre">PolygonSymbolizer</span></code> 来显示国家多边形，然后将符号化器附加到 Mapnik 的 Rule 对象。接着，规则成为 Mapnik <code class="docutils literal notranslate"><span class="pre">Style</span></code> 对象的一部分。然后，我们创建了一个 Mapnik 图层对象，从 shapefile 数据源读取图层的地图数据。最后，创建了一个 Mapnik Map 对象，附加了图层，并将生成的地图渲染为 PNG 格式的图像文件。</p>
+<a class="with-border reference internal image-reference" href="../_images/92-0.png"><img alt="../_images/92-0.png" class="with-border align-center" src="../_images/92-0.png" style="width: 720.0px; height: 360.0px;" /></a>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>The following example program displays a simple world map using Mapnik:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mapnik</span>
+
+<span class="n">symbolizer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;darkgreen&quot;</span><span class="p">))</span>
+
+<span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">symbolizer</span><span class="p">)</span>
+
+<span class="n">style</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Style</span><span class="p">()</span>
+<span class="n">style</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<span class="n">layer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span><span class="s2">&quot;mapLayer&quot;</span><span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Shapefile</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">&quot;TM_WORLD_BORDERS-0.3.shp&quot;</span><span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;mapStyle&quot;</span><span class="p">)</span>
+
+<span class="nb">map</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+<span class="nb">map</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;steelblue&quot;</span><span class="p">)</span>
+<span class="nb">map</span><span class="o">.</span><span class="n">append_style</span><span class="p">(</span><span class="s2">&quot;mapStyle&quot;</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+<span class="nb">map</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+
+<span class="nb">map</span><span class="o">.</span><span class="n">zoom_all</span><span class="p">()</span>
+<span class="n">mapnik</span><span class="o">.</span><span class="n">render_to_file</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="s2">&quot;map.png&quot;</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>If you are running Mapnik Version 2.0, you should replace the import mapnik statement in the first line of this program with import mapnik2 as mapnik.</p>
+</div>
+<p>Notice that this program creates a <code class="docutils literal notranslate"><span class="pre">PolygonSymbolizer</span></code> to display the country
+polygons, and then attaches the symbolizer to a Mapnik Rule object. The Rule
+then becomes part of a Mapnik <code class="docutils literal notranslate"><span class="pre">Style</span></code> object. We then create a Mapnik Layer object,
+reading the layer’s map data from a shapefile data source. Finally, a Mapnik Map
+object is created, the layer is attached, and the resulting map is rendered to a
+PNG-format image file:</p>
+<a class="with-border reference internal image-reference" href="../_images/92-0.png"><img alt="../_images/92-0.png" class="with-border align-center" src="../_images/92-0.png" style="width: 720.0px; height: 360.0px;" /></a>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>文档<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p>Documentation</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>Mapnik 的文档对于一个开源项目来说算是相当不错的：提供了良好的安装指南和一些很好的教程，但 API 文档通常令人困惑。Python 文档源自 C++ 文档，主要集中在描述 Python 绑定的实现方式，而不是用户如何使用 Python 与 Mapnik 进行交互——有很多技术细节对 Python 程序员并不相关，而且很多 Python 特定的描述也缺失了。</p>
+<p>开始使用 Mapnik 的最佳方式是遵循安装指南，然后完成提供的 Python 专用教程。之后，您可以查看 Mapnik Wiki 上的学习页面：</p>
+<p><a class="reference external" href="http://trac.mapnik.org/wiki/LearningMapnik">http://trac.mapnik.org/wiki/LearningMapnik</a></p>
+<p>尽管 Wiki 中并非所有内容都与 Python 相关，但花时间阅读是非常值得的。尽管 Python API 文档有其局限性，但查看它也是一个好主意。主页列出了可用的各种类以及一些有用的函数，很多函数都有文档说明。类本身列出了可以访问的方法和属性（特性），即使许多方法缺乏 Python 特定的文档，您通常可以猜到它们的功能。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>本书的第 8 章 <em>使用 Python 和 Mapnik 生成地图</em> 包含了有关 Mapnik 的全面描述，以及如何在 Python 中使用它；您可能会发现这比 Mapnik 网站上的 Python API 文档更有用。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Mapnik’s has reasonable documentation for an open source project: there are good
+installation guides and some excellent tutorials, but the API documentation is often
+confusing. The Python documentation is derived from the C++ documentation, and
+concentrates on describing how the Python bindings are implemented rather than
+how an end user would work with Mapnik using Python—there’s a lot of technical
+details that aren’t relevant to the Python programmer, and many Python-specific
+descriptions are missing.</p>
+<p>The best way to get started with Mapnik is to follow the installation instructions,
+and then to work your way through the supplied Python-specific tutorial. You can
+then check out the Learning Mapnik page on the Mapnik Wiki:</p>
+<p><a class="reference external" href="http://trac.mapnik.org/wiki/LearningMapnik">http://trac.mapnik.org/wiki/LearningMapnik</a></p>
+<p>It is well worth spending some time reading through the Mapnik Wiki, even
+though not all of it is Python-specific. It is also a good idea to look at the Python API
+documentation, despite its limitations. The main page lists the various classes, which
+are available and a number of useful functions, many of which are documented. The
+classes themselves list the methods and properties (attributes) you can access, and
+even though many of these lack Python-specific documentation, you can generally
+guess what they do.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><em>Chapter 8, Using Python and Mapnik to Produce Maps</em>, of this book includes a comprehensive description of Mapnik and how to use it from Python; you may find this more useful than the Python API documentation on the Mapnik website.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>可用性<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h2>
+<p>Availability</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>Mapnik 可以在所有主要操作系统上运行，包括 MS Windows、Mac OS X 和 Linux。Mapnik 的主网站地址是：</p>
+<p><a class="reference external" href="http://mapnik.org">http://mapnik.org</a></p>
+<p>提供了下载链接，您可以下载 Mapnik 的源代码，在 Unix 系统上可以轻松编译，也可以下载适用于 Windows 和 Mac OS X 的预构建二进制文件。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请确保安装 Mapnik 版本 2.0 或更高版本；您在本书中的示例操作需要使用这个版本。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Mapnik runs on all major operating systems, including MS Windows, Mac OS X,
+and Linux. The main Mapnik website can be found at:</p>
+<p><a class="reference external" href="http://mapnik.org">http://mapnik.org</a></p>
+<p>Download links are provided for downloading the Mapnik source code, which
+can be readily compiled if you are running on a Unix machine, and you can also
+download prebuilt binaries for Windows and Mac OS X.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Make sure that you install Mapnik Version 2.0 or later; you will need to use this version as you work through the examples in this book.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="summary.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">小结</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="analyzing.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">分析和处理地理空间数据</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">可视化地理空间数据</a><ul>
+<li><a class="reference internal" href="#mapnik">Mapnik</a></li>
+<li><a class="reference internal" href="#id2">设计</a></li>
+<li><a class="reference internal" href="#id3">示例代码</a></li>
+<li><a class="reference internal" href="#id4">文档</a></li>
+<li><a class="reference internal" href="#id5">可用性</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

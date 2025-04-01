@@ -1,0 +1,590 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="可视化地理空间数据" href="visualizing.html" /><link rel="prev" title="处理投影" href="dealing_proj.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>分析和处理地理空间数据 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">3 用于地理空间开发的 Python 库</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="id1">
+<h1>分析和处理地理空间数据<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>Analyzing and manipulating geospatial data</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>由于地理空间数据与点、线和多边形等几何特征相关，因此您经常需要使用这些几何特征执行各种计算。幸运的是，有一些非常强大的工具可以做到这一点。出于我们将很快描述的原因，在 Python 中执行此类计算几何的首选库是 <strong>Shapely</strong>。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Because geospatial data works with geometrical features such as points, lines, and polygons, you often need to perform various calculations using these geometrical features. Fortunately, there are some very powerful tools for doing exactly this. For reasons we will describe shortly, the library of choice for performing this type of computational geometry in Python is <strong>Shapely</strong>.</p>
+</div>
+</div>
+<section id="shapely">
+<h2>Shapely<a class="headerlink" href="#shapely" title="此标题的永久链接">#</a></h2>
+<p>Shapely</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>Shapely 是一个用于处理和分析二维地理空间几何图形的 Python 包。Shapely 基于 GEOS 库，该库使用 C++ 实现各种地理空间数据操作。GEOS 本身基于一个名为 Java Topology Suite 的库，该库为 Java 程序员提供相同的功能。Shapely 为 GEOS 提供了一个 Pythonic 接口，让您可以轻松地直接从 Python 程序中使用这些操作。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>Shapely is a Python package for the manipulation and analysis of two-dimensional geospatial geometries. Shapely is based on the GEOS library, which implements a wide range of geospatial data manipulations in C++. GEOS is itself based on a library called the Java Topology Suite, which provides the same functionality for Java programmers. Shapely provides a Pythonic interface to GEOS which makes it easy to use these manipulations directly from your Python programs.</p>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>设计<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Design</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>Shapely 库的组织结构如下：</p>
+<a class="with-border reference internal image-reference" href="../_images/84-0.png"><img alt="../_images/84-0.png" class="with-border align-center" src="../_images/84-0.png" style="width: 394.09999999999997px; height: 508.9px;" /></a>
+<p>Shapely 的所有功能都建立在 GEOS 之上。事实上，Shapely 需要在运行之前安装 GEOS。</p>
+<p>Shapely 本身包含八个主要的类，表示不同类型的几何形状：</p>
+<ul class="simple">
+<li><p><strong>Point</strong> 类表示空间中的单个点。点可以是二维的 (x, y)，也可以是三维的 (x, y, z)。</p></li>
+<li><p><strong>LineString</strong> 类表示一系列连接在一起的点，形成一条线。LineString 可以是 <em>简单的</em> （没有交叉的线段），也可以是 <em>复杂的</em> （其中两个线段在 LineString 中交叉）。</p></li>
+<li><p><strong>LinearRing</strong> 类表示一条以起点结束的线段。LinearRing 中的线段不能交叉或相接触。</p></li>
+<li><p><strong>Polygon</strong> 类表示一个填充区域，通常可以包含一个或多个“孔”。</p></li>
+<li><p><strong>MultiPoint</strong> 类表示一个点的集合。</p></li>
+<li><p><strong>MultiLineString</strong> 类表示多个 LineString 的集合。</p></li>
+<li><p><strong>MultiPolygon</strong> 类表示多个 Polygon 的集合。</p></li>
+<li><p><strong>GeometryCollection</strong> 类表示任何点、线、线环和多边形的集合。</p></li>
+</ul>
+<p>除了能够表示这些不同类型的几何图形，Shapely 还提供了许多方法和属性，用于操作和分析这些几何图形。例如，LineString 类提供了一个 <em>length</em> 属性，表示构成 LineString 的所有线段的长度，以及一个 <em>crosses()</em> 方法，如果两个 LineString 交叉，返回 true。其他方法允许你计算两个多边形的交集、扩张或侵蚀几何图形、简化几何图形、计算两个几何图形之间的距离，并构建一个包围给定几何图形列表中所有点的多边形（称为 <em>convex_hull</em> 属性）。</p>
+<p>需要注意的是，Shapely 是一个 <em>空间</em> 操作库，而不是地理空间操作库。它没有地理坐标的概念。相反，它假设在操作之前，地理空间数据已被投影到二维笛卡尔平面上，然后结果可以在需要时转换回地理坐标。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>The Shapely library is organized as follows:</p>
+<a class="with-border reference internal image-reference" href="../_images/84-0.png"><img alt="../_images/84-0.png" class="with-border align-center" src="../_images/84-0.png" style="width: 394.09999999999997px; height: 508.9px;" /></a>
+<p>All of Shapely’s functionality is built on top of GEOS. Indeed, Shapely requires GEOS
+to be installed before it can run.</p>
+<p>Shapely itself consists of eight major classes, representing different types of
+geometrical shapes:</p>
+<ul class="simple">
+<li><p>The <strong>Point</strong> class represents a single point in space. Points can be two-dimensional (x, y), or three-dimensional (x, y, z).</p></li>
+<li><p>The <strong>LineString</strong> class represents a sequence of points joined together to form a line. LineStrings can be <em>simple</em> (no crossing line segments) or <em>complex</em> (where two line segments within the LineString cross).</p></li>
+<li><p>The <strong>LinearRing</strong> class represents a line string which finishes at the starting point. The line segments within a LinearRing cannot cross or touch.</p></li>
+<li><p>The <strong>Polygon</strong> class represents a filled area, optionally with one or more “holes” inside it.</p></li>
+<li><p>The <strong>MultiPoint</strong> class represents a collection of Points.</p></li>
+<li><p>The <strong>MultiLineString</strong> class represents a collection of LineStrings.</p></li>
+<li><p>The <strong>MultiPolygon</strong> class represents a collection of Polygons.</p></li>
+<li><p>The <strong>GeometryCollection</strong> class represents a collection of any combination of Points, LineStrings, LinearRings, and Polygons.</p></li>
+</ul>
+<p>As well as being able to represent these various types of geometries, Shapely provides
+a number of methods and attributes for manipulating and analyzing these geometries.
+For example, the LineString class provides a <em>length</em> attribute that equals the length
+of all the line segments that make up the LineString, and a <em>crosses()</em> method that
+returns true if two LineStrings cross. Other methods allow you to calculate the
+intersection of two polygons, dilate or erode geometries, simplify a geometry, calculate
+the distance between two geometries, and build a polygon that encloses all the points
+within a given list of geometries (called the <em>convex_hull</em> attribute).</p>
+<p>Note that Shapely is a <em>spatial</em> manipulation library rather than a geospatial manipulation
+library. It has no concept of geographical coordinates. Instead, it assumes that the
+geospatial data has been projected onto a two-dimensional Cartesian plane before it
+is manipulated, and the results can then be converted back into geographic coordinates
+if desired.</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>示例代码<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p>Example code</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>以下程序创建了两个 Shapely 几何对象，一个圆形和一个正方形，并计算它们的交集：</p>
+<a class="with-border reference internal image-reference" href="../_images/85-0.png"><img alt="../_images/85-0.png" class="with-border align-center" src="../_images/85-0.png" style="width: 243.6px; height: 242.89999999999998px;" /></a>
+<p>交集将是一个四分之一圆形的多边形，如前图中的深灰色部分所示：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shapely.geometry</span>
+
+<span class="n">pt</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">square</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                                <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+
+<span class="n">intersect</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">intersect</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span>
+</pre></div>
+</div>
+<p>注意，圆形是通过创建一个点几何对象并使用 <em>buffer()</em> 方法来构建的，该方法创建了一个表示圆形轮廓的多边形。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>The following program creates two Shapely geometry objects, a circle and a square, and calculates their intersection:</p>
+<a class="with-border reference internal image-reference" href="../_images/85-0.png"><img alt="../_images/85-0.png" class="with-border align-center" src="../_images/85-0.png" style="width: 243.6px; height: 242.89999999999998px;" /></a>
+<p>The intersection will be a polygon in the shape of a quarter circle , as indicated by the dark grey portion of the preceding image:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shapely.geometry</span>
+
+<span class="n">pt</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">square</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                                <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+
+<span class="n">intersect</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">intersect</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span>
+</pre></div>
+</div>
+<p>Notice how the circle is constructed by taking a Point geometry and using the <em>buffer()</em> method to create a Polygon representing the outline of a circle.</p>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>文档<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p>Documentation</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>Shapely 附带了出色的文档，其中包含详细的描述、扩展的代码示例和许多插图，清楚地展示了各种类、方法和属性的工作原理。</p>
+<p>Shapely 文档完全独立；无需参考 GEOS 文档或其所基于的 Java 拓扑套件，除非您特别想了解这些库中的工作原理。唯一的例外是，如果您从源代码编译 GEOS 并且无法使其正常工作，则可能需要参考 GEOS 文档。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Shapely comes with excellent documentation, with detailed descriptions, extended
+code samples, and many illustrations that clearly show how the various classes,
+methods, and attributes work.</p>
+<p>The Shapely documentation is entirely self-contained; there is no need to refer to
+the GEOS documentation, or to the Java Topology Suite it is based on, unless you
+particularly want to see how things are done in these libraries. The only exception
+is that you may need to refer to the GEOS documentation if you are compiling
+GEOS from source and are having problems getting it to work.</p>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>可用性<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h2>
+<p>Availability</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>Shapely 可以在所有主要操作系统上运行，包括 MS Windows、Mac OS X 和 Linux。Shapely 的官方网站可以在以下地址找到：</p>
+<p><a class="reference external" href="http://pypi.python.org/pypi/Shapely">http://pypi.python.org/pypi/Shapely</a></p>
+<p>该网站提供了你所需要的一切，包括 Shapely 库的文档和下载资源，既有源代码形式，也有适用于 MS Windows 的预编译二进制文件。</p>
+<p>如果你在 Windows 计算机上安装 Shapely，预编译的二进制文件已经包含了 GEOS 库。否则，你需要在使用 Shapely 之前先安装 GEOS。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>确保你安装了 Shapely 版本 1.2 或更高版本；你需要这个版本才能按照本书中的示例进行操作。</p>
+</div>
+<p>GEOS 库的网站地址为：</p>
+<p><a class="reference external" href="http://trac.osgeo.org/geos">http://trac.osgeo.org/geos</a></p>
+<p>在 Unix 系统中安装 GEOS，你可以从 GEOS 网站下载源代码并自行编译，或者可以安装适合的 RPM 或 APT 包，这些包中已经包含了 GEOS。如果你使用的是 Mac OS X，你可以尝试自行下载并构建 GEOS，或者安装预构建的 GEOS 框架，该框架可以从以下网站获得：</p>
+<p><a class="reference external" href="http://www.kyngchaos.com/software/frameworks">http://www.kyngchaos.com/software/frameworks</a></p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>如果你已经从上述网站安装了 “GDAL Complete” 包，你的 Mac OS X 计算机上已经安装了 GEOS。</p>
+</div>
+<p>安装 GEOS 后，你需要下载、编译并安装 Shapely 库。在 Mac OS X 上进行安装可能会有些复杂，因此你可能会发现以下博客文章非常有用：</p>
+<p><a class="reference external" href="http://tumblr.pauladamsmith.com/post/17663153373">http://tumblr.pauladamsmith.com/post/17663153373</a></p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Shapely will run on all major operating systems, including MS Windows, Mac OS X,
+and Linux. Shapely’s main website can be found at:</p>
+<p><a class="reference external" href="http://pypi.python.org/pypi/Shapely">http://pypi.python.org/pypi/Shapely</a></p>
+<p>The website has everything you need, including the documentation and downloads for
+the Shapely library, in both source code form and prebuilt binaries for MS Windows.</p>
+<p>If you are installing Shapely on a Windows computer, the prebuilt binaries include
+the GEOS library built-in. Otherwise, you will be responsible for installing GEOS
+before you can use Shapely.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Make sure that you install Shapely Version 1.2 or later; you will need this version to work through the examples in this book.</p>
+</div>
+<p>The GEOS library’s website is at:</p>
+<p><a class="reference external" href="http://trac.osgeo.org/geos">http://trac.osgeo.org/geos</a></p>
+<p>To install GEOS in a Unix-based computer, you can either download the source code
+from the GEOS website and compile it yourself, or you can install a suitable RPM
+or APT package which includes GEOS. If you are running Mac OS X, you can either
+try to download and build GEOS yourself, or you can install the prebuild GEOS
+framework, which is available from the following website:</p>
+<p><a class="reference external" href="http://www.kyngchaos.com/software/frameworks">http://www.kyngchaos.com/software/frameworks</a></p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>If you’ve installed the “GDAL Complete” package from the above website, you’ll already have GEOS installed on your Mac OS X computer.</p>
+</div>
+<p>After installing GEOS, you need to download, compile, and install the Shapely
+library. This can be slightly tricky on a Mac OS X computer, so you may find the
+following blog post useful:</p>
+<p><a class="reference external" href="http://tumblr.pauladamsmith.com/post/17663153373">http://tumblr.pauladamsmith.com/post/17663153373</a></p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="visualizing.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">可视化地理空间数据</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="dealing_proj.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">处理投影</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">分析和处理地理空间数据</a><ul>
+<li><a class="reference internal" href="#shapely">Shapely</a></li>
+<li><a class="reference internal" href="#id2">设计</a></li>
+<li><a class="reference internal" href="#id3">示例代码</a></li>
+<li><a class="reference internal" href="#id4">文档</a></li>
+<li><a class="reference internal" href="#id5">可用性</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

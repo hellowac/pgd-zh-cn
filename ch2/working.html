@@ -1,0 +1,859 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="小结" href="summary.html" /><link rel="prev" title="GIS 数据格式" href="gis_data_format.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>手动处理 GIS 数据 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">2 GIS</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="gis">
+<h1>手动处理 GIS 数据<a class="headerlink" href="#gis" title="此标题的永久链接">#</a></h1>
+<p>Working with GIS data manually</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>让我们简要了解手动处理 GIS 数据的过程。在开始之前，您需要做两件事：</p>
+<ul class="simple">
+<li><p>获取一些 GIS 数据</p></li>
+<li><p>安装 GDAL Python 库，以便您可以读取所需的数据文件</p></li>
+</ul>
+<p>让我们使用美国人口普查局的网站来下载一组美国各州的矢量地图。获取美国人口普查局 GIS 数据的主站点如下：</p>
+<p><a class="reference external" href="http://www.census.gov/geo/www/tiger">http://www.census.gov/geo/www/tiger</a></p>
+<p>为了简化操作，我们可以直接从以下链接下载所需的文件，而无需访问该网站：</p>
+<p><a class="reference external" href="http://www2.census.gov/geo/tiger/TIGER2012/STATE/tl_2012_us_state.zip">http://www2.census.gov/geo/tiger/TIGER2012/STATE/tl_2012_us_state.zip</a></p>
+<p>下载后的文件应该是一个 ZIP 格式的压缩包，解压后您应该会看到以下文件：</p>
+<ul class="simple">
+<li><p>tl_2012_us_state.dbf</p></li>
+<li><p>tl_2012_us_state.prj</p></li>
+<li><p>tl_2012_us_state.shp</p></li>
+<li><p>tl_2012_us_state.shp.xml</p></li>
+<li><p>tl_2012_us_state.shx</p></li>
+</ul>
+<p>这些文件组成了一个 <strong>Shapefile</strong>，其中包含所有美国各州的轮廓。将这些文件放在一个方便的目录中。</p>
+<p>接下来，我们需要下载 GDAL Python 库。GDAL 的官方网站如下：</p>
+<p><a class="reference external" href="http://gdal.org">http://gdal.org</a></p>
+<p>在 Windows 或 Unix 系统上，安装 GDAL 最简单的方法是使用 <strong>FWTools 安装程序</strong>，可以从以下网站下载：</p>
+<p><a class="reference external" href="http://fwtools.maptools.org">http://fwtools.maptools.org</a></p>
+<p>如果您使用的是 Mac OS X，可以在以下网址找到 GDAL 的完整安装程序：</p>
+<p><a class="reference external" href="http://www.kyngchaos.com/software/frameworks">http://www.kyngchaos.com/software/frameworks</a></p>
+<p>安装 GDAL 后，您可以通过在 Python 命令提示符下输入 <cite>import osgeo</cite> 来检查它是否正常工作。如果 Python 命令提示符重新出现且没有错误消息，那么 GDAL 就已成功安装，您就可以开始使用了：</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo</span>
+<span class="gp">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>现在我们已经有了一些数据可以使用，接下来让我们看一下这些数据。您可以直接在命令提示符下输入以下内容，或者将其保存为 Python 脚本，以便随时运行（我们将其称为 <em>analyze.py</em>）：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.ogr</span>
+
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;tl_2012_us_state.shp&quot;</span><span class="p">)</span>
+<span class="n">numLayers</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayerCount</span><span class="p">()</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Shapefile contains </span><span class="si">%d</span><span class="s2"> layers&quot;</span> <span class="o">%</span> <span class="n">numLayers</span>
+<span class="nb">print</span>
+
+<span class="k">for</span> <span class="n">layerNum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numLayers</span><span class="p">):</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="n">layerNum</span><span class="p">)</span>
+    <span class="n">spatialRef</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetSpatialRef</span><span class="p">()</span><span class="o">.</span><span class="n">ExportToProj4</span><span class="p">()</span>
+    <span class="n">numFeatures</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="s2">&quot;Layer </span><span class="si">%d</span><span class="s2"> has spatial reference </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">layerNum</span><span class="p">,</span> <span class="n">spatialRef</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s2">&quot;Layer </span><span class="si">%d</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> features:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">layerNum</span><span class="p">,</span> <span class="n">numFeatures</span><span class="p">)</span>
+    <span class="nb">print</span>
+
+    <span class="k">for</span> <span class="n">featureNum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numFeatures</span><span class="p">):</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">featureNum</span><span class="p">)</span>
+        <span class="n">featureName</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="s2">&quot;NAME&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Feature </span><span class="si">%d</span><span class="s2"> has name </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">featureNum</span><span class="p">,</span> <span class="n">featureName</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>上面的示例假设您已将脚本放在与 <em>tl_2012_us_state.shp</em> 文件相同的目录中。如果您将其放在不同的目录中，请更改 <em>osgeo.ogr.Open()</em> 命令，包含 Shapefile 的路径。如果您使用的是 MS Windows，请记得使用双反斜杠（\）作为目录分隔符。</p>
+</div>
+<p>这将快速总结 Shapefile 数据的结构：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Shapefile contains 1 layers
+
+Layer 0 has spatial reference +proj=longlat +datum=NAD83 +no_defs
+Layer 0 has 56 features:
+
+Feature 0 has name Hawaii
+Feature 1 has name Arkansas
+Feature 2 has name New Mexico
+Feature 3 has name Montana
+...
+Feature 53 has name Arizona
+Feature 54 has name Nevada
+Feature 55 has name California
+</pre></div>
+</div>
+<p>这告诉我们，下载的数据包含一个图层，包含56个单独的特征，分别对应美国的各个州和领土。它还告诉我们该图层的“空间参考”，这告诉我们坐标是使用 NAD 83 基准投影为经纬度值的。</p>
+<p>正如您从上面的示例中看到的，使用 GDAL 从 Shapefile 中提取数据非常简单。接下来我们继续做一个例子。这次，我们将查看 New Mexico（新墨西哥州）特征 2 的详细信息：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.ogr</span>
+
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;tl_2012_us_state.shp&quot;</span><span class="p">)</span>
+
+<span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Feature 2 has the following attributes:&quot;</span>
+<span class="nb">print</span>
+
+<span class="n">attributes</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span> <span class="s2">&quot; </span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+<span class="n">geometryName</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryName</span><span class="p">()</span>
+
+<span class="nb">print</span>
+<span class="nb">print</span> <span class="s2">&quot;Feature&#39;s geometry data consists of a </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">geometryName</span>
+</pre></div>
+</div>
+<p>运行该程序后，您将看到以下输出：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Feature 2 has the following attributes:
+
+    DIVISION = 8
+    INTPTLAT = +34.4346843
+    NAME = New Mexico
+    STUSPS = NM
+    FUNCSTAT = A
+    REGION = 4
+    LSAD = 00
+    INTPTLON = -106.1316181
+    AWATER = 756438507.0
+    STATENS = 00897535
+    MTFCC = G4000
+    STATEFP = 35
+    ALAND = 3.14161109357e+11
+
+Feature&#39;s geometry data consists of a POLYGON
+</pre></div>
+</div>
+<p>这些属性的含义可以在美国人口普查局的网站上找到，但我们现在关注的是特征的几何数据。几何对象是一个复杂的结构，包含一些地理空间数据，通常使用嵌套的几何对象来反映地理空间数据的组织方式。目前，我们发现 New Mexico 的几何数据由一个多边形组成。接下来，我们更仔细地查看这个多边形：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.ogr</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">analyzeGeometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="n">indent</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryName</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetPointCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; with </span><span class="si">%d</span><span class="s2"> data points&quot;</span> <span class="o">%</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetPointCount</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; containing:&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryCount</span><span class="p">()):</span>
+        <span class="n">analyzeGeometry</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">indent</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;tl_2012_us_state.shp&quot;</span><span class="p">)</span>
+<span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+
+<span class="n">analyzeGeometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>analyzeGeometry()</em> 函数提供了一个有用的思路，帮助我们了解几何数据的结构：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POLYGON containing:
+
+    LINEARRING with 7550 data points
+</pre></div>
+</div>
+<p>在 GDAL（更具体地说是我们使用的 OGR Simple Feature 库）中，多边形被定义为一个外部“环”，可选的内环则定义了多边形的“孔”（例如，显示湖泊的轮廓）。</p>
+<p>New Mexico 是一个相对简单的特征，它只包含一个多边形。如果我们对 California（加利福尼亚州，Shapefile 中的特征 55）运行相同的程序，输出会复杂一些：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>MULTIPOLYGON containing:
+    POLYGON containing:
+        LINEARRING with 10105 data points
+    POLYGON containing:
+        LINEARRING with 392 data points
+    POLYGON containing:
+        LINEARRING with 152 data points
+    POLYGON containing:
+        LINEARRING with 191 data points
+    POLYGON containing:
+        LINEARRING with 121 data points
+    POLYGON containing:
+        LINEARRING with 93 data points
+    POLYGON containing:
+        LINEARRING with 77 data points
+</pre></div>
+</div>
+<p>如您所见，California 由七个不同的多边形组成，每个多边形由一个线性环定义。这是因为 California 位于海岸线，包含六个外岛和主要的内陆部分。</p>
+<p>让我们通过回答一个简单的问题来完成对美国州 Shapefile 的分析：从加利福尼亚州的最北端到最南端的距离是多少？有多种方法可以回答这个问题，但现在我们手动计算。首先，找出加利福尼亚州的最北端和最南端：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.ogr</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">findPoints</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetPointCount</span><span class="p">()):</span>
+        <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetPoint</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryCount</span><span class="p">()):</span>
+        <span class="n">findPoints</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">results</span><span class="p">)</span>
+
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;tl_2012_us_state.shp&quot;</span><span class="p">)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="mi">55</span><span class="p">)</span>
+    <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;north&#39;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;south&#39;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="n">findPoints</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;Northernmost point is (</span><span class="si">%0.4f</span><span class="s2">, </span><span class="si">%0.4f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="s2">&quot;Southernmost point is (</span><span class="si">%0.4f</span><span class="s2">, </span><span class="si">%0.4f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><em>findPoints()</em> 函数递归扫描几何数据，提取单个点，并找出纬度（y）值最高和最低的点，这些点被存储在 <em>results</em> 字典中，供主程序使用。</p>
+<p>正如您所见，GDAL 使得处理复杂的几何数据结构变得轻松。虽然代码需要递归，但与直接读取数据相比，仍然显得相当简单。如果您运行前面的程序，您将看到以下输出：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Northernmost point is (-122.3782, 42.0095)
+Southernmost point is (-117.2049, 32.5288)
+</pre></div>
+</div>
+<p>现在我们有了这两个点，接下来要计算它们之间的距离。如前所述，我们需要使用 <strong>大圆距离</strong> 计算来考虑地球表面的曲率。我们将手动计算，使用 Haversine 公式：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="n">lat1</span> <span class="o">=</span> <span class="mf">42.0095</span>
+<span class="n">long1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">122.3782</span>
+
+<span class="n">lat2</span> <span class="o">=</span> <span class="mf">32.5288</span>
+<span class="n">long2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">117.2049</span>
+
+<span class="n">rLat1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span>
+<span class="n">rLong1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">long1</span><span class="p">)</span>
+<span class="n">rLat2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span>
+<span class="n">rLong2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">long2</span><span class="p">)</span>
+
+<span class="n">dLat</span> <span class="o">=</span> <span class="n">rLat2</span> <span class="o">-</span> <span class="n">rLat1</span>
+<span class="n">dLong</span> <span class="o">=</span> <span class="n">rLong2</span> <span class="o">-</span> <span class="n">rLong1</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dLat</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rLat1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rLat2</span><span class="p">)</span> \
+                        <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dLong</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a</span><span class="p">))</span>
+<span class="n">distance</span> <span class="o">=</span> <span class="mi">6371</span> <span class="o">*</span> <span class="n">c</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Great circle distance is </span><span class="si">%0.0f</span><span class="s2"> kilometres&quot;</span> <span class="o">%</span> <span class="n">distance</span>
+</pre></div>
+</div>
+<p>该公式返回的结果是：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Great circle distance is 759 kilometres
+</pre></div>
+</div>
+<p>现在我们有了答案，您已经完成了对 Shapefile 的所有操作！您已经通过 GDAL 库分析了美国州 Shapefile 中的数据、提取了几何信息、以及计算了最北端和最南端的距离。随着时间的推移，您将会掌握更多的技巧，处理更多复杂的空间数据。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Let’s take a brief look at the process of working with GIS data manually. Before we can begin, there are two things you need to do:</p>
+<ul class="simple">
+<li><p>Obtain some GIS data</p></li>
+<li><p>Install the GDAL Python library so that you can read the necessary data files</p></li>
+</ul>
+<p>Let’s use the US Census Bureau’s website to download a set of vector maps for the
+various US states. The main site for obtaining GIS data from the US Census Bureau
+can be found at:</p>
+<p><a class="reference external" href="http://www.census.gov/geo/www/tiger">http://www.census.gov/geo/www/tiger</a></p>
+<p>To make things simpler though, let’s bypass the website and directly download the
+file we need from the following link:</p>
+<p><a class="reference external" href="http://www2.census.gov/geo/tiger/TIGER2012/STATE/tl_2012_us_state.zip">http://www2.census.gov/geo/tiger/TIGER2012/STATE/tl_2012_us_state.zip</a></p>
+<p>The resulting file, tl_2009_us_state.zip, should be a ZIP-format archive. After
+uncompressing the archive, you should have the following files:</p>
+<ul class="simple">
+<li><p>tl_2012_us_state.dbf</p></li>
+<li><p>tl_2012_us_state.prj</p></li>
+<li><p>tl_2012_us_state.shp</p></li>
+<li><p>tl_2012_us_state.shp.xml</p></li>
+<li><p>tl_2012_us_state.shx</p></li>
+</ul>
+<p>These files make up a <strong>Shapefile</strong> containing the outlines of all the US states. Place these files together in a convenient directory.</p>
+<p>We next have to download the GDAL Python library. The main website for GDAL can be found at:</p>
+<p><a class="reference external" href="http://gdal.org">http://gdal.org</a></p>
+<p>The easiest way to install GDAL onto a Windows or Unix machine is to use the <strong>FWTools installer</strong>, which can be downloaded from the following site:</p>
+<p><a class="reference external" href="http://fwtools.maptools.org">http://fwtools.maptools.org</a></p>
+<p>If you are running Mac OS X, you can find a complete installer for GDAL at:</p>
+<p><a class="reference external" href="http://www.kyngchaos.com/software/frameworks">http://www.kyngchaos.com/software/frameworks</a></p>
+<p>After installing GDAL, you can check that it works by typing import osgeo into the Python command prompt; if the Python command prompt reappears with no error message, GDAL was successfully installed and you are all set to go:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo</span>
+<span class="gp">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Now that we have some data to work with, let’s take a look at it. You can either type the following directly into the command prompt, or else save it as a Python script so that you can run it whenever you wish (let’s call this <em>analyze.py</em>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.ogr</span>
+
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;tl_2012_us_state.shp&quot;</span><span class="p">)</span>
+<span class="n">numLayers</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayerCount</span><span class="p">()</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Shapefile contains </span><span class="si">%d</span><span class="s2"> layers&quot;</span> <span class="o">%</span> <span class="n">numLayers</span>
+<span class="nb">print</span>
+
+<span class="k">for</span> <span class="n">layerNum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numLayers</span><span class="p">):</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="n">layerNum</span><span class="p">)</span>
+    <span class="n">spatialRef</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetSpatialRef</span><span class="p">()</span><span class="o">.</span><span class="n">ExportToProj4</span><span class="p">()</span>
+    <span class="n">numFeatures</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()</span>
+    <span class="nb">print</span> <span class="s2">&quot;Layer </span><span class="si">%d</span><span class="s2"> has spatial reference </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">layerNum</span><span class="p">,</span> <span class="n">spatialRef</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="s2">&quot;Layer </span><span class="si">%d</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> features:&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">layerNum</span><span class="p">,</span> <span class="n">numFeatures</span><span class="p">)</span>
+    <span class="nb">print</span>
+
+<span class="k">for</span> <span class="n">featureNum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numFeatures</span><span class="p">):</span>
+    <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">featureNum</span><span class="p">)</span>
+    <span class="n">featureName</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="s2">&quot;NAME&quot;</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Feature </span><span class="si">%d</span><span class="s2"> has name </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">featureNum</span><span class="p">,</span> <span class="n">featureName</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The previous example assumes you’ve placed this script in the same directory as the <em>tl_2012_us_state.shp</em> file. If you’ve put it in a different directory, change the <em>osgeo.ogr.Open()</em> command to include the path to your Shapefile. If you are running MS Windows, don’t forget to use double backslash characters (\) as directory separators.</p>
+</div>
+<p>This gives us a quick summary of how the Shapefile’s data is structured:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Shapefile contains 1 layers
+
+Layer 0 has spatial reference +proj=longlat +datum=NAD83 +no_defs
+Layer 0 has 56 features:
+
+Feature 0 has name Hawaii
+Feature 1 has name Arkansas
+Feature 2 has name New Mexico
+Feature 3 has name Montana
+...
+Feature 53 has name Arizona
+Feature 54 has name Nevada
+Feature 55 has name California
+</pre></div>
+</div>
+<p>This shows us that the data we downloaded consists of one layer, with 56 individual features corresponding to the various states and protectorates in the USA. It also tells us the “spatial reference” for this layer, which tells us that the coordinates are projected as latitude and longitude values using the NAD 83 datum.</p>
+<p>As you can see from the previous example, using GDAL to extract data from Shapefiles is quite straightforward. Let’s continue with another example. This time, we’ll look at the details for Feature 2, New Mexico:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.ogr</span>
+
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;tl_2012_us_state.shp&quot;</span><span class="p">)</span>
+
+<span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Feature 2 has the following attributes:&quot;</span>
+<span class="nb">print</span>
+
+<span class="n">attributes</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">value</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span> <span class="s2">&quot; </span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+<span class="n">geometryName</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryName</span><span class="p">()</span>
+
+<span class="nb">print</span>
+<span class="nb">print</span> <span class="s2">&quot;Feature&#39;s geometry data consists of a </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">geometryName</span>
+</pre></div>
+</div>
+<p>Running this produces the following:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Feature 2 has the following attributes:
+
+    DIVISION = 8
+    INTPTLAT = +34.4346843
+    NAME = New Mexico
+    STUSPS = NM
+    FUNCSTAT = A
+    REGION = 4
+    LSAD = 00
+    INTPTLON = -106.1316181
+    AWATER = 756438507.0
+    STATENS = 00897535
+    MTFCC = G4000
+    STATEFP = 35
+    ALAND = 3.14161109357e+11
+
+Feature&#39;s geometry data consists of a POLYGON
+</pre></div>
+</div>
+<p>The meaning of the various attributes is described on the US Census Bureau’s website, but what interests us right now is the feature’s geometry. A geometry object is a complex structure that holds some geospatial data, often using nested geometry objects to reflect the way the geospatial data is organized. So far, we’ve discovered that New Mexico’s geometry consists of a polygon. Let’s now take a closer look at this polygon:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.ogr</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">analyzeGeometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="n">indent</span><span class="p">)</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryName</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetPointCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; with </span><span class="si">%d</span><span class="s2"> data points&quot;</span> <span class="o">%</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetPointCount</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryCount</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; containing:&quot;</span><span class="p">)</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryCount</span><span class="p">()):</span>
+        <span class="n">analyzeGeometry</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">indent</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;tl_2012_us_state.shp&quot;</span><span class="p">)</span>
+<span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+
+<span class="n">analyzeGeometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <em>analyzeGeometry()</em> function gives a useful idea of how the geometry has been structured:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POLYGON containing:
+
+    LINEARRING with 7550 data points
+</pre></div>
+</div>
+<p>In GDAL (or more specifically the OGR Simple Feature library we are using here), polygons are defined as a single outer “ring” with optional inner rings that define “holes” in the polygon (for example, to show the outline of a lake).</p>
+<p>New Mexico is a relatively simple feature in that it consists of only one polygon. If we ran the same program over California (feature 55 in our Shapefile), the output would be somewhat more complicated:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>MULTIPOLYGON containing:
+    POLYGON containing:
+        LINEARRING with 10105 data points
+    POLYGON containing:
+        LINEARRING with 392 data points
+    POLYGON containing:
+        LINEARRING with 152 data points
+    POLYGON containing:
+        LINEARRING with 191 data points
+    POLYGON containing:
+        LINEARRING with 121 data points
+    POLYGON containing:
+        LINEARRING with 93 data points
+    POLYGON containing:
+        LINEARRING with 77 data points
+</pre></div>
+</div>
+<p>As you can see, California is made up of seven distinct polygons, each defined by a single linear ring. This is because California is on the coast, and includes six outlying islands as well as the main inland body of the state.</p>
+<p>Let’s finish this analysis of the US state Shapefile by answering a simple question: what is the distance from the northernmost point to the southernmost point in California? There are various ways we could answer this question, but for now we’ll do it by hand. Let’s start by identifying the northernmost and southernmost points in California:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.ogr</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">findPoints</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetPointCount</span><span class="p">()):</span>
+        <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">GetPoint</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">y</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">y</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryCount</span><span class="p">()):</span>
+            <span class="n">findPoints</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">results</span><span class="p">)</span>
+
+    <span class="n">shapefile</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;tl_2012_us_state.shp&quot;</span><span class="p">)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="mi">55</span><span class="p">)</span>
+    <span class="n">geometry</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;north&#39;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;south&#39;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="n">findPoints</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+
+    <span class="nb">print</span> <span class="s2">&quot;Northernmost point is (</span><span class="si">%0.4f</span><span class="s2">, </span><span class="si">%0.4f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;north&#39;</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="s2">&quot;Southernmost point is (</span><span class="si">%0.4f</span><span class="s2">, </span><span class="si">%0.4f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;south&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The <em>findPoints()</em> function recursively scans through a geometry, extracting the individual points and identifying the points with the highest and lowest y (latitude) values, which are then stored in the <em>results</em> dictionary so that the main program can use it.</p>
+<p>As you can see, GDAL makes it easy to work with the complex geometry data structure. The code does require recursion, but is still trivial compared with trying to read the data directly. If you run the previous program, the following will be displayed:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Northernmost point is (-122.3782, 42.0095)
+Southernmost point is (-117.2049, 32.5288)
+</pre></div>
+</div>
+<p>Now that we have these two points, we next want to calculate the distance between them. As described earlier, we have to use a <strong>great circle distance</strong> calculation here to allow for the curvature of the earth’s surface. We’ll do this manually, using the Haversine formula:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="n">lat1</span> <span class="o">=</span> <span class="mf">42.0095</span>
+<span class="n">long1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">122.3782</span>
+
+<span class="n">lat2</span> <span class="o">=</span> <span class="mf">32.5288</span>
+<span class="n">long2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">117.2049</span>
+
+<span class="n">rLat1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat1</span><span class="p">)</span>
+<span class="n">rLong1</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">long1</span><span class="p">)</span>
+<span class="n">rLat2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">lat2</span><span class="p">)</span>
+<span class="n">rLong2</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">long2</span><span class="p">)</span>
+
+<span class="n">dLat</span> <span class="o">=</span> <span class="n">rLat2</span> <span class="o">-</span> <span class="n">rLat1</span>
+<span class="n">dLong</span> <span class="o">=</span> <span class="n">rLong2</span> <span class="o">-</span> <span class="n">rLong1</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dLat</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rLat1</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rLat2</span><span class="p">)</span> \
+                        <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dLong</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a</span><span class="p">))</span>
+<span class="n">distance</span> <span class="o">=</span> <span class="mi">6371</span> <span class="o">*</span> <span class="n">c</span>
+
+<span class="nb">print</span> <span class="s2">&quot;Great circle distance is </span><span class="si">%0.0f</span><span class="s2"> kilometres&quot;</span> <span class="o">%</span> <span class="n">distance</span>
+</pre></div>
+</div>
+<p>Don’t worry about the complex maths involved here; basically, we are converting
+the latitude and longitude values to radians, calculating the difference in latitude/
+longitude values between the two points, and then passing the results through some
+trigonometric functions to obtain the great circle distance. The value of 6371 is the
+radius of the earth, in kilometers.</p>
+<p>More details about the Haversine formula and how it is used in the previous example
+can be found at <a class="reference external" href="http://mathforum.org/library/drmath/view/51879.html">http://mathforum.org/library/drmath/view/51879.html</a>.</p>
+<p>If you run the previous program, your computer will tell you the distance from the
+northernmost point to the southernmost point in California:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Great circle distance is 1149 kilometres
+</pre></div>
+</div>
+<p>There are, of course, other ways of calculating this. You wouldn’t normally type the
+Haversine formula directly into your program, as there are libraries which will do
+this for you. But we deliberately did the calculation this way to show just how it can
+be done.</p>
+<p>If you would like to explore this further, you might like to try writing programs to
+calculate the following:</p>
+<ul class="simple">
+<li><p>The easternmost and westernmost points in California.</p></li>
+<li><p>The midpoint in California. Hint: you can calculate the midpoint’s longitude by taking the average of the easternmost and westernmost longitude.</p></li>
+<li><p>The midpoint in Arizona.</p></li>
+<li><p>The distance between the middle of California and the middle of Arizona.</p></li>
+</ul>
+<p>As you can see, working with GIS data manually isn’t too onerous. While the data structures and maths involved can be rather complex, using tools such as GDAL makes your data accessible and easy to work with.</p>
+</div>
+</div>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="summary.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">小结</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="gis_data_format.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">GIS 数据格式</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

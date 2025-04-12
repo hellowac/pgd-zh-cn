@@ -1,0 +1,774 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="地图定义文件" href="mapdefinition.html" /><link rel="prev" title="Mapnik 深度介绍" href="mapnik.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>重新审视 MapGenerator - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">8 使用 Python 和 Mapnik 生成地图</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="mapgenerator">
+<h1>重新审视 MapGenerator<a class="headerlink" href="#mapgenerator" title="此标题的永久链接">#</a></h1>
+<p>MapGenerator revisited</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>现在我们已经了解了 Mapnik 的 Python 接口，让我们利用这些知识更深入地研究在第 7 章《处理空间数据》中使用的 <cite>mapGenerator.py</cite> 模块。除了作为一个更全面的创建地图的示例外， <cite>mapGenerator.py</cite> 模块还建议了如何围绕 Mapnik 编写自己的封装器，以简化使用 Python 代码创建地图的过程。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we have examined the Python interface to Mapnik, let’s use this
+knowledge to take a closer look at the mapGenerator.py module used in Chapter
+7, Working with Spatial Data. As well as being a more comprehensive example of
+creating maps programmatically, the mapGenerator.py module suggests ways in
+which you can write your own wrapper around Mapnik to simplify the creation
+of a map using Python code.</p>
+</div>
+</div>
+<section id="id1">
+<h2>MapGenerator 接口<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>The MapGenerator interface</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p><cite>mapGenerator.py</cite> 模块定义了一个函数 <cite>generateMap()</cite>，该函数允许您创建一个简单的地图，并将其存储在磁盘上的临时文件中。 <cite>generateMap()</cite> 函数的签名如下:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generateMap</span><span class="p">(</span><span class="n">datasource</span><span class="p">,</span> <span class="n">minX</span><span class="p">,</span> <span class="n">minY</span><span class="p">,</span> <span class="n">maxX</span><span class="p">,</span> <span class="n">maxY</span><span class="p">,</span>
+                <span class="n">mapWidth</span><span class="p">,</span> <span class="n">mapHeight</span><span class="p">,</span>
+                <span class="n">hiliteExpr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;#8080a0&quot;</span><span class="p">,</span>
+                <span class="n">hiliteLine</span><span class="o">=</span><span class="s2">&quot;#000000&quot;</span><span class="p">,</span> <span class="n">hiliteFill</span><span class="o">=</span><span class="s2">&quot;#408000&quot;</span><span class="p">,</span>
+                <span class="n">normalLine</span><span class="o">=</span><span class="s2">&quot;#404040&quot;</span><span class="p">,</span> <span class="n">normalFill</span><span class="o">=</span><span class="s2">&quot;#a0a0a0&quot;</span><span class="p">,</span>
+                <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>各个参数说明如下：</p>
+<ul class="simple">
+<li><p><strong>datasource</strong> 是一个定义用于此地图的数据源的字典。该字典至少应包含一个条目 <cite>type</cite>，它定义了数据源的类型。支持的以下数据源类型有：”OGR”、”PostGIS” 和 “SQLite”。此字典中的任何附加条目将作为关键字参数传递给数据源初始化函数。</p></li>
+<li><p><strong>minX</strong>, <strong>minY</strong>, <strong>maxX</strong>, <strong>maxY</strong> 定义了要显示区域的边界框，单位为地图坐标。</p></li>
+<li><p><strong>mapWidth</strong> 和 <strong>mapHeight</strong> 是生成的地图图像的宽度和高度，单位为像素。</p></li>
+<li><p><strong>hiliteExpr</strong> 是一个 Mapnik 过滤器表达式，用于标识需要高亮显示的要素。</p></li>
+<li><p><strong>background</strong> 是用于地图背景的 HTML 颜色代码。</p></li>
+<li><p><strong>hiliteLine</strong> 和 <strong>hiliteFill</strong> 分别是高亮要素的边界线和填充颜色的 HTML 颜色代码。</p></li>
+<li><p><strong>normalLine</strong> 和 <strong>normalFill</strong> 分别是非高亮要素的边界线和填充颜色的 HTML 颜色代码。</p></li>
+<li><p><strong>points</strong> 是一个由 (经度, 纬度, 名称) 元组组成的列表，标识要在地图上显示的点。</p></li>
+</ul>
+<p>由于许多这些关键字参数都有默认值，因此只需要指定数据源、边界框和地图尺寸即可创建一个简单的地图，其他参数则是可选的。</p>
+<p><cite>generateMap()</cite> 函数会根据给定的参数创建一个新的地图，并将结果作为 PNG 格式的图像文件存储在临时的地图缓存目录中。完成后，它返回新生成的图像文件的名称和相对路径。</p>
+<p>到这里，我们了解了 <cite>mapGenerator.py</cite> 模块的公共接口，接下来让我们深入看看它是如何实现的。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>The mapGenerator.py module defines just one function, generateMap(), which
+allows you to create a simple map which is stored in a temporary file on disk.
+The method signature for the generateMap() function looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generateMap</span><span class="p">(</span><span class="n">datasource</span><span class="p">,</span> <span class="n">minX</span><span class="p">,</span> <span class="n">minY</span><span class="p">,</span> <span class="n">maxX</span><span class="p">,</span> <span class="n">maxY</span><span class="p">,</span>
+                <span class="n">mapWidth</span><span class="p">,</span> <span class="n">mapHeight</span><span class="p">,</span>
+                <span class="n">hiliteExpr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="s2">&quot;#8080a0&quot;</span><span class="p">,</span>
+                <span class="n">hiliteLine</span><span class="o">=</span><span class="s2">&quot;#000000&quot;</span><span class="p">,</span> <span class="n">hiliteFill</span><span class="o">=</span><span class="s2">&quot;#408000&quot;</span><span class="p">,</span>
+                <span class="n">normalLine</span><span class="o">=</span><span class="s2">&quot;#404040&quot;</span><span class="p">,</span> <span class="n">normalFill</span><span class="o">=</span><span class="s2">&quot;#a0a0a0&quot;</span><span class="p">,</span>
+                <span class="n">points</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The parameters are as follows:</p>
+<ul class="simple">
+<li><p><em>datasource</em> is a dictionary defining the data source to use for this map. This dictionary should have at least one entry, type, which defines the type of data source. The following data source types are supported: “OGR”, “PostGIS” and “SQLite”. Any additional entries in this dictionary will be passed as keyword parameters to the data source initializer.</p></li>
+<li><p><em>minX</em>, <em>minY</em>, <em>maxX</em>, and <em>maxY</em> define the bounding box for the area to display, in map coordinates.</p></li>
+<li><p><em>mapWidth</em> and <em>mapHeight</em> are the width and height of the image to generate, in pixels.</p></li>
+<li><p><em>hiliteExpr</em> is a Mapnik filter expression to use to identify the feature(s) to be highlighted.</p></li>
+<li><p><em>background</em> is the HTML color code to use for the background of the map.</p></li>
+<li><p><em>hiliteLine</em> and <em>hiliteFill</em> are the HTML color codes to use for the line and fill for the highlighted features.</p></li>
+<li><p><em>normalLine</em> and <em>normalFill</em> are the HTML color codes to use for the line and fill for the non-highlighted features.</p></li>
+<li><p><em>points</em>, if defined, should be a list of (long, lat, name) tuples identifying points to display on the map.</p></li>
+</ul>
+<p>Because many of these keyword parameters have default values, creating a simple map only requires the data source, bounding box, and map dimensions to be specified. Everything else is optional.</p>
+<p>The <em>generateMap()</em> function creates a new map based on the given parameters, and
+stores the result as a PNG format image file in a temporary map cache directory. Upon
+completion, it returns the name and relative path to the newly-rendered image file.</p>
+<p>So much for the public interface to the mapGenerator.py module. Let’s take a look inside to see how it works.</p>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>创建主地图层<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h2>
+<p>Creating the main map layer</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>该模块首先创建了一个 <cite>mapnik.Map</cite> 对象，用于保存生成的地图，并同时设置背景颜色:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">mapWidth</span><span class="p">,</span> <span class="n">mapHeight</span><span class="p">,</span> <span class="s1">&#39;+proj=longlat +datum=WGS84&#39;</span><span class="p">)</span>
+<span class="nb">map</span><span class="o">.</span><span class="n">background_color</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>接下来，我们需要设置 Mapnik 数据源来加载地图数据。为了简化访问数据源的工作，<cite>datasource</cite> 参数包括了数据源的类型，以及任何其他额外的条目，这些额外条目会作为关键字参数直接传递给 Mapnik 数据源初始化函数:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">srcType</span> <span class="o">=</span> <span class="n">datasource</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+<span class="k">del</span> <span class="n">datasource</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">srcType</span> <span class="o">==</span> <span class="s2">&quot;OGR&quot;</span><span class="p">:</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Ogr</span><span class="p">(</span><span class="o">**</span><span class="n">datasource</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">srcType</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">PostGIS</span><span class="p">(</span><span class="o">**</span><span class="n">datasource</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">srcType</span> <span class="o">==</span> <span class="s2">&quot;SQLite&quot;</span><span class="p">:</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">SQLite</span><span class="p">(</span><span class="o">**</span><span class="n">datasource</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>然后，我们创建一个 <cite>Layer</cite> 对象，并开始定义样式，用于将地图数据绘制到地图上:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">layer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">source</span>
+
+<span class="n">style</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Style</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>接下来，我们设置一个仅适用于高亮要素的规则:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">hiliteExpr</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">rule</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">hiliteExpr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>此规则将使用“高亮”线条和填充颜色:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">hiliteFill</span><span class="p">)))</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">LineSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Stroke</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">hiliteLine</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>然后，我们将这个规则添加到样式中，并创建另一个规则，仅适用于非高亮要素:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">style</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">set_else</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>此规则将使用“正常”线条和填充颜色:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">normalFill</span><span class="p">)))</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">LineSymbolizer</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Stroke</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">normalLine</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>接着，我们将该规则添加到样式中，并将样式添加到地图和图层中:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">style</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<span class="nb">map</span><span class="o">.</span><span class="n">append_style</span><span class="p">(</span><span class="s2">&quot;Map Style&quot;</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Map Style&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>最后，将图层添加到地图中:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这样， <cite>generateMap()</cite> 函数就通过这些步骤创建了一个完整的地图，定义了数据源、样式和图层，并将其渲染为图像。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>The module starts by creating a mapnik.Map object to hold the generated map.
+We set the background color at the same time:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">mapWidth</span><span class="p">,</span> <span class="n">mapHeight</span><span class="p">,</span>
+                <span class="s1">&#39;+proj=longlat +datum=WGS84&#39;</span><span class="p">)</span>
+<span class="nb">map</span><span class="o">.</span><span class="n">background_color</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We next have to set up the Mapnik data source to load our map data from.
+To simplify the job of accessing a data source, the datasource parameter includes
+the type of data source, as well as any additional entries which are passed as
+keyword parameters directly to the Mapnik data source initializer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">srcType</span> <span class="o">=</span> <span class="n">datasource</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+<span class="k">del</span> <span class="n">datasource</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">srcType</span> <span class="o">==</span> <span class="s2">&quot;OGR&quot;</span><span class="p">:</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Ogr</span><span class="p">(</span><span class="o">**</span><span class="n">datasource</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">srcType</span> <span class="o">==</span> <span class="s2">&quot;PostGIS&quot;</span><span class="p">:</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">PostGIS</span><span class="p">(</span><span class="o">**</span><span class="n">datasource</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">srcType</span> <span class="o">==</span> <span class="s2">&quot;SQLite&quot;</span><span class="p">:</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">SQLite</span><span class="p">(</span><span class="o">**</span><span class="n">datasource</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We then create our Layer object, and start defining the style, which is used to draw
+the map data onto the map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">layer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">source</span>
+
+<span class="n">style</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Style</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We next set up a rule that only applies to the highlighted features:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">hiliteExpr</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">rule</span><span class="o">.</span><span class="n">filter</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="n">hiliteExpr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This rule will use the “highlight” line and fill colors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span>
+    <span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">hiliteFill</span><span class="p">)))</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">LineSymbolizer</span><span class="p">(</span>
+    <span class="n">mapnik</span><span class="o">.</span><span class="n">Stroke</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">hiliteLine</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>We then add this rule to the style, and create another rule that only applies to the non-highlighted features:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">style</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">set_else</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This rule will use the “normal” line and fill colors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">PolygonSymbolizer</span><span class="p">(</span>
+    <span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">normalFill</span><span class="p">)))</span>
+<span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">LineSymbolizer</span><span class="p">(</span>
+    <span class="n">mapnik</span><span class="o">.</span><span class="n">Stroke</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="n">normalLine</span><span class="p">),</span> <span class="mf">0.1</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>We then add this rule to the style, and add the style to the map and layer:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">style</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+<span class="nb">map</span><span class="o">.</span><span class="n">append_style</span><span class="p">(</span><span class="s2">&quot;Map Style&quot;</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Map Style&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, the layer is added to the map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>在地图上显示点<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h2>
+<p>Displaying points on the map</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p><cite>generateMap()</cite> 函数的一个特点是，它可以接收一个点列表，并将这些点直接显示到地图上，而无需将这些点存储到数据库中。这个功能是通过使用 <cite>MemoryDataSource</cite> 数据源和 <cite>ShieldSymbolizer</cite> 来绘制点到地图上实现的:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">points</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">memoryDatasource</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">MemoryDatasource</span><span class="p">()</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+    <span class="n">next_id</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">long</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="s2">&quot;POINT (</span><span class="si">%0.8f</span><span class="s2"> </span><span class="si">%0.8f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">long</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Feature</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">next_id</span><span class="p">)</span>
+        <span class="n">feature</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">add_geometries_from_wkt</span><span class="p">(</span><span class="n">wkt</span><span class="p">)</span>
+        <span class="n">next_id</span> <span class="o">=</span> <span class="n">next_id</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">memoryDatasource</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span><span class="s2">&quot;Points&quot;</span><span class="p">)</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">memoryDatasource</span>
+
+        <span class="n">style</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Style</span><span class="p">()</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+
+        <span class="n">pointImgFile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;point.png&quot;</span><span class="p">)</span>
+
+        <span class="n">shield</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">ShieldSymbolizer</span><span class="p">(</span>
+                        <span class="n">mapnik</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="s1">&#39;[name]&#39;</span><span class="p">),</span>
+                        <span class="s2">&quot;DejaVu Sans Bold&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>
+                        <span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;#000000&quot;</span><span class="p">),</span>
+                        <span class="n">mapnik</span><span class="o">.</span><span class="n">PathExpression</span><span class="p">(</span><span class="n">pointImgFile</span><span class="p">))</span>
+        <span class="n">shield</span><span class="o">.</span><span class="n">displacement</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="n">shield</span><span class="o">.</span><span class="n">unlock_image</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shield</span><span class="p">)</span>
+
+        <span class="n">style</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+        <span class="nb">map</span><span class="o">.</span><span class="n">append_style</span><span class="p">(</span><span class="s2">&quot;Point Style&quot;</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Point Style&quot;</span><span class="p">)</span>
+
+        <span class="nb">map</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请注意， <cite>point.png</cite> 文件的路径是通过计算绝对路径来确定的，基于 <cite>mapGenerator.py</cite> 模块本身的位置（通过 <cite>__file__</cite> 全局变量）。这样做是因为该模块可以作为 CGI 脚本的一部分调用，而 CGI 脚本没有当前工作目录。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>One of the features of the generateMap() function is that it can take a list of points
+and display them directly onto the map without having to store those points into a
+database. This is done through the use of a MemoryDataSource data source and a
+ShieldSymbolizer to draw the points onto the map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">points</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">memoryDatasource</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">MemoryDatasource</span><span class="p">()</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+    <span class="n">next_id</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">long</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">name</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">wkt</span> <span class="o">=</span> <span class="s2">&quot;POINT (</span><span class="si">%0.8f</span><span class="s2"> </span><span class="si">%0.8f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">long</span><span class="p">,</span><span class="n">lat</span><span class="p">)</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Feature</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">next_id</span><span class="p">)</span>
+        <span class="n">feature</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">feature</span><span class="o">.</span><span class="n">add_geometries_from_wkt</span><span class="p">(</span><span class="n">wkt</span><span class="p">)</span>
+        <span class="n">next_id</span> <span class="o">=</span> <span class="n">next_id</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">memoryDatasource</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span><span class="s2">&quot;Points&quot;</span><span class="p">)</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">datasource</span> <span class="o">=</span> <span class="n">memoryDatasource</span>
+
+        <span class="n">style</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Style</span><span class="p">()</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Rule</span><span class="p">()</span>
+
+        <span class="n">pointImgFile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span>
+                                    <span class="s2">&quot;point.png&quot;</span><span class="p">)</span>
+
+        <span class="n">shield</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">ShieldSymbolizer</span><span class="p">(</span>
+                        <span class="n">mapnik</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="s1">&#39;[name]&#39;</span><span class="p">),</span>
+                        <span class="s2">&quot;DejaVu Sans Bold&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span>
+                        <span class="n">mapnik</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s2">&quot;#000000&quot;</span><span class="p">),</span>
+                        <span class="n">mapnik</span><span class="o">.</span><span class="n">PathExpression</span><span class="p">(</span><span class="n">pointImgFile</span><span class="p">))</span>
+        <span class="n">shield</span><span class="o">.</span><span class="n">displacement</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="n">shield</span><span class="o">.</span><span class="n">unlock_image</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">rule</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">shield</span><span class="p">)</span>
+
+        <span class="n">style</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+
+        <span class="nb">map</span><span class="o">.</span><span class="n">append_style</span><span class="p">(</span><span class="s2">&quot;Point Style&quot;</span><span class="p">,</span> <span class="n">style</span><span class="p">)</span>
+        <span class="n">layer</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Point Style&quot;</span><span class="p">)</span>
+
+        <span class="nb">map</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that the path to the point.png file is calculated as an absolute path, based on the location of the mapGenerator.py module itself (via the __file__ global). This is done because the module can be called as part of a CGI script, and CGI scripts do not have a current working directory.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>渲染地图<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p>Rendering the map</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>因为 <cite>mapGenerator.py</cite> 模块旨在与 CGI 脚本一起使用，模块利用一个临时的地图缓存来存储生成的图像文件。在渲染地图图像之前， <cite>generateMap()</cite> 函数需要先创建地图缓存（如果它尚不存在），并在缓存目录中创建一个临时文件来存储生成的地图:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scriptDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">cacheDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scriptDir</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;mapCache&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cacheDir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">cacheDir</span><span class="p">)</span>
+<span class="n">fd</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="n">cacheDir</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>最后，我们准备将地图渲染成图像文件，并返回生成的地图文件的相对路径给调用者:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span><span class="o">.</span><span class="n">zoom_to_box</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Box2d</span><span class="p">(</span><span class="n">minX</span><span class="p">,</span> <span class="n">minY</span><span class="p">,</span> <span class="n">maxX</span><span class="p">,</span> <span class="n">maxY</span><span class="p">))</span>
+<span class="n">mapnik</span><span class="o">.</span><span class="n">render_to_file</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="s2">&quot;../mapCache/&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Because the mapGenerator.py module is designed to be used within a CGI script,
+the module makes use of a temporary map cache to hold the generated image files.
+Before it can render the map image, the generateMap() function has to create the
+map cache if it doesn’t already exist, and create a temporary file within the cache
+directory to hold the generated map:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scriptDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+<span class="n">cacheDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">scriptDir</span><span class="p">,</span> <span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;mapCache&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cacheDir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">cacheDir</span><span class="p">)</span>
+<span class="n">fd</span><span class="p">,</span><span class="n">filename</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="n">cacheDir</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we are ready to render the map into an image file, and return back to the
+caller the relative path to the generated map file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span><span class="o">.</span><span class="n">zoom_to_box</span><span class="p">(</span><span class="n">mapnik</span><span class="o">.</span><span class="n">Box2d</span><span class="p">(</span><span class="n">minX</span><span class="p">,</span> <span class="n">minY</span><span class="p">,</span> <span class="n">maxX</span><span class="p">,</span> <span class="n">maxY</span><span class="p">))</span>
+<span class="n">mapnik</span><span class="o">.</span><span class="n">render_to_file</span><span class="p">(</span><span class="nb">map</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="s2">&quot;../mapCache/&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>地图生成器教给我们什么<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h2>
+<p>What the map generator teaches us</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>虽然在许多方面， <em>mapGenerator.py</em> 模块相当简化，并且专门为满足上一章中介绍的 DISTAL 应用的需求而设计，但深入研究这个模块是值得的，因为它展示了如何利用 <em>封装</em> 原则隐藏 Mapnik 的复杂性，从而简化地图生成的过程。使用 <em>generateMap()</em> 函数比每次生成地图时都要创建所有数据源、图层、符号化器、规则和样式要容易得多。</p>
+<p>设计一个更通用的地图生成器来处理各种数据源和地图图层，以及返回结果的不同方式，将是一个相对简单的任务，而且不必每次手动定义每个对象。设计并实现这样的模块将非常有价值，特别是如果你希望在 Python 程序中广泛使用 Mapnik。希望这一部分能够给你一些灵感，帮助你着手实现自己的高级 Mapnik 封装模块。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>While in many ways the <em>mapGenerator.py</em> module is quite simplistic and designed
+specifically to meet the needs of the DISTAL application presented in the previous
+chapter, it is worth examining this module in depth because it shows how the principle
+of <em>encapsulation</em> can be used to hide Mapnik’s complexity and simplify the process of
+map generation. Using the <em>generateMap()</em> function is infinitely easier than creating
+all the data sources, layers, symbolizers, rules, and styles each time a map has to
+be generated.</p>
+<p>It would be a relatively easy task to design a more generic map generator that could
+handle a variety of data sources and map layers, as well as various ways of returning
+the results, without having to exhaustively define every object by hand. Designing
+and implementing such a module would be very worthwhile if you want to use
+Mapnik extensively from your Python programs. Hopefully this section has given
+you some ideas about how you can proceed with implementing your own high-level
+Mapnik wrapper module.</p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="mapdefinition.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">地图定义文件</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="mapnik.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Mapnik 深度介绍</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">重新审视 MapGenerator</a><ul>
+<li><a class="reference internal" href="#id1">MapGenerator 接口</a></li>
+<li><a class="reference internal" href="#id2">创建主地图层</a></li>
+<li><a class="reference internal" href="#id3">在地图上显示点</a></li>
+<li><a class="reference internal" href="#id4">渲染地图</a></li>
+<li><a class="reference internal" href="#id5">地图生成器教给我们什么</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

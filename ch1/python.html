@@ -1,0 +1,411 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="地理空间开发" href="geo_dev.html" /><link rel="prev" title="1 使用 Python 进行地理空间开发" href="index.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>Python - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">1 使用 Python 进行地理空间开发</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="python">
+<h1>Python<a class="headerlink" href="#python" title="此标题的永久链接">#</a></h1>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>Python (<a class="reference external" href="http://python.org">http://python.org</a>) 是一种现代的高级编程语言，适用于各种编程任务。它常用作脚本语言，用于在操作系统层面上自动化和简化任务，但同样也适合构建大型和复杂的程序。Python 已被用于编写基于 Web 的系统、桌面应用程序、游戏、科学编程，甚至是实用工具和各种操作系统的其他高级组件。</p>
+<p>Python 支持多种编程范式，从简单的过程化编程到面向对象编程和函数式编程。</p>
+<p>虽然 Python 通常被认为是一种“解释型”语言，并且偶尔因与像 C 这样的“编译型”语言相比较慢而受到批评，但使用字节编译以及大量工作由库代码完成意味着 Python 的性能通常出奇地好。</p>
+<p>Python 解释器的开源版本可供所有主要操作系统免费使用。Python 非常适合各种编程任务，从快速的一次性脚本到构建庞大而复杂的系统。它甚至可以在交互式（命令行）模式下运行，允许您输入命令并立即看到结果。这对于快速计算或了解某个特定库的工作原理非常理想。</p>
+<p>开发人员在使用 Python 时，首先会注意到与其他语言（如 Java 或 C++）相比，Python 是多么富有表现力：在 Java 中可能需要 20 或 30 行代码的任务，在 Python 中通常只需几行代码。例如，假设您想打印给定文本中出现的单词的排序列表。在 Python 中，这非常简单:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>在其他语言中实现这一任务通常会出乎意料地困难。</p>
+<p>虽然 Python 语言本身使得编程快速而简便，让您可以专注于当前任务，但 Python 标准库使得编程更加高效。这些库使得执行诸如转换日期和时间值、操作字符串、从网站下载数据、进行复杂数学运算、处理电子邮件、编码和解码数据、XML 解析、数据加密、文件操作、压缩和解压文件、与数据库交互等任务变得轻松。您可以通过 Python 标准库做的事情真是令人惊叹。</p>
+<p>除了 Python 标准库中的内置模块外，您还可以轻松下载并安装自定义模块，这些模块可以用 Python 或 C 编写。</p>
+<p><strong>Python 包索引</strong> (<a class="reference external" href="http://pypi.python.org">http://pypi.python.org</a>) 提供了成千上万的额外模块，您可以下载和安装。如果这还不够，许多其他系统提供了 Python 的“绑定”，让您可以直接从程序中访问它们。本书中将大量使用 Python 绑定。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>需要指出的是，Python 有不同版本。Python 2.x 是当前最常用的版本，而 Python 开发者过去几年一直在开发一个全新的、不兼容旧版的 Python 版本，称为 Python 3。最终，Python 3 将取代 Python 2.x，但目前大多数第三方库（包括我们将使用的所有 GIS 工具）仅支持 Python 2.x。因此，本书中将不会使用 Python 3。</p>
+</div>
+<p>Python 在许多方面都是一种理想的编程语言。一旦您熟悉了语言本身并且使用了几次，您会发现编写程序解决各种任务变得异常简单。您不必陷入类型定义和低级字符串操作的困扰，可以专注于实现目标。您最终几乎会直接用 Python 代码思考。用 Python 编程是直接、有效的，而且，敢说一句，<em>有趣</em>。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Python (<a class="reference external" href="http://python.org">http://python.org</a>) is a modern, high level language suitable for a wide variety of programming tasks. It is often used as a scripting language, automating and simplifying tasks at the operating system level, but it is equally suitable for building large and complex programs. Python has been used to write web-based systems, desktop applications, games, scientific programming, and even utilities and other higher-level parts of various operating systems.</p>
+<p>Python supports a wide range of programming idioms, from straightforward procedural programming to object-oriented programming and functional programming.</p>
+<p>While Python is generally considered to be an “interpreted” language, and is occasionally criticized for being slow compared to “compiled” languages such as C, the use of byte-compilation and the fact that much of the heavy lifting is done by library code means that Python’s performance is often surprisingly good.</p>
+<p>Open-source versions of the Python interpreter are freely available for all major operating systems. Python is eminently suitable for all sorts of programming, from quick one-off scripts to building huge and complex systems. It can even be run in interactive (command-line) mode, allowing you to type in commands and immediately see the results. This is ideal for doing quick calculations or figuring out how a particular library works.</p>
+<p>One of the first things a developer notices about Python compared with other languages such as Java or C++ is how expressive the language is: what may take 20 or 30 lines of code in Java can often be written in half a dozen lines of code in Python. For example, imagine that you wanted to print a sorted list of the words that occur in a given piece of text. In Python, this is trivial:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+<span class="nb">print</span> <span class="n">word</span>
+</pre></div>
+</div>
+<p>Implementing this kind of task in other languages is often surprisingly difficult.</p>
+<p>While the Python language itself makes programming quick and easy, allowing you to focus on the task at hand, the Python Standard Libraries make programming even more efficient. These libraries make it easy to do things such as converting date and time values, manipulating strings, downloading data from websites, performing complex maths, working with e-mail messages, encoding and decoding data, XML parsing, data encryption, file manipulation, compressing and decompressing files, working with databases—the list goes on. What you can do with the Python Standard Libraries is truly amazing.</p>
+<p>As well as the built-in modules in the Python Standard Libraries, it is easy to download and install custom modules, which can be written in either Python or C.</p>
+<p>The <strong>Python Package Index</strong> (<a class="reference external" href="http://pypi.python.org">http://pypi.python.org</a>) provides thousands of additional modules which you can download and install. And if that isn’t enough, many other systems provide python “bindings” to allow you to access them directly from within your programs. We will be making heavy use of Python bindings in this book.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>It should be pointed out that there are different versions of Python available. Python 2.x is the most common version in use today, while the Python developers have been working for the past several years on a completely new, non-backwards- compatible version called Python 3. Eventually, Python 3 will replace Python 2.x, but at this stage most of the third-party libraries (including all the GIS tools we will be using) only work with Python 2.x. For this reason, we won’t be using Python 3 in this book.</p>
+</div>
+<p>Python is in many ways an ideal programming language. Once you are familiar with the language itself and have used it a few times, you’ll find it incredibly easy to write programs to solve various tasks. Rather than getting buried in a morass of type-definitions and low-level string manipulation, you can simply concentrate on what you want to achieve. You end up almost thinking directly in Python code. Programming in Python is straightforward, efficient, and, dare I say it, <em>fun</em>.</p>
+</div>
+</div>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="geo_dev.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">地理空间开发</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">1 使用 Python 进行地理空间开发</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

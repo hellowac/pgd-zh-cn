@@ -1,0 +1,793 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="添加要素" href="adding.html" /><link rel="prev" title="选择要编辑的要素" href="selecting.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>编辑要素 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">11 ShapeEditor – 选择和编辑特征</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="id1">
+<h1>编辑要素<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>Editing features</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>现在我们知道用户想要编辑的特征，接下来的任务是实现编辑特征的页面。为此，我们需要创建一个自定义表单，表单中有一个名为“geometry”的输入字段，使用地图编辑小部件来编辑特征的几何形状。</p>
+<p>为了创建这个表单，我们将借用 GeoDjango 内置的“admin”界面中的一些元素，特别是 <cite>django.contrib.gis.admin.GeoModelAdmin</cite> 类。这个类提供了一个名为 <cite>get_map_widget()</cite> 的方法，该方法返回一个编辑小部件，我们可以将其包含在自定义生成的表单中。</p>
+<p>构建这个表单的过程有点复杂，因为我们需要动态创建一个新的 <cite>django.forms.Form</cite> 子类来处理可以编辑的不同类型的几何形状。让我们把这个复杂性放到一个新的函数中，放在 <cite>shared.utils</cite> 模块里，命名为 <cite>get_map_form()</cite>。</p>
+<p>编辑 <cite>utils.py</cite> 模块并输入以下代码:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_map_form</span><span class="p">(</span><span class="n">shapefile</span><span class="p">):</span>
+    <span class="n">geometry_field</span> <span class="o">=</span> <span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">geom_type</span><span class="p">)</span>
+    <span class="n">admin_instance</span> <span class="o">=</span> <span class="n">admin</span><span class="o">.</span><span class="n">GeoModelAdmin</span><span class="p">(</span><span class="n">Feature</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+    <span class="n">field</span>       <span class="o">=</span> <span class="n">Feature</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">geometry_field</span><span class="p">)</span>
+    <span class="n">widget_type</span> <span class="o">=</span> <span class="n">admin_instance</span><span class="o">.</span><span class="n">get_map_widget</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">MapForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget_type</span><span class="p">(),</span>
+                                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">MapForm</span>
+</pre></div>
+</div>
+<p>你还需要在文件顶部添加以下导入语句:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django</span><span class="w"> </span><span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.gis</span><span class="w"> </span><span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shared.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Feature</span>
+</pre></div>
+</div>
+<p><cite>get_map_form()</cite> 函数使用了一个 <cite>GeoModelAdmin</cite> 实例。我们在本章早些时候探讨 GeoDjango 内置的 <cite>admin</cite> 界面时已经见过 <cite>GeoModelAdmin</cite>；在这里我们使用它来生成一个适用于当前 shapefile 几何类型的地图小部件。</p>
+<p>使用 <cite>GeoModelAdmin</cite> 实例，<cite>get_map_form()</cite> 函数创建并返回一个新的 <cite>django.forms.Form</cite> 子类，使用适当的小部件类型来编辑这个特定 shapefile 的特征。请注意，<cite>get_map_form()</cite> 函数返回的是 <cite>MapForm</cite> 类，而不是该类的实例；我们将使用返回的类在需要时创建适当的 <cite>MapForm</cite> 实例。</p>
+<p>有了这个函数后，我们现在可以实现其余的编辑特征视图。首先设置视图的 URL；打开 <cite>editor</cite> 应用的 <cite>urls.py</cite> 模块，并将以下内容添加到 URL 模式列表中:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^edit_feature/(?P&lt;shapefile_id&gt;\d+)/&#39;</span> <span class="o">+</span>
+    <span class="sa">r</span><span class="s1">&#39;(?P&lt;feature_id&gt;\d+)$&#39;</span><span class="p">,</span> <span class="s1">&#39;edit_feature&#39;</span><span class="p">),</span>
+</pre></div>
+</div>
+<p>现在我们可以实现视图函数本身。编辑 <cite>views.py</cite> 模块并开始定义 <cite>edit_feature()</cite> 函数:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">edit_feature</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">shapefile_id</span><span class="p">,</span> <span class="n">feature_id</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shapefile</span> <span class="o">=</span> <span class="n">Shapefile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">shapefile_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">ShapeFile</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseNotFound</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">feature_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Feature</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseNotFound</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>到目前为止，这部分非常简单：我们加载当前 shapefile 的 <cite>Shapefile</cite> 对象，以及正在编辑的特征的 <cite>Feature</cite> 对象。接下来，我们需要加载该特征的属性列表，以便将其显示给用户:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">attr_value</span> <span class="ow">in</span> <span class="n">feature</span><span class="o">.</span><span class="n">attributevalue_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">attr_value</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">attr_value</span><span class="o">.</span><span class="n">value</span><span class="p">])</span>
+<span class="n">attributes</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>这时事情变得有趣了。我们需要创建一个 Django 表单对象（实际上是由我们之前编写的 <cite>get_map_form()</cite> 函数动态创建的 <cite>MapForm</cite> 类的实例），并使用该表单实例来显示要编辑的特征。当表单提交时，我们将提取更新后的几何形状并将其保存回 <cite>Feature</cite> 对象，然后将用户重定向回编辑 shapefile 页面，以选择另一个特征。</p>
+<p>正如我们在创建导入 shapefile 表单时看到的那样，处理表单的基本 Django 习惯用法如下:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">MyForm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;template.html&quot;</span><span class="p">,</span>
+                    <span class="p">{</span><span class="s1">&#39;form&#39;</span> <span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+<span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">MyForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="c1"># 提取并保存表单的内容...</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/somewhere/else&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;template.html&quot;</span><span class="p">,</span>
+                    <span class="p">{</span><span class="s1">&#39;form&#39;</span> <span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>当表单首次显示时， <cite>request.method</cite> 会被设置为 <cite>GET</cite>。在这种情况下，我们创建一个新的表单对象，并将表单作为 HTML 模板的一部分显示。当表单由用户提交时， <cite>request.method</cite> 会被设置为 <cite>POST</cite>。在这种情况下，会创建一个新的表单对象，并将其绑定到提交的 POST 参数。然后检查表单的内容，如果有效，则保存并将用户重定向到其他页面。如果表单无效，它会再次显示并附带适当的错误信息。</p>
+<p>让我们看看这个习惯用法是如何在编辑特征视图中使用的。将以下内容添加到新视图函数的末尾:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geometry_field</span> <span class="o">=</span> \
+    <span class="n">utils</span><span class="o">.</span><span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">geom_type</span><span class="p">)</span>
+<span class="n">form_class</span>     <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_map_form</span><span class="p">(</span><span class="n">shapefile</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+    <span class="n">wkt</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">geometry_field</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">form_class</span><span class="p">({</span><span class="s1">&#39;geometry&#39;</span> <span class="p">:</span> <span class="n">wkt</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;edit_feature.html&quot;</span><span class="p">,</span>
+                    <span class="p">{</span><span class="s1">&#39;shapefile&#39;</span> <span class="p">:</span> <span class="n">shapefile</span><span class="p">,</span>
+                    <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+                    <span class="s1">&#39;attributes&#39;</span> <span class="p">:</span> <span class="n">attributes</span><span class="p">})</span>
+<span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">form_class</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">wkt</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">geometry_field</span><span class="p">,</span> <span class="n">wkt</span><span class="p">)</span>
+            <span class="n">feature</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/editor/edit/&quot;</span> <span class="o">+</span>
+                <span class="n">shapefile_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;edit_feature.html&quot;</span><span class="p">,</span>
+                    <span class="p">{</span><span class="s1">&#39;shapefile&#39;</span> <span class="p">:</span> <span class="n">shapefile</span><span class="p">,</span>
+                    <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+                    <span class="s1">&#39;attributes&#39;</span> <span class="p">:</span> <span class="n">attributes</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>正如你所见，我们调用 <cite>utils.get_map_form()</cite> 创建了一个新的 <cite>django.forms.Form</cite> 子类，用来编辑特征的几何形状。我们还调用 <cite>utils.calc_geometry_field()</cite> 查看在 <cite>Feature</cite> 对象中应该编辑哪个字段。</p>
+<p>该函数的其余部分基本遵循 Django 的表单处理习惯。唯一值得注意的是，我们以 WKT 格式获取并设置几何字段（分别使用 <cite>getattr()</cite> 和 <cite>setattr()</cite> 函数）。GeoDjango 将几何字段视为字符字段，并以 WKT 格式存储几何数据。GeoDjango 的 JavaScript 代码会将该 WKT 数据（存储在一个名为 <cite>geometry</cite> 的隐藏表单字段中）传递给 OpenLayers，显示为向量几何。OpenLayers 允许用户编辑该向量几何，更新后的几何形状再次存储到隐藏的几何字段中，以 WKT 数据格式。然后我们提取更新后的几何形状的 WKT 文本，并将其存储回 <cite>Feature</cite> 对象。</p>
+<p>至此，<cite>edit_feature()</cite> 视图函数就完成了。接下来，我们来创建该视图使用的模板。创建一个新的文件 <cite>edit_feature.html</cite>，并将以下内容输入到该文件中:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>ShapeEditor<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;http://openlayers.org/api/OpenLayers.js&quot;</span><span class="p">&gt;</span>
+<span class="w">        </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Edit Feature<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;POST&quot;</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+            {{ form.as_table }}
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span> <span class="na">align</span><span class="o">=</span><span class="s">&quot;right&quot;</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+                    {% for attr in attributes %}
+                        <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>{{ attr.0 }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>{{ attr.1 }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+                        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+                    {% endfor %}
+                    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span> <span class="na">align</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Save&quot;</span><span class="p">/&gt;</span>
+                    <span class="ni">&amp;nbsp;</span>
+                    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span> <span class="na">onClick</span><span class="o">=</span><span class="s">&#39;window.location=&quot;/editor/</span>
+<span class="s">                        edit/{{ shapefile.id }}&quot;;&#39;</span><span class="p">&gt;</span>
+                        Cancel
+                    <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>这个模板使用 HTML 表格显示表单，并使用 <cite>form.as_table</cite> 模板函数将表单渲染为 HTML 表格行。接下来，我们在一个子表格中显示特征属性列表，并在底部放置保存和取消按钮。</p>
+<p>完成这些代码后，我们终于能够在 ShapeEditor 中编辑特征了：</p>
+<img alt="../_images/483-0.png" class="align-center" src="../_images/483-0.png" />
+<p>在这个编辑器中，你可以利用 GeoDjango 内置的许多功能来编辑几何形状：</p>
+<ul class="simple">
+<li><p>你可以点击 <strong>Edit Geometry</strong> 工具（<img alt="img1" src="../_images/484-0.png" /> ）来选择一个特征进行编辑。</p></li>
+<li><p>你可以点击 <strong>Add Geometry</strong> 工具（<img alt="img2" src="../_images/484-1.png" /> ）开始绘制新几何形状。</p></li>
+<li><p>当选择了一个几何形状时，你可以点击一个深色圆圈并拖动它来移动线段的端点。</p></li>
+<li><p>当选择了一个几何形状时，你可以点击一个浅色圆圈将现有的线段分成两段，生成一个新的点，并可以拖动它。</p></li>
+<li><p>如果按住鼠标并按 Delete 键（或按 D），你可以删除该点。请注意，只有当几何形状有三个以上的点时，这才有效。</p></li>
+<li><p>你可以点击 <strong>Delete all Features</strong> 超链接来删除当前特征的几何形状。稍后我们将详细查看这个超链接。</p></li>
+</ul>
+<p>完成编辑特征后，你可以点击 <strong>Save</strong> 按钮保存编辑的特征，或者点击 <strong>Cancel</strong> 按钮放弃更改。</p>
+<p>虽然这一切都在顺利进行，但有一个相当令人恼火的缺陷：GeoDjango 允许用户通过一个名为 <strong>Delete all Features</strong> 的超链接从地图中删除几何形状。由于我们当前正在编辑单个特征，这个超链接的命名让人感到困惑：实际上，它删除的是该特征的几何形状，而不是特征本身。我们来将这个超链接的文本改为更有意义的内容。</p>
+<p>进入你下载的 Django 版本，导航到 <cite>contrib/gis/templates/gis/admin</cite> 目录。在这个目录中有一个名为 <cite>openlayers.html</cite> 的文件。复制这个文件并将其移动到你的 <cite>editor</cite> 应用的 <cite>templates</cite> 目录中，并重命名为 <cite>openlayers-custom.html</cite>。</p>
+<p>打开这个文件，并在文件底部找到文本 <strong>Delete all Features</strong>，将其改为 <strong>Clear Feature’s Geometry</strong>，然后保存更改。</p>
+<p>到目前为止，一切顺利。现在我们需要告诉 GeoDjango 编辑小部件使用我们自定义的 <cite>openlayers.html</cite> 文件。为此，编辑 <cite>utils.py</cite> 模块并找到 <cite>get_map_form()</cite> 函数的定义。用以下代码替换定义 <cite>admin_instance</cite> 变量的行:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_map_form</span><span class="p">(</span><span class="n">shapefile</span><span class="p">):</span>
+    <span class="n">geometry_field</span> <span class="o">=</span> <span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">geom_type</span><span class="p">)</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">CustomGeoModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">GeoModelAdmin</span><span class="p">):</span>
+        <span class="n">map_template</span> <span class="o">=</span> <span class="s2">&quot;openlayers-custom.html&quot;</span>
+
+    <span class="n">adminInstance</span> <span class="o">=</span> <span class="n">CustomGeoModelAdmin</span><span class="p">(</span><span class="n">Feature</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">Feature</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">geometry_field</span><span class="p">)</span>
+    <span class="n">widget_type</span> <span class="o">=</span> <span class="n">admin_instance</span><span class="o">.</span><span class="n">get_map_widget</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">MapForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget_type</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">MapForm</span>
+</pre></div>
+</div>
+<p>如果你现在尝试编辑一个特征，你会看到正在使用自定义版本的 <cite>openlayers.html</cite> 文件：</p>
+<img alt="../_images/485-0.png" class="with-border align-center" src="../_images/485-0.png" />
+<p>通过替换模板，并创建你自己的 <cite>GeoModelAdmin</cite> 子类，你可以更改内置编辑小部件的外观和功能。如果你想了解更多可能性，可以查看 <cite>django.contrib.gis.admin</cite> 目录中的模块。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we know which feature the user wants to edit, our next task is to
+implement the edit feature page itself. To do this, we are going to have to create a
+custom form with a single input field, named geometry, that uses a map-editing
+widget for editing the feature’s geometry.</p>
+<p>To create this form, we’re going to borrow elements from GeoDjango’s built-in
+“admin” interface, in particular the django.contrib.gis.admin.GeoModelAdmin
+class. This class provides a method named get_map_widget() which returns an
+editing widget which we can then include in a custom-generated form.</p>
+<p>The process of building this form is a bit involved, thanks to the fact that we have
+to create a new django.forms.Form subclass on-the-fly to be handle the different
+types of geometries which can be edited. Let’s put this complexity into a new
+function within the shared.utils module, which we’ll call get_map_form().</p>
+<p>Edit the utils.py module and type in the following code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_map_form</span><span class="p">(</span><span class="n">shapefile</span><span class="p">):</span>
+    <span class="n">geometry_field</span> <span class="o">=</span> <span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">geom_type</span><span class="p">)</span>
+    <span class="n">admin_instance</span> <span class="o">=</span> <span class="n">admin</span><span class="o">.</span><span class="n">GeoModelAdmin</span><span class="p">(</span><span class="n">Feature</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+    <span class="n">field</span>       <span class="o">=</span> <span class="n">Feature</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">geometry_field</span><span class="p">)</span>
+    <span class="n">widget_type</span> <span class="o">=</span> <span class="n">admin_instance</span><span class="o">.</span><span class="n">get_map_widget</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">MapForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget_type</span><span class="p">(),</span>
+                                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">MapForm</span>
+</pre></div>
+</div>
+<p>You’ll also need to add the following import statements to the top of the file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django</span><span class="w"> </span><span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.gis</span><span class="w"> </span><span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shared.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Feature</span>
+</pre></div>
+</div>
+<p>The get_map_form() function makes use of a GeoModelAdmin instance. We met
+GeoModelAdmin earlier in this chapter when we explored GeoDjango’s built-in
+admin interface; here we are using it to generate an appropriate map widget for
+editing the type of geometry stored in the current shapefile.</p>
+<p>Using the GeoModelAdmin instance, the get_map_form() function creates and
+returns a new django.forms.Form subclass with the appropriate widget type used
+to edit this particular shapefile’s features. Note that the get_map_form() function
+returns the MapForm class, rather than an instance of that class; we’ll use the returned
+class to create the appropriate MapForm instances as we need them.</p>
+<p>With this function behind us, we can now implement the rest of the edit feature
+view. Let’s start by setting up the view’s URL; open the editor application’s urls.
+py module and add the following to the list of URL patterns:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^edit_feature/(?P&lt;shapefile_id&gt;\d+)/&#39;</span> <span class="o">+</span>
+    <span class="sa">r</span><span class="s1">&#39;(?P&lt;feature_id&gt;\d+)$&#39;</span><span class="p">,</span> <span class="s1">&#39;edit_feature&#39;</span><span class="p">),</span>
+</pre></div>
+</div>
+<p>We’re now ready to implement the view function itself. Edit the views.py module
+and start defining the edit_feature() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">edit_feature</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">shapefile_id</span><span class="p">,</span> <span class="n">feature_id</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shapefile</span> <span class="o">=</span> <span class="n">Shapefile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">shapefile_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">ShapeFile</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseNotFound</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">feature_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">Feature</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseNotFound</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>So far this is quite straightforward: we load the Shapefile object for the current
+shapefile, and the Feature object for the feature we are editing. We next want to load
+into memory a list of that feature’s attributes, so these can be displayed to the user:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">attr_value</span> <span class="ow">in</span> <span class="n">feature</span><span class="o">.</span><span class="n">attributevalue_set</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+    <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">attr_value</span><span class="o">.</span><span class="n">attribute</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                       <span class="n">attr_value</span><span class="o">.</span><span class="n">value</span><span class="p">])</span>
+<span class="n">attributes</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This is where things get interesting. We need to create a Django Form object
+(actually, an instance of the MapForm class created dynamically by the <a href="#id2"><span class="problematic" id="id3">get_map_</span></a>
+form() function we wrote earlier), and use this form instance to display the feature
+to be edited. When the form is submitted, we’ll extract the updated geometry and
+save it back into the Feature object again, before redirecting the user back to the
+edit shapefile page to select another feature.</p>
+<p>As we saw when we created the import shapefile form, the basic Django idiom
+for processing a form is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">MyForm</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;template.html&quot;</span><span class="p">,</span>
+                    <span class="p">{</span><span class="s1">&#39;form&#39;</span> <span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+<span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">MyForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="c1"># Extract and save the form&#39;s contents here...</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/somewhere/else&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;template.html&quot;</span><span class="p">,</span>
+                  <span class="p">{</span><span class="s1">&#39;form&#39;</span> <span class="p">:</span> <span class="n">form</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>When the form is to be displayed for the first time, request.method will be set to
+GET. In this case, we create a new form object and display the form as part of an
+HTML template. When the form is submitted by the user, request.method will be
+set to POST. In this case, a new form object is created that is bound to the submitted
+POST arguments. The form’s contents are then checked, and if they are valid they are
+saved and the user is redirected back to some other page. If the form is not valid, it
+will be displayed again along with a suitable error message.</p>
+<p>Let’s see how this idiom is used by the edit feature view. Add the following to
+the end of your new view function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geometry_field</span> <span class="o">=</span> \
+    <span class="n">utils</span><span class="o">.</span><span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">geom_type</span><span class="p">)</span>
+<span class="n">form_class</span>     <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_map_form</span><span class="p">(</span><span class="n">shapefile</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+    <span class="n">wkt</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">geometry_field</span><span class="p">)</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">form_class</span><span class="p">({</span><span class="s1">&#39;geometry&#39;</span> <span class="p">:</span> <span class="n">wkt</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;edit_feature.html&quot;</span><span class="p">,</span>
+                  <span class="p">{</span><span class="s1">&#39;shapefile&#39;</span> <span class="p">:</span> <span class="n">shapefile</span><span class="p">,</span>
+                  <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+                  <span class="s1">&#39;attributes&#39;</span> <span class="p">:</span> <span class="n">attributes</span><span class="p">})</span>
+<span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">form_class</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">wkt</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">geometry_field</span><span class="p">,</span> <span class="n">wkt</span><span class="p">)</span>
+            <span class="n">feature</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/editor/edit/&quot;</span> <span class="o">+</span>
+                <span class="n">shapefile_id</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;edit_feature.html&quot;</span><span class="p">,</span>
+                      <span class="p">{</span><span class="s1">&#39;shapefile&#39;</span> <span class="p">:</span> <span class="n">shapefile</span><span class="p">,</span>
+                      <span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+                      <span class="s1">&#39;attributes&#39;</span> <span class="p">:</span> <span class="n">attributes</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>As you can see, we call utils.get_map_form() to create a new django.forms.Form
+subclass which will be used to edit the feature’s geometry. We also call <a href="#id4"><span class="problematic" id="id5">utils.calc_</span></a>
+geometry_field() to see which field in the Feature object should be edited.</p>
+<p>The rest of this function pretty much follows the Django idiom for form-processing.
+The only interesting thing to note is that we get and set the geometry field (using the
+getattr() and setattr() functions, respectively) in WKT format. GeoDjango treats
+geometry fields as if they were character fields which hold the geometry in WKT
+format. The GeoDjango JavaScript code then takes that WKT data (which is stored
+in a hidden form field named geometry) and passes it to OpenLayers for display as
+a vector geometry. OpenLayers allows the user to edit that vector geometry, and the
+updated geometry is stored back into the hidden geometry field as WKT data. We
+then extract that updated geometry’s WKT text, and store it back into the Feature
+object again.</p>
+<p>So much for the edit_feature() view function. Let’s now create the template
+used by this view. Create a new file named edit_feature.html within the editor
+application’s templates directory, and enter the following text into this file:</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>ShapeEditor<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;http://openlayers.org/api/OpenLayers.js&quot;</span><span class="p">&gt;</span>
+<span class="w">        </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Edit Feature<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;POST&quot;</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+            {{ form.as_table }}
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span> <span class="na">align</span><span class="o">=</span><span class="s">&quot;right&quot;</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+                    {% for attr in attributes %}
+                        <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>{{ attr.0 }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>{{ attr.1 }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+                        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+                    {% endfor %}
+                    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">td</span> <span class="na">align</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Save&quot;</span><span class="p">/&gt;</span>
+                    <span class="ni">&amp;nbsp;</span>
+                    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span> <span class="na">onClick</span><span class="o">=</span><span class="s">&#39;window.location=&quot;/editor/</span>
+<span class="s">                        edit/{{ shapefile.id }}&quot;;&#39;</span><span class="p">&gt;</span>
+                        Cancel
+                    <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>This template uses an HTML table to display the form, and uses the form.as_table
+template function call to render the form as HTML table rows. We then display the
+list of feature attributes within a sub-table, and finally include Save and Cancel
+buttons at the bottom.</p>
+<p>With all this code written, we are finally able to edit features within the ShapeEditor:</p>
+<img alt="../_images/483-0.png" class="align-center" src="../_images/483-0.png" />
+<p>Within this editor, you can make use of a number of GeoDjango’s built-in features to
+edit the geometry:</p>
+<ul class="simple">
+<li><p>You can click on the <strong>Edit Geometry</strong> tool (<img alt="img1" src="../_images/484-0.png" /> ) to select a feature for editing.</p></li>
+<li><p>You can click on the <strong>Add Geometry</strong> tool (<img alt="img2" src="../_images/484-1.png" /> ) to start drawing a new geometry.</p></li>
+<li><p>When a geometry is selected, you can click on a dark circle and drag it to move the endpoints of a line segment.</p></li>
+<li><p>When a geometry is selected, you can click on a light circle to split an existing line segment in two, making a new point which can then be dragged.</p></li>
+<li><p>If you hold the mouse down over a dark circle, you can press the Delete key (or type D) to delete that point. Note that this only works if the geometry has more than three points.</p></li>
+<li><p>You can click on the <strong>Delete all Features</strong> hyperlink to delete the current feature’s geometries. We’ll look at this hyperlink in more detail shortly.</p></li>
+</ul>
+<p>Once you have finished editing the feature, you can click on the <strong>Save</strong> button to save
+the edited features, or the <strong>Cancel</strong> button to abandon the changes.</p>
+<p>While this is all working well, there is one rather annoying quirk: GeoDjango lets
+the user remove the geometries from a map by using a hyperlink named <strong>Delete
+all Features</strong>. Since we’re currently editing a single feature, this hyperlink is rather
+confusingly named: what it actually does is delete the geometries for this feature, not the
+feature itself. Let’s change the text of this hyperlink to something more meaningful.</p>
+<p>Go to the copy of Django that you downloaded, and navigate to the contrib/gis/templates/gis/admin directory. In this directory is a file named openlayers.
+html. Take a copy of this file, and move it into your editor application’s templates
+directory, renaming it to openlayers-custom.html.</p>
+<p>Open your copy of this file, and look near the bottom for the text Delete all
+Features. Change this to Clear Feature’s Geometry, and save your changes.</p>
+<p>So far so good. Now we need to tell the GeoDjango editing widget to use our custom
+version of the openlayers.html file. To do this, edit your utils.py module and
+find your definition of the get_map_form() function. Replace the line which defines
+the admin_instance variable with the following highlighted lines:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_map_form</span><span class="p">(</span><span class="n">shapefile</span><span class="p">):</span>
+    <span class="n">geometry_field</span> <span class="o">=</span> <span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">shapefile</span><span class="o">.</span><span class="n">geom_type</span><span class="p">)</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">CustomGeoModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">GeoModelAdmin</span><span class="p">):</span>
+        <span class="n">map_template</span> <span class="o">=</span> <span class="s2">&quot;openlayers-custom.html&quot;</span>
+
+    <span class="n">adminInstance</span> <span class="o">=</span> <span class="n">CustomGeoModelAdmin</span><span class="p">(</span><span class="n">Feature</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="p">)</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">Feature</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">geometry_field</span><span class="p">)</span>
+    <span class="n">widget_type</span> <span class="o">=</span> <span class="n">admin_instance</span><span class="o">.</span><span class="n">get_map_widget</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+
+    <span class="k">class</span><span class="w"> </span><span class="nc">MapForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+        <span class="n">geometry</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget_type</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">MapForm</span>
+</pre></div>
+</div>
+<p>If you then try editing a feature, you’ll see that your customized version of the openlayers.html file is being used:</p>
+<img alt="../_images/485-0.png" class="with-border align-center" src="../_images/485-0.png" />
+<p>By replacing the template, and by creating your own custom subclass of
+GeoModelAdmin, you can make various changes to the appearance and functionality
+of the built-in editing widget. If you want to see what is possible, take a look at the
+modules in the django.contrib.gis.admin directory.</p>
+</div>
+</div>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="adding.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">添加要素</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="selecting.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">选择要编辑的要素</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

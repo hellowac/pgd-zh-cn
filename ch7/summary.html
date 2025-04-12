@@ -1,0 +1,438 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="8 使用 Python 和 Mapnik 生成地图" href="../ch8/index.html" /><link rel="prev" title="应用程序审查和改进" href="aplication.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>小结 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">7 使用空间数据</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="id1">
+<h1>小结<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>Summary</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>在本章中，我们实现、测试并改进了一个简单的基于 web 的应用程序，该应用程序在给定起点半径范围内显示海岸线、城镇和湖泊（DISTAL）。这个应用程序是我们探索地理空间应用开发中一些重要概念的动力，包括以下内容：</p>
+<ul class="simple">
+<li><p>创建一个简单但完整的基于 web 的地理空间应用程序</p></li>
+<li><p>使用数据库存储和处理大量的地理空间数据</p></li>
+<li><p>使用“黑箱”地图渲染模块，通过从数据库中选择的空间数据创建地图</p></li>
+<li><p>考察基于真实距离而非使用纬度/经度近似值来识别特征的问题</p></li>
+<li><p>学习如何有效使用空间连接</p></li>
+<li><p>探索原型实现中的可用性问题</p></li>
+<li><p>处理数据质量问题</p></li>
+<li><p>学习如何预计算数据以提高性能</p></li>
+</ul>
+<p>通过我们的开发工作，我们学到了以下内容：</p>
+<ul class="simple">
+<li><p>设置数据库并从 shapefile 和其他数据源导入大量数据</p></li>
+<li><p>设计和构建一个简单的 web 应用程序来显示地图并响应用户输入</p></li>
+<li><p>显示地图的三个步骤：计算纬度/经度的边界框，计算地图图像的像素大小，以及告诉地图渲染器从哪些表中获取数据</p></li>
+<li><p>给定用户在地图上点击的点的 (x, y) 坐标，如何将其转换为等效的纬度和经度值</p></li>
+<li><p>可以执行真实距离计算和按距离选择特征的多种方式</p></li>
+<li><p>使用大圆距离公式手动计算每个点的距离虽然准确，但非常慢</p></li>
+<li><p>角度距离（即纬度/经度坐标的差异）是一个简单的距离近似值，但与地球表面上的真实距离没有任何有用的关系</p></li>
+<li><p>使用投影坐标使真实距离计算变得简单，但仅限于覆盖地球部分表面的数据</p></li>
+<li><p>使用混合方法，通过计算纬度/经度边界框来准确快速地按距离识别特征，然后对这些特征进行大圆距离计算，以剔除误报</p></li>
+<li><p>设置数据源以访问和检索 MySQL、PostGIS 和 SpatiaLite 数据库中的数据</p></li>
+<li><p>显示一个国家的轮廓并要求用户点击一个期望的点，在该国相对较小且紧凑时有效，但对于较大的国家则会失败</p></li>
+<li><p>学习数据质量问题如何影响地理空间应用程序的整体实用性</p></li>
+<li><p>学习如何不假设地理空间数据以最适合应用程序的形式存在</p></li>
+<li><p>非常大的多边形可能会降低性能，通常可以将其拆分成较小的子多边形，从而显著提高性能</p></li>
+<li><p>使用分而治之的方法拆分大多边形比每次都使用完整的多边形计算交集要快得多</p></li>
+</ul>
+<p>在下一章中，我们将探讨使用 Mapnik 库将原始地理空间数据转换为地图图像的详细内容。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>In this chapter, we have implemented, tested, and made improvements to a simple
+web-based application which displays shorelines, towns, and lakes (DISTAL) within
+a given radius of a starting point. This application was the impetus for exploring a
+number of important concepts within geospatial application development, including
+the following:</p>
+<ul class="simple">
+<li><p>The creation of a simple but complete web-based geospatial application</p></li>
+<li><p>Using databases to store and work with large amounts of geospatial data</p></li>
+<li><p>Using a “black-box” map rendering module to create maps using spatial data selected from a database</p></li>
+<li><p>Examining the issues involved in identifying features based on their true distance rather than using a lat/long approximation</p></li>
+<li><p>Learning how to use spatial joins effectively</p></li>
+<li><p>Exploring usability issues in a prototype implementation</p></li>
+<li><p>Dealing with issues of data quality</p></li>
+<li><p>Learning how to precalculate data to improve performance</p></li>
+</ul>
+<p>As a result of our development efforts, we have learned the following:</p>
+<ul class="simple">
+<li><p>Setting up a database and importing large quantities of data from shapefiles and other data sources</p></li>
+<li><p>Designing and structuring a simple web-based application to display maps and respond to user input</p></li>
+<li><p>There are three steps in displaying a map: calculating the lat/long bounding box, calculating the pixel size of the map image, and telling the map renderer which tables to get its data from</p></li>
+<li><p>Given the (x, y) coordinate of a point the user clicked on within a map, how to translate this point into equivalent latitude and longitude value</p></li>
+<li><p>Various ways in which true distance calculations, and selection of features by distance, can be performed</p></li>
+<li><p>Manually calculating distance for every point using the great circle distance formula is accurate but very slow</p></li>
+<li><p>Angular distances (that is, differences in lat/long coordinates) is an easy approximation of distance but doesn’t relate in any useful way to true distances across the Earth’s surface</p></li>
+<li><p>Using projected coordinates makes true distance calculations easy, but is limited to data covering only part of the Earth’s surface</p></li>
+<li><p>Using a hybrid approach to accurately and quickly identify features by distance, by calculating a lat/long bounding box to identify potential features, and then doing a great circle distance calculation on these features to weed out the false positives</p></li>
+<li><p>Setting up a datasource to access and retrieve data from MySQL, PostGIS and SpatiaLite databases</p></li>
+<li><p>Displaying a country’s outline and asking the user to click on a desired point works when the country is relatively small and compact, but breaks down for larger countries</p></li>
+<li><p>Learning how issues of data quality can affect the overall usefulness of your geospatial application</p></li>
+<li><p>Learning how you cannot assume that geospatial data comes in the best form for use in your application</p></li>
+<li><p>Very large polygons can degrade performance, and can often be split into smaller subpolygons, resulting in dramatic improvements in performance</p></li>
+<li><p>A divide-and-conquer approach to splitting large polygons is much faster than simply calculating the intersection using the full polygon each time</p></li>
+</ul>
+<p>In the next chapter, we will explore the details of using the Mapnik library to convert raw geospatial data into map images.</p>
+</div>
+</div>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../ch8/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">8 使用 Python 和 Mapnik 生成地图</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="aplication.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">应用程序审查和改进</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

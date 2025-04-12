@@ -1,0 +1,1565 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="导出 shapefiles" href="exporting.html" /><link rel="prev" title="实现“列出 Shapefile”视图" href="implementing.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>导入 Shapefile - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch4/index.html">4 地理空间数据来源</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/raster_format.html">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch4/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="shapefile">
+<h1>导入 Shapefile<a class="headerlink" href="#shapefile" title="此标题的永久链接">#</a></h1>
+<p>Importing shapefiles</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>导入 Shapefile 的过程包括以下步骤：</p>
+<ol class="arabic simple">
+<li><p>显示一个表单，提示用户上传 Shapefile 的 ZIP 压缩文件。</p></li>
+<li><p>解压 ZIP 文件以提取上传的 Shapefile。</p></li>
+<li><p>打开 Shapefile 并将其中的数据读取到数据库中。</p></li>
+<li><p>删除我们创建的临时文件。</p></li>
+</ol>
+<p>由于这个过程的复杂性，我们将使用一个名为 <cite>shapefileIO</cite> 的单独应用程序来处理导入（以及稍后导出）Shapefile 内容的幕后逻辑。这允许我们实现导入 Shapefile 的用户界面，而不必担心这些幕后细节。</p>
+<p>让我们从创建 <cite>shapefileIO</cite> 应用程序的基本框架开始。使用终端窗口，进入顶级目录，并输入以下命令:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">startapp</span> <span class="n">shapefileIO</span>
+</pre></div>
+</div>
+<p>然后将 <cite>shapefileIO</cite> 目录移动到 <cite>shapeEditor</cite> 子目录中，如下所示:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mv</span> <span class="n">shapefileIO</span> <span class="n">shapeEditor</span>
+</pre></div>
+</div>
+<p>虽然 <cite>shapefileIO</cite> 是一个标准的 Django 应用程序，但它不会有用户界面。相反，它仅定义一些模块，由系统的其他部分使用。因此，您可以删除该应用程序目录中的 <cite>views.py</cite> 模块。您还可以删除 <cite>tests.py</cite> 模块，因为我们不会为此应用程序定义任何单元测试。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Django 应用程序必须有一个 <cite>models.py</cite> 文件和一个 <cite>__init__.py</cite> 文件。如果您没有为该模块定义任何数据库表，<cite>models.py</cite> 模块可以是空的，但它必须存在，否则 Django 将不会将该包识别为应用程序。该应用程序还需要在项目的 <cite>settings</cite> 模块中的 <cite>INSTALLED_APPS</cite> 列表中列出。</p>
+</div>
+<p>接下来，我们需要将 <cite>shapefileIO</cite> 应用程序添加到项目中。编辑 <cite>settings.py</cite> 模块，并在 <cite>INSTALLED_APPS</cite> 列表的末尾添加以下行:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;shapeEditor.shapefileIO&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>在 <cite>shapefileIO</cite> 目录内，创建一个名为 <cite>importer.py</cite> 的新模块，并在此文件中输入以下内容:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">import_data</span><span class="p">(</span><span class="n">shapefile</span><span class="p">,</span> <span class="n">character_encoding</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;More to come...&quot;</span>
+</pre></div>
+</div>
+<p>这个函数将尝试导入由 <cite>shapefile</cite> 参数定义的压缩 ZIP 存档的内容，使用给定的字符编码。如果过程失败，该函数将返回一个适当的错误消息，解释出了什么问题。如果成功，<cite>import_data()</cite> 函数将返回 <cite>None</cite>。</p>
+<p>现在我们已经定义了后台 Shapefile 导入器的接口，我们可以开始实现导入 Shapefile 的用户界面部分。我们将首先定义一个视图函数和一个相关的 Django 表单，以允许用户导入 Shapefile。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>The process of importing a shapefile involves the following steps:</p>
+<ol class="arabic simple">
+<li><p>Displaying a form prompting the user to upload the shapefile’s ZIP archive.</p></li>
+<li><p>Decompressing the ZIP file to extract the uploaded shapefile.</p></li>
+<li><p>Opening the shapefile and reading the data out of it into the database.</p></li>
+<li><p>Deleting the temporary files that we have created.</p></li>
+</ol>
+<p>Because of the complexity of this process, we’ll use a separate application called
+shapefileIO to handle the behind-the-scenes logic of importing (and later, exporting)
+the shapefile’s contents. This allows us to implement the user interface for importing
+shapefiles, without having to worry about these behind-the-scenes details.</p>
+<p>Let’s start by creating the basic framework for the shapefileIO application. Using a
+terminal window, cd into the top-level directory and type the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">manage</span><span class="o">.</span><span class="n">py</span> <span class="n">startapp</span> <span class="n">shapefileIO</span>
+</pre></div>
+</div>
+<p>Then move the shapefileIO directory into the shapeEditor sub-directory, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mv</span> <span class="n">shapefileIO</span> <span class="n">shapeEditor</span>
+</pre></div>
+</div>
+<p>While shapefileIO is a standard Django application, it won’t have a user interface.
+Instead, it just defines various modules to be used by other parts of the system. For
+this reason, you can delete the views.py module from this application’s directory.
+You can also delete the tests.py module, since we won’t be defining any unit tests
+for this application.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>A Django application must have a models.py file and an __init__.py file. The models.py module can be empty if you don’t define any database tables for the module, but it must exist or Django won’t recognize the package as being an application. The application also needs to be listed in INSTALLED_APPS within the project’s settings module.</p>
+</div>
+<p>Next, we need to add the shapefileIO application to the project. Edit the settings.
+py module, and add the following line to the end of the INSTALLED_APPS list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;shapeEditor.shapefileIO&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>Within the shapefileIO directory, create a new module named importer.py,
+and enter the following into this file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">import_data</span><span class="p">(</span><span class="n">shapefile</span><span class="p">,</span> <span class="n">character_encoding</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;More to come...&quot;</span>
+</pre></div>
+</div>
+<p>This function will attempt to import the contents of the compressed ZIP archive
+defined by the shapefile parameter, using the given character encoding. If the
+process fails, this function will return a suitable error message explaining what
+went wrong. If it succeeds, the import_data() function will return None.</p>
+<p>Now that we’ve defined the interface to our behind-the-scenes shapefile importer,
+we can start to implement the user-interface aspects of importing a shapefile.
+We’ll start by defining a view function, and an associated Django form, to let the
+user import a shapefile.</p>
+</div>
+</div>
+<section id="id1">
+<h2>“导入 Shapefile”视图功能<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h2>
+<p>The “import shapefile” view function</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>让我们从为这个视图创建一个占位符开始。编辑 <cite>editor</cite> 应用程序的 <cite>urls.py</cite> 模块，并向 <cite>shapeEditor.editor.views</cite> 模式列表中添加第二个条目:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s1">&#39;shapeEditor.editor.views&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^$&#39;</span><span class="p">,</span> <span class="s1">&#39;list_shapefiles&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^import$&#39;</span><span class="p">,</span> <span class="s1">&#39;import_shapefile&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>然后编辑 <cite>editor</cite> 应用程序的 <cite>views.py</cite> 模块，并添加一个虚拟的 <cite>import_shapefile()</cite> 视图函数来响应此 URL:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">import_shapefile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s2">&quot;More to come&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>如果你想测试一下，可以运行 Django 服务器，访问主页面并点击 <strong>Import New Shapefile</strong> 按钮。你应该会看到 <strong>More to come</strong> 消息。</p>
+<p>为了让用户输入数据，我们将使用 Django 表单。<strong>表单</strong> 是自定义类，定义了将在网页上显示的各种字段。在本例中，我们的表单将包含两个字段：一个用于接受上传的文件，另一个用于从弹出菜单中选择字符编码。我们将把这个表单存储在 <cite>editor</cite> 目录下的 <cite>forms.py</cite> 文件中；请创建该文件并将其编辑为以下内容:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django</span><span class="w"> </span><span class="kn">import</span> <span class="n">forms</span>
+
+<span class="n">CHARACTER_ENCODINGS</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="s2">&quot;ASCII&quot;</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s2">&quot;latin1&quot;</span><span class="p">,</span> <span class="s2">&quot;Latin-1&quot;</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)]</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ImportShapefileForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">import_file</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Select a Zipped Shapefile&quot;</span><span class="p">)</span>
+    <span class="n">character_encoding</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ChoiceField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">CHARACTER_ENCODINGS</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>我们的表单将包含两个字段。第一个字段是 <cite>FileField</cite>，它接受上传的文件。我们为此字段设置了一个自定义标签，将在网页上显示。对于第二个字段，我们将使用 <cite>ChoiceField</cite>，它会显示一个弹出菜单。请注意，<cite>CHARACTER_ENCODINGS</cite> 列表显示了弹出列表中的各种选择；此列表中的每一项都是一个 <cite>(value, label)</cite> 元组，其中 <cite>label</cite> 是显示的字符串，<cite>value</cite> 是当用户从列表中选择该项时实际使用的值。</p>
+<p>现在我们已经创建了表单，请返回 <cite>editor</cite> 应用程序的 <cite>views.py</cite> 模块，并将 <cite>import_shapefile()</cite> 视图函数的实现替换为以下内容:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">import_shapefile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ImportShapefileForm</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;import_shapefile.html&quot;</span><span class="p">,</span>
+                        <span class="p">{</span><span class="s1">&#39;form&#39;</span>   <span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+                        <span class="s1">&#39;err_msg&#39;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+
+    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ImportShapefileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                                    <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">shapefile</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">[</span><span class="s1">&#39;import_file&#39;</span><span class="p">]</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;character_encoding&#39;</span><span class="p">]</span>
+
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">import_shapefile</span><span class="p">(</span><span class="n">shapefile</span><span class="p">,</span>
+                                                <span class="n">encoding</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">err_msg</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/shape-editor&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;import_shapefile.html&quot;</span><span class="p">,</span>
+                        <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+                        <span class="s1">&#39;err_msg&#39;</span> <span class="p">:</span> <span class="n">err_msg</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>同时，添加以下导入语句到模块顶部:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.editor.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImportShapefileForm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shapefileIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">importer</span>
+</pre></div>
+</div>
+<p>让我们来看看这里发生了什么。<cite>import_shapefile()</cite> 函数最初会通过 HTTP GET 请求被调用；这会导致该函数创建一个新的 <cite>ImportShapefileForm</cite> 对象，然后调用 <cite>render()</cite> 函数将该表单显示给用户。当表单被提交时，<cite>import_shapefile()</cite> 函数将通过 HTTP POST 请求被调用。在这种情况下，<cite>ImportShapefileForm</cite> 将使用提交的数据（<cite>request.POST</cite> 和 <cite>request.FILES</cite>）创建，并检查表单中的数据是否合法。如果合法，我们提取上传的 Shapefile 和选择的字符编码。</p>
+<p>然后我们要求 Shapefile 导入器导入 Shapefile 的数据。如果出现问题，这将返回一条错误消息。如果没有错误，我们会将用户重定向回主 <cite>/editor</cite> 页面，以便显示新导入的 Shapefile。</p>
+<p>如果表单无效，或者导入过程因某种原因失败，我们会再次调用 <cite>render()</cite> 函数来显示表单给用户，这次会附带一个合适的错误消息。请注意，Django 会自动显示表单中的错误消息。</p>
+<p>为了将表单显示给用户，我们将使用 Django 模板，并将表单对象作为参数传递。现在让我们创建这个模板；在 <cite>editor</cite> 应用程序的 <cite>templates</cite> 目录中添加一个名为 <cite>import_shapefile.html</cite> 的新文件，并输入以下文本：</p>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>ShapeEditor<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Import Shapefile<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+{% if err_msg %}
+    <span class="p">&lt;</span><span class="nt">b</span><span class="p">&gt;&lt;</span><span class="nt">i</span><span class="p">&gt;</span>{{ err_msg }}<span class="p">&lt;/</span><span class="nt">i</span><span class="p">&gt;&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>
+{% endif %}
+    <span class="p">&lt;</span><span class="nt">form</span> <span class="na">enctype</span><span class="o">=</span><span class="s">&quot;multipart/form-data&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span>
+            <span class="na">action</span><span class="o">=</span><span class="s">&quot;import&quot;</span><span class="p">&gt;</span>
+        {{ form.as_p }}
+        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Submit&quot;</span><span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span>
+                <span class="na">onClick</span><span class="o">=</span><span class="s">&#39;window.location=&quot;/editor&quot;;&#39;</span><span class="p">&gt;</span>
+        Cancel
+    <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>如您所见，该模板定义了一个 HTML <cite>&lt;form&gt;</cite> 并添加了 <strong>Submit</strong> 和 <strong>Cancel</strong> 按钮。表单的主体没有指定。相反，我们使用 <cite>{{ form.as_p }}</cite> 将表单对象渲染为一系列的 <a href="#id2"><span class="problematic" id="id3">`</span></a>&lt;p&gt;`（段落）元素。在页面的顶部，我们还会显示错误消息（如果有的话）。</p>
+<p>让我们来测试一下。启动 Django web 服务器（如果它尚未运行），打开浏览器并访问 <cite>http://127.0.0.1:8000/editor</cite> URL。然后点击 <strong>Import New Shapefile</strong> 按钮。如果一切顺利，您应该会看到以下页面：</p>
+<img alt="../_images/419-0.png" class="align-center" src="../_images/419-0.png" />
+<p>如果您尝试在没有上传任何文件的情况下提交表单，将会出现一条错误消息，提示 <cite>import_file</cite> 字段是必填项。这是任何表单的默认错误处理；默认情况下，所有字段都是必填的。如果您选择了文件进行上传，导入器将返回字符串 <strong>More to come…</strong>，因此此消息应出现在页面的顶部。</p>
+<p>现在我们已经实现了表单本身，让我们回到 <cite>shapefileIO</cite> 应用程序并实现处理上传的 Shapefile 所需的逻辑。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>Let’s start by creating a placeholder for this view. Edit the editor application’s urls.
+py module and add a second entry to the shapeEditor.editor.views pattern list:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s1">&#39;shapeEditor.editor.views&#39;</span><span class="p">,</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^$&#39;</span><span class="p">,</span> <span class="s1">&#39;list_shapefiles&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^import$&#39;</span><span class="p">,</span> <span class="s1">&#39;import_shapefile&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Then edit the editor application’s views.py module and add a dummy <a href="#id16"><span class="problematic" id="id17">import_</span></a>
+shapefile() view function to respond to this URL:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">import_shapefile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s2">&quot;More to come&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can test this if you want: run the Django server, go to the main page and click
+on the <strong>Import New Shapefile</strong> button. You should see the <strong>More to come</strong> message.</p>
+<p>To let the user enter data, we’re going to use a Django form. <strong>Forms</strong> are custom
+classes that define the various fields, which will appear on the web page. In this
+case, our form will have two fields: one to accept the uploaded file, and other to
+select the character encoding from a pop-up menu. We’re going to store this form
+in a file named forms.py in the editor directory; go ahead and create this file,
+and then edit it to look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django</span><span class="w"> </span><span class="kn">import</span> <span class="n">forms</span>
+
+<span class="n">CHARACTER_ENCODINGS</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="s2">&quot;ASCII&quot;</span><span class="p">),</span>
+                       <span class="p">(</span><span class="s2">&quot;latin1&quot;</span><span class="p">,</span> <span class="s2">&quot;Latin-1&quot;</span><span class="p">),</span>
+                       <span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)]</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ImportShapefileForm</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="n">import_file</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Select a Zipped Shapefile&quot;</span><span class="p">)</span>
+    <span class="n">character_encoding</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ChoiceField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">CHARACTER_ENCODINGS</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="s2">&quot;utf8&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Our form will contain two fields. The first field is a FileField, which accepts
+uploaded files. We give this field a custom label which will be displayed in the
+web page. For the second field we’ll use a ChoiceField, which displays a pop-up
+menu. Note that the CHARACTER_ENCODINGS list shows the various choices to display
+in the pop-up list; each entry in this list is a (value, label) tuple, where label is
+the string to be displayed and value is the actual value to be used for that field
+when the user chooses this item from the list.</p>
+<p>Now that we have created the form, go back to the editor application’s views.py
+module, and replace the implementation of the import_shapefile() view function
+with the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">import_shapefile</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ImportShapefileForm</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;import_shapefile.html&quot;</span><span class="p">,</span>
+                      <span class="p">{</span><span class="s1">&#39;form&#39;</span>   <span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+                      <span class="s1">&#39;err_msg&#39;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">})</span>
+
+    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">ImportShapefileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                                   <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">shapefile</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">[</span><span class="s1">&#39;import_file&#39;</span><span class="p">]</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s1">&#39;character_encoding&#39;</span><span class="p">]</span>
+
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">import_shapefile</span><span class="p">(</span><span class="n">shapefile</span><span class="p">,</span>
+                                                <span class="n">encoding</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">err_msg</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s2">&quot;/shape-editor&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">err_msg</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;import_shapefile.html&quot;</span><span class="p">,</span>
+                      <span class="p">{</span><span class="s1">&#39;form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+                       <span class="s1">&#39;err_msg&#39;</span> <span class="p">:</span> <span class="n">err_msg</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Also, add the following import statements to the top of the module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.editor.forms</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImportShapefileForm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shapefileIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">importer</span>
+</pre></div>
+</div>
+<p>Let’s take a look at what is happening here. The <em>import_shapefile()</em> function
+will initially be called with an HTTP GET request; this will cause the function to
+create a new <em>ImportShapefileForm</em> object, and then call the <em>render()</em> function
+to display that form to the user. When the form is submitted, the <em>import_shapefile()</em> function will be called with an HTTP POST request. In this case, the
+<em>ImportShapefileForm</em> will be created with the submitted data (request.POST and
+<em>request.FILES</em>), and the form will be checked to see that the entered data is valid.
+If so, we extract the uploaded shapefile and the selected character encoding.</p>
+<p>We then ask the shapefile importer to import the shapefile’s data. This will return
+an error message if something goes wrong. If there is no error, we redirect the user
+back to the main <em>/editor</em> page so that the newly-imported shapefile can be shown.</p>
+<p>If the form was not valid, or if the import process failed for some reason, we once
+again call the <em>render()</em> function to display the form to the user, this time with an
+appropriate error message. Note that Django will automatically display an error
+message if there is a problem with the form.</p>
+<p>To display the form to the user, we’ll use a Django template and pass the form
+object as a parameter. Let’s create that template now; add a new file named
+import_shapefile.html in the editor application’s templates directory
+and enter the following text into this file:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;ShapeEditor&lt;/title&gt;
+    &lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Import Shapefile&lt;/h1&gt;
+{% if err_msg %}
+    &lt;b&gt;&lt;i&gt;{{ err_msg }}&lt;/i&gt;&lt;/b&gt;
+{% endif %}
+    &lt;form enctype=&quot;multipart/form-data&quot; method=&quot;post&quot;
+          action=&quot;import&quot;&gt;
+        {{ form.as_p }}
+        &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;
+        &lt;button type=&quot;button&quot;
+                onClick=&#39;window.location=&quot;/editor&quot;;&#39;&gt;
+        Cancel
+    &lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+<p>As you can see, this template defines an HTML &lt;form&gt; and adds <strong>Submit</strong> and <strong>Cancel</strong>
+buttons. The body of the form is not specified. Instead, we use {{ form.as_p }} to
+render the form object as a series of &lt;p&gt; (paragraph) elements. Near the top of the
+page, we also display the error message if there is one.</p>
+<p>Let’s test this out. Start up the Django web server if it is not already running,
+open a web browser and navigate to the <a class="reference external" href="http://127.0.0.1:8000/editor">http://127.0.0.1:8000/editor</a> URL.
+Then click on the <strong>Import New Shapefile</strong> button. All going well, you should see
+the following page:</p>
+<img alt="../_images/419-0.png" class="align-center" src="../_images/419-0.png" />
+<p>If you attempt to submit the form without uploading anything, an error message
+will appear saying that the import_file field is required. This is the default
+error-handling for any form; by default, all fields are required. If you do select
+a file for uploading, the importer will return the string <strong>More to come…</strong>, so this
+message should appear near the top of the page.</p>
+<p>Now that we’ve implemented the form itself, let’s return to our shapefileIO
+application and implement the logic needed to process the uploaded shapefile.</p>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>提取已上传的 Shapefile<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h2>
+<p>Extracting the uploaded shapefile</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>现在是时候编写 <cite>import_data()</cite> 函数的主体了。返回到 <cite>shapefileIO</cite> 应用中的 <cite>importer.py</cite> 模块，并删除我们之前添加的假定返回语句。</p>
+<p>当我们使用包含 <cite>FileField</cite> 的表单时，Django 会返回一个 <cite>UploadedFile</cite> 对象，表示上传的文件。我们的第一步是读取 <cite>UploadedFile</cite> 对象的内容，并将其存储到磁盘上的临时文件中，以便我们可以处理它。将以下代码添加到 <cite>import_data()</cite> 函数中:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fd</span><span class="p">,</span> <span class="n">fname</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.zip&quot;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">chunks</span><span class="p">():</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>如你所见，我们使用了 Python 标准库中的 <cite>tempfile</cite> 模块来创建一个临时文件，然后将 shapefile 对象的内容复制到该文件中。</p>
+<p>由于 <cite>tempfile.mkstemp()</cite> 返回文件描述符和文件名，我们调用 <cite>os.close(fd)</cite> 来关闭文件描述符。这使我们能够使用 <cite>open()</cite> 重新打开文件，并以正常方式写入数据。</p>
+<p>现在，我们准备打开临时文件并检查它是否确实是一个包含构成 shapefile 的文件的 ZIP 压缩包。以下是如何执行此操作:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">is_zipfile</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;Not a valid zip archive.&quot;</span>
+
+<span class="nb">zip</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+<span class="n">required_suffixes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.shp&quot;</span><span class="p">,</span> <span class="s2">&quot;.shx&quot;</span><span class="p">,</span> <span class="s2">&quot;.dbf&quot;</span><span class="p">,</span> <span class="s2">&quot;.prj&quot;</span><span class="p">]</span>
+<span class="n">has_suffix</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">required_suffixes</span><span class="p">:</span>
+    <span class="n">has_suffix</span><span class="p">[</span><span class="n">suffix</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="nb">zip</span><span class="o">.</span><span class="n">infolist</span><span class="p">():</span>
+    <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">required_suffixes</span><span class="p">:</span>
+        <span class="n">has_suffix</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">required_suffixes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">has_suffix</span><span class="p">[</span><span class="n">suffix</span><span class="p">]:</span>
+        <span class="nb">zip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Archive missing required &quot;</span> <span class="o">+</span> <span class="n">suffix</span> <span class="o">+</span> <span class="s2">&quot; file.&quot;</span>
+</pre></div>
+</div>
+<p>请注意，我们使用 Python 标准库中的 <cite>zipfile</cite> 模块来检查上传的 ZIP 压缩包的内容，如果有什么问题，我们会返回一个合适的错误信息。我们还会在返回错误信息之前删除临时文件，以避免留下临时文件。</p>
+<p>最后，现在我们知道上传的文件是一个有效的 ZIP 压缩包，包含构成 shapefile 的文件，我们可以提取这些文件并将它们存储到一个临时目录中:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">shapefile_name</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">dst_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="nb">zip</span><span class="o">.</span><span class="n">infolist</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.shp&quot;</span><span class="p">):</span>
+        <span class="n">shapefile_name</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">filename</span>
+
+    <span class="n">dst_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">dst_file</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">zip</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="nb">zip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>请注意，我们首先创建一个临时目录来存放提取的文件，然后将文件复制到该目录中。同时，我们记住了来自压缩包的主 <cite>.shp</cite> 文件的名称，因为我们稍后需要使用这个名称来打开 shapefile。</p>
+<p>因为我们在代码中使用了一些 Python 标准库模块，你还需要在模块顶部添加以下内容:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">os.path</span><span class="o">,</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">zipfile</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>It is now time for us to write the body of our import_data() function. Go back
+to the importer.py module within the shapefileIO application, and delete the
+dummy return statement we added earlier.</p>
+<p>When we use a form that includes a FileField, Django returns to us an
+UploadedFile object representing the uploaded file. Our first task is to read the
+contents of the UploadedFile object and store it in a temporary file on disk so
+that we can work with it. Add the following lines to your import_data() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fd</span><span class="p">,</span><span class="n">fname</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.zip&quot;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">shapefile</span><span class="o">.</span><span class="n">chunks</span><span class="p">():</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>As you can see, we use the tempfile module from the Python standard library to
+create a temporary file, and then copy the contents of the shapefile object into it.</p>
+<p>Because tempfile.mkstemp() returns both a file descriptor and a filename, we call
+os.close(fd) to close the file descriptor. This allows us to reopen the file using
+open() and write to it in the normal way.</p>
+<p>We’re now ready to open the temporary file and check that it is indeed a ZIP archive
+containing the files which make up a shapefile. Here is how we can do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">is_zipfile</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;Not a valid zip archive.&quot;</span>
+
+<span class="nb">zip</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+
+<span class="n">required_suffixes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.shp&quot;</span><span class="p">,</span> <span class="s2">&quot;.shx&quot;</span><span class="p">,</span> <span class="s2">&quot;.dbf&quot;</span><span class="p">,</span> <span class="s2">&quot;.prj&quot;</span><span class="p">]</span>
+<span class="n">has_suffix</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">required_suffixes</span><span class="p">:</span>
+    <span class="n">has_suffix</span><span class="p">[</span><span class="n">suffix</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="nb">zip</span><span class="o">.</span><span class="n">infolist</span><span class="p">():</span>
+    <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">required_suffixes</span><span class="p">:</span>
+        <span class="n">has_suffix</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="k">for</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">required_suffixes</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">has_suffix</span><span class="p">[</span><span class="n">suffix</span><span class="p">]:</span>
+        <span class="nb">zip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Archive missing required &quot;</span><span class="o">+</span><span class="n">suffix</span><span class="o">+</span><span class="s2">&quot; file.&quot;</span>
+</pre></div>
+</div>
+<p>Note that we use the Python standard library’s zipfile module to check the
+contents of the uploaded ZIP archive, and return a suitable error message
+if something is wrong. We also delete the temporary file before returning
+an error message, so that we don’t leave temporary files lying around.</p>
+<p>Finally, now that we know that the uploaded file is a valid ZIP archive containing
+the files that make up a shapefile, we can extract these files and store them into a
+temporary directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">shapefile_name</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">dst_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="nb">zip</span><span class="o">.</span><span class="n">infolist</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.shp&quot;</span><span class="p">):</span>
+        <span class="n">shapefile_name</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">filename</span>
+
+    <span class="n">dst_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">dst_file</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">zip</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="nb">zip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that we create a temporary directory to hold the extracted files before copying
+the files into this directory. At the same time, we remember the name of the main
+.shp file from the archive, as we’ll need to use this name when we open the
+shapefile.</p>
+<p>Because we’ve used some of the Python standard library modules in this code,
+you’ll also need to add the following to the top of the module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">os.path</span><span class="o">,</span><span class="w"> </span><span class="nn">tempfile</span><span class="o">,</span><span class="w"> </span><span class="nn">zipfile</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>导入 Shapefile 的内容<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h2>
+<p>Importing the shapefile’s contents</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>现在我们已经将 shapefile 的文件从 ZIP 压缩包中提取出来了，就可以准备导入上传的 shapefile 的数据。导入 shapefile 内容的过程涉及以下步骤：</p>
+<ol class="arabic simple">
+<li><p>打开 shapefile。</p></li>
+<li><p>将 Shapefile 对象添加到数据库。</p></li>
+<li><p>定义 shapefile 的属性。</p></li>
+<li><p>存储 shapefile 的要素。</p></li>
+<li><p>存储 shapefile 的属性。</p></li>
+</ol>
+<p>让我们逐一处理这些步骤。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we’ve extracted the shapefile’s files out of the ZIP archive, we are ready to
+import the data from the uploaded shapefile. The process of importing the shapefile’s
+contents involves the following steps:</p>
+<ol class="arabic simple">
+<li><p>Opening the shapefile.</p></li>
+<li><p>Adding the Shapefile object to the database.</p></li>
+<li><p>Defining the shapefile’s attributes.</p></li>
+<li><p>Storing the shapefile’s features.</p></li>
+<li><p>Storing the shapefile’s attributes.</p></li>
+</ol>
+<p>Let’s work through these steps one at a time.</p>
+</div>
+</div>
+<section id="id6">
+<h3>打开 Shapefile<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h3>
+<p>Open the shapefile</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>我们将使用 OGR 库来打开 shapefile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">datasource</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span> <span class="n">shapefileName</span><span class="p">))</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">datasource</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">shapefileOK</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+    <span class="n">shapefileOK</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">shapefileOK</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;Not a valid shapefile.&quot;</span>
+</pre></div>
+</div>
+<p>同样地，如果出现任何错误，我们会清理临时文件并返回适当的错误信息。我们同时使用 traceback 标准库模块在 Web 服务器日志中显示调试信息，而给用户返回友好的错误提示。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>在本程序中，我们将直接使用 OGR 来读写 shapefile。虽然 GeoDjango 在 contrib.gis.gdal 包中提供了自己的 OGR Python 接口，但遗憾的是 GeoDjango 的版本不支持写入 shapefile 的功能。因此，我们将直接使用 OGR 的 Python 绑定，这要求您单独安装 OGR 库。</p>
+</div>
+<p>由于这段代码使用了几个标准库模块以及 OGR 库，我们需要在 importer.py 模块顶部添加以下导入语句:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span><span class="o">,</span><span class="w"> </span><span class="nn">traceback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>We will use the OGR library to open the shapefile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">datasource</span>  <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">,</span>
+                                        <span class="n">shapefileName</span><span class="p">))</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">datasource</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">shapefileOK</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+    <span class="n">shapefileOK</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">shapefileOK</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;Not a valid shapefile.&quot;</span>
+</pre></div>
+</div>
+<p>Once again, if something goes wrong we clean up our temporary files and return a
+suitable error message. We’re also using the traceback library module to display
+debugging information in the web server’s log, while returning a friendly error
+message that will be shown to the user.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>In this program, we will be using OGR directly to read and write shapefiles. GeoDjango provides its own Python interface to OGR in the contrib.gis.gdal package, but unfortunately GeoDjango’s version doesn’t implement writing to shapefiles. Because of this, we will use the OGR Python bindings directly, and require you to install OGR separately.</p>
+</div>
+<p>Because this code uses a couple of standard library modules, as well as the OGR library, we’ll have to add the following import statements to the top of the importer.py module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span><span class="o">,</span><span class="w"> </span><span class="nn">traceback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id7">
+<h3>将 Shapefile 对象添加到数据库<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h3>
+<p>Add the Shapefile object to the database</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>成功打开 shapefile 后，我们现在可以开始读取其中的数据。首先创建一个 Shapefile 对象来表示这个导入的文件:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src_spatial_ref</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetSpatialRef</span><span class="p">()</span>
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">Shapefile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">shapefile_name</span><span class="p">,</span>
+                        <span class="n">srs_wkt</span><span class="o">=</span><span class="n">src_spatial_ref</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">(),</span>
+                        <span class="n">geom_type</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+                        <span class="n">encoding</span><span class="o">=</span><span class="n">character_encoding</span><span class="p">)</span>
+<span class="n">shapefile</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>如您所见，我们从 shapefile 图层获取空间参考信息，然后将文件名、空间参考和编码存入 Shapefile 对象，最后保存到数据库。这里存在一个小问题：geom_type 字段应该存储什么值？</p>
+<p>geom_type 字段本应存储该 shapefile 包含的几何类型名称。虽然 OGR 能告诉我们几何类型的数字常量，但 OGRGeometryTypeToName() 函数并未在 Python 绑定中公开，因此无法直接通过 OGR 获取几何类型名称。</p>
+<p>为解决这个问题，我们将自行实现 OGRGeometryTypeToName() 功能。考虑到后续会有多个类似功能函数，我们将其放在单独的 utils.py 模块中。进入 shared 应用目录创建该文件，并添加以下内容:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ogr_type_to_geometry_mname</span><span class="p">(</span><span class="n">ogr_type</span><span class="p">):</span>
+<span class="k">return</span> <span class="p">{</span><span class="n">ogr</span><span class="o">.</span><span class="n">wkbUnknown</span><span class="p">:</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbPoint</span><span class="p">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbLineString</span><span class="p">:</span> <span class="s1">&#39;LineString&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbPolygon</span><span class="p">:</span> <span class="s1">&#39;Polygon&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbMultiPoint</span><span class="p">:</span> <span class="s1">&#39;MultiPoint&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbMultiLineString</span><span class="p">:</span> <span class="s1">&#39;MultiLineString&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbMultiPolygon</span><span class="p">:</span> <span class="s1">&#39;MultiPolygon&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbGeometryCollection</span> <span class="p">:</span> <span class="s1">&#39;GeometryCollection&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbNone</span><span class="p">:</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbLinearRing</span> <span class="p">:</span> <span class="s1">&#39;LinearRing&#39;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ogr_type</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>每个规范的 Python 程序都应该有个 utils.py 模块，现在正是为 ShapeEditor 添加这个模块的好时机。</p>
+</div>
+<p>有了自定义的 OGRGeometryTypeToName() 功能后，我们就可以设置 Shapefile 对象的 geom_type 字段了。返回 importer.py 模块，在 import_data() 函数末尾进行如下修改:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src_spatial_ref</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetSpatialRef</span><span class="p">()</span>
+
+<span class="n">geometry_type</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetLayerDefn</span><span class="p">()</span><span class="o">.</span><span class="n">GetGeomType</span><span class="p">()</span>
+<span class="n">geometry_name</span> <span class="o">=</span> \
+        <span class="n">utils</span><span class="o">.</span><span class="n">ogr_type_to_geometry_name</span><span class="p">(</span><span class="n">geometry_type</span><span class="p">)</span>
+
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">Shapefile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">shapefileName</span><span class="p">,</span>
+                        <span class="n">srs_wkt</span><span class="o">=</span> <span class="n">src_spatial_ref</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">(),</span>
+                        <span class="n">geom_type</span><span class="o">=</span><span class="n">geometry_name</span><span class="p">,</span>
+                        <span class="n">encoding</span><span class="o">=</span><span class="n">character_encoding</span><span class="p">)</span>
+<span class="n">shapefile</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>要使这段代码正常工作，需要在 importer.py 模块顶部添加以下导入语句:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shared.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Shapefile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shared</span><span class="w"> </span><span class="kn">import</span> <span class="n">utils</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we’ve successfully opened the shapefile, we are ready to read the data out
+of it. First off, we’ll create the Shapefile object to represent this imported shapefile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src_spatial_ref</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetSpatialRef</span><span class="p">()</span>
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">Shapefile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">shapefile_name</span><span class="p">,</span>
+                      <span class="n">srs_wkt</span><span class="o">=</span><span class="n">src_spatial_ref</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">(),</span>
+                      <span class="n">geom_type</span><span class="o">=</span><span class="s2">&quot;...&quot;</span><span class="p">,</span>
+                      <span class="n">encoding</span><span class="o">=</span><span class="n">character_encoding</span><span class="p">)</span>
+<span class="n">shapefile</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>As you can see, we get the spatial reference from the shapefile’s layer, and then store
+the shapefile’s name, spatial reference, and encoding into a Shapefile object, which
+we then save into the database. There’s only one glitch: what value are we going to
+store into the geom_type field?</p>
+<p>The geom_type field is supposed to hold the name of the geometry type that this
+shapefile holds. While the OGR shapefile is able to tell us the geometry type as a
+numeric constant, the OGRGeometryTypeToName() function in OGR is not exposed by
+the Python bindings, so we can’t get the name of the geometry directly using OGR.</p>
+<p>To work around this, we’ll implement our own version of
+OGRGeometryTypeToName(). Because we’re going to have a several of these
+functions, we’ll store this in a separate module, which we’ll call utils.py. Go into
+the shared application directory and create a new file called utils.py. Edit this file,
+and add the following to it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ogr</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ogr_type_to_geometry_mname</span><span class="p">(</span><span class="n">ogr_type</span><span class="p">):</span>
+<span class="k">return</span> <span class="p">{</span><span class="n">ogr</span><span class="o">.</span><span class="n">wkbUnknown</span><span class="p">:</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbPoint</span><span class="p">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbLineString</span><span class="p">:</span> <span class="s1">&#39;LineString&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbPolygon</span><span class="p">:</span> <span class="s1">&#39;Polygon&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbMultiPoint</span><span class="p">:</span> <span class="s1">&#39;MultiPoint&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbMultiLineString</span><span class="p">:</span> <span class="s1">&#39;MultiLineString&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbMultiPolygon</span><span class="p">:</span> <span class="s1">&#39;MultiPolygon&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbGeometryCollection</span> <span class="p">:</span> <span class="s1">&#39;GeometryCollection&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbNone</span><span class="p">:</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span>
+        <span class="n">ogr</span><span class="o">.</span><span class="n">wkbLinearRing</span> <span class="p">:</span> <span class="s1">&#39;LinearRing&#39;</span><span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ogr_type</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Every self-respecting Python program should have a utils.py module; it’s about time we added one in the ShapeEditor.</p>
+</div>
+<p>Now that we have our own version of OGRGeometryTypeToName(), we can use this
+to set the geom_type field in the Shapefile object. Go back to the importer.py
+module and make the following changes to the end of your import_data() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">src_spatial_ref</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetSpatialRef</span><span class="p">()</span>
+
+<span class="n">geometry_type</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetLayerDefn</span><span class="p">()</span><span class="o">.</span><span class="n">GetGeomType</span><span class="p">()</span>
+<span class="n">geometry_name</span> <span class="o">=</span> \
+        <span class="n">utils</span><span class="o">.</span><span class="n">ogr_type_to_geometry_name</span><span class="p">(</span><span class="n">geometry_type</span><span class="p">)</span>
+
+<span class="n">shapefile</span> <span class="o">=</span> <span class="n">Shapefile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">shapefileName</span><span class="p">,</span>
+                      <span class="n">srs_wkt</span><span class="o">=</span> <span class="n">src_spatial_ref</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">(),</span>
+                      <span class="n">geom_type</span><span class="o">=</span><span class="n">geometry_name</span><span class="p">,</span>
+                      <span class="n">encoding</span><span class="o">=</span><span class="n">character_encoding</span><span class="p">)</span>
+<span class="n">shapefile</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To make this code work, we’ll have to add the following import statements to the
+top of the importer.py module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shared.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Shapefile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shared</span><span class="w"> </span><span class="kn">import</span> <span class="n">utils</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id8">
+<h3>定义 Shapefile 的属性<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h3>
+<p>Define the shapefile’s attributes</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>既然我们已经创建了表示导入 shapefile 的 Shapefile 对象，接下来的任务就是创建描述 shapefile 属性的 Attribute 对象。我们可以通过查询 OGR shapefile 来实现这一点，在 import_data() 函数末尾添加以下代码:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">layer_def</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetLayerDefn</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer_def</span><span class="o">.</span><span class="n">GetFieldCount</span><span class="p">()):</span>
+    <span class="n">field_def</span> <span class="o">=</span> <span class="n">layer_def</span><span class="o">.</span><span class="n">GetFieldDefn</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">attr</span> <span class="o">=</span> <span class="n">Attribute</span><span class="p">(</span><span class="n">shapefile</span><span class="o">=</span><span class="n">shapefile</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">field_def</span><span class="o">.</span><span class="n">GetName</span><span class="p">(),</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="n">field_def</span><span class="o">.</span><span class="n">GetType</span><span class="p">(),</span>
+                    <span class="n">width</span><span class="o">=</span><span class="n">field_def</span><span class="o">.</span><span class="n">GetWidth</span><span class="p">(),</span>
+                    <span class="n">precision</span><span class="o">=</span><span class="n">field_def</span><span class="o">.</span><span class="n">GetPrecision</span><span class="p">())</span>
+    <span class="n">attr</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>请注意，除了将 Attribute 对象保存到数据库外，我们还在名为 attributes 的变量中创建了这些属性的单独列表。稍后当我们导入每个要素的属性值时将会用到这个列表。</p>
+<p>别忘了在模块顶部添加以下导入语句:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">shapeEditor.shared.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Attribute</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we’ve created the Shapefile object to represent the imported shapefile,
+our next task is to create Attribute objects describing the shapefile’s attributes. We
+can do this by querying the OGR shapefile; add the following code to the end of the
+import_data() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">attributes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">layer_def</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetLayerDefn</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer_def</span><span class="o">.</span><span class="n">GetFieldCount</span><span class="p">()):</span>
+    <span class="n">field_def</span> <span class="o">=</span> <span class="n">layer_def</span><span class="o">.</span><span class="n">GetFieldDefn</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">attr</span> <span class="o">=</span> <span class="n">Attribute</span><span class="p">(</span><span class="n">shapefile</span><span class="o">=</span><span class="n">shapefile</span><span class="p">,</span>
+                     <span class="n">name</span><span class="o">=</span><span class="n">field_def</span><span class="o">.</span><span class="n">GetName</span><span class="p">(),</span>
+                     <span class="nb">type</span><span class="o">=</span><span class="n">field_def</span><span class="o">.</span><span class="n">GetType</span><span class="p">(),</span>
+                     <span class="n">width</span><span class="o">=</span><span class="n">field_def</span><span class="o">.</span><span class="n">GetWidth</span><span class="p">(),</span>
+                     <span class="n">precision</span><span class="o">=</span><span class="n">field_def</span><span class="o">.</span><span class="n">GetPrecision</span><span class="p">())</span>
+    <span class="n">attr</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">attributes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that, as well as saving the Attribute objects into a database, we also create a
+separate list of these attributes in a variable named attributes. We’ll use this later
+on, when we import the attribute values for each feature.</p>
+<p>Don’t forget to add the following import statement to the top of the module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">geodjango.shapeEditor.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Attribute</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id9">
+<h3>存储 Shapefile 的功能<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h3>
+<p>Store the shapefile’s features</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>我们的下一个任务是提取 shapefile 的要素，并将其作为 Feature 对象存入数据库。由于 shapefile 的要素可能使用任何空间参考系，我们需要先将它们转换到我们的内部空间参考系统（EPSG 4326，未投影的经纬度值）才能存储。为此，我们将使用 OGR 的 CoordinateTransformation() 对象。</p>
+<p>以下是扫描 shapefile 要素、提取每个要素的几何图形、将其转换到 EPSG 4326 空间参考系，并转换为 GeoDjango GEOS 几何对象以便存入数据库的代码:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dst_spatial_ref</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
+<span class="n">dst_spatial_ref</span><span class="o">.</span><span class="n">ImportFromEPSG</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>
+
+<span class="n">coord_transform</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">CoordinateTransformation</span><span class="p">(</span><span class="n">src_spatial_ref</span><span class="p">,</span>
+                                            <span class="n">dst_spatial_ref</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()):</span>
+    <span class="n">src_feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">src_geometry</span> <span class="o">=</span> <span class="n">src_feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+    <span class="n">src_geometry</span><span class="o">.</span><span class="n">Transform</span><span class="p">(</span><span class="n">coord_transform</span><span class="p">)</span>
+    <span class="n">geometry</span> <span class="o">=</span> <span class="n">GEOSGeometry</span><span class="p">(</span><span class="n">src_geometry</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>目前为止一切顺利；我们现在有了可以存入 Feature 对象的 GEOS 几何对象。但不幸的是，我们现在面临两个问题。首先，如前一章所述，Shapefile 无法区分 Polygon 和 MultiPolygon（以及 LineString 和 MultiLineString），这意味着我们必须将 Polygon 几何图形包装在 MultiPolygon 中，将 LineString 几何图形包装在 MultiLineString 中，以便 shapefile 中的所有要素都具有相同的几何类型。这有点麻烦，所以我们将编写一个 utils.py 函数来处理这个问题。在 import_data() 函数末尾添加以下代码来包装几何图形:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geometry</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">wrap_geos_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>我们面临的第二个问题是需要确定 Feature 对象中的哪个特定字段将保存我们的几何图形。在定义 Feature 对象时，我们不得不为每种几何类型创建单独的几何字段；现在需要决定使用哪个字段来存储给定类型的几何图形。</p>
+<p>由于我们有时需要包装几何图形，不能简单地使用几何名称来标识字段。这是另一个我们将在 utils.py 中实现的复杂函数。现在，只需在 import_data() 函数末尾添加以下代码:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geometry_field</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">geometry_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>现在我们已经解决了这些问题，终于可以将要素的几何图形存入数据库中的 Feature 对象了:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">args</span><span class="p">[</span><span class="s1">&#39;shapefile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shapefile</span>
+<span class="n">args</span><span class="p">[</span><span class="n">geometry_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">geometry</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+<span class="n">feature</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>注意我们使用关键字参数（<a href="#id10"><span class="problematic" id="id11">**</span></a>args）创建 Feature 对象。这让我们可以用最少的麻烦将几何图形存储到 Feature 对象的正确字段中。替代方案是使用一系列 if…elif…elif 语句，那将会繁琐得多。</p>
+<p>在继续之前，我们最好在 utils.py 模块中实现这两个额外函数。以下是 wrap_geos_geometry() 函数的实现:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">wrap_geos_Geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">geom_type</span> <span class="o">==</span> <span class="s2">&quot;Polygon&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">MultiPolygon</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">geometry</span><span class="o">.</span><span class="n">geom_type</span> <span class="o">==</span> <span class="s2">&quot;LineString&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">MultiLineString</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">geometry</span>
+</pre></div>
+</div>
+<p>以下是 calc_geometry_field() 函数的实现:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calc_geometry_field</span><span class="p">(</span><span class="n">geometry_type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">geometry_type</span> <span class="o">==</span> <span class="s2">&quot;Polygon&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;geom_multipolygon&quot;</span>
+    <span class="k">elif</span> <span class="n">geometry_type</span> <span class="o">==</span> <span class="s2">&quot;LineString&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;geom_multilinestring&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;geom_&quot;</span> <span class="o">+</span> <span class="n">geometry_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>您还需要在 utils.py 模块顶部添加以下导入语句:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.gis.geos.collections</span> \
+    <span class="kn">import</span><span class="w"> </span><span class="nn">MultiPolygon</span><span class="o">,</span><span class="w"> </span><span class="nn">MultiLineString</span>
+</pre></div>
+</div>
+<p>最后，在 importer.py 模块中，您需要添加以下导入语句:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.gis.geos.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">GEOSGeometry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">osr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geodjango.shapeEditor.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Feature</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>Our next task is to extract the shapefile’s features and store them as Feature objects
+in the database. Because the shapefile’s features can be in any spatial reference,
+we need to transform them into our internal spatial reference system (EPSG 4326,
+unprojected latitude, and longitude values) before we can store them. To do this,
+we’ll use an OGR CoordinateTransformation() object.</p>
+<p>Here is how we’re going to scan through the shapefile’s features, extract the geometry
+from each feature, transform it into the EPSG 4326 spatial reference, and convert it into
+a GeoDjango GEOS geometry object so that we can store it into the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dst_spatial_ref</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
+<span class="n">dst_spatial_ref</span><span class="o">.</span><span class="n">ImportFromEPSG</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>
+
+<span class="n">coord_transform</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">CoordinateTransformation</span><span class="p">(</span><span class="n">src_spatial_ref</span><span class="p">,</span>
+                                            <span class="n">dst_spatial_ref</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">GetFeatureCount</span><span class="p">()):</span>
+    <span class="n">src_feature</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">GetFeature</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">src_geometry</span> <span class="o">=</span> <span class="n">src_feature</span><span class="o">.</span><span class="n">GetGeometryRef</span><span class="p">()</span>
+    <span class="n">src_geometry</span><span class="o">.</span><span class="n">Transform</span><span class="p">(</span><span class="n">coord_transform</span><span class="p">)</span>
+    <span class="n">geometry</span> <span class="o">=</span> <span class="n">GEOSGeometry</span><span class="p">(</span><span class="n">src_geometry</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>So far so good; we now have a GEOS geometry object which we can store into the
+Feature object. Unfortunately, we are now faced with a couple of problems. First,
+the inability of Shapefiles to distinguish between Polygons and MultiPolygons (and
+between LineStrings and MultiLineStrings) as described in the previous chapter means
+that we have to wrap a Polygon geometry inside a MultiPolygon, and a LineString
+geometry inside a MultiLineString, so that all the features in the shapefile will have the
+same geometry type. This is kind of messy, so we’ll write a utils.py function to do
+this. Add the following line to the end of your import_data() function (along with
+the code above, if you haven’t already typed this in) to wrap the geometry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geometry</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">wrap_geos_geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The second problem we have is that we need to decide which particular field within
+the Feature object will hold our geometry. When we defined the Feature object, we
+had to create separate geometry fields for each of the geometry types; we now need
+to decide which of these fields will be used to store a given type of geometry.</p>
+<p>Because we sometimes have to wrap up geometries, we can’t simply use the
+geometry name to identify the field. This is another messy function that we’ll
+implement in utils.py. For now, just add the following line to the end of your
+import_data() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">geometry_field</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">calc_geometry_field</span><span class="p">(</span><span class="n">geometry_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that we’ve sorted out these problems, we’re finally ready to store the feature’s
+geometry into a Feature object within the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">args</span><span class="p">[</span><span class="s1">&#39;shapefile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shapefile</span>
+<span class="n">args</span><span class="p">[</span><span class="n">geometry_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">geometry</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+<span class="n">feature</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that we use keyword arguments (<a href="#id12"><span class="problematic" id="id13">**</span></a>args) to create the Feature object. This lets
+us store the geometry into the correct field of the Feature object with a minimum
+of fuss. The alternative, using a series of if…elif…elif statements would have
+been much more tedious.</p>
+<p>Before we move on, we’d better implement those two extra functions in the utils.
+py module. Here is the implementation for the wrap_geos_geometry() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">wrap_geos_Geometry</span><span class="p">(</span><span class="n">geometry</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">geom_type</span> <span class="o">==</span> <span class="s2">&quot;Polygon&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">MultiPolygon</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">geometry</span><span class="o">.</span><span class="n">geom_type</span> <span class="o">==</span> <span class="s2">&quot;LineString&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">MultiLineString</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">geometry</span>
+</pre></div>
+</div>
+<p>Here is the implementation for the calc_geometry_field() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calc_geometry_field</span><span class="p">(</span><span class="n">geometry_type</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">geometry_type</span> <span class="o">==</span> <span class="s2">&quot;Polygon&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;geom_multipolygon&quot;</span>
+    <span class="k">elif</span> <span class="n">geometry_type</span> <span class="o">==</span> <span class="s2">&quot;LineString&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;geom_multilinestring&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;geom_&quot;</span> <span class="o">+</span> <span class="n">geometry_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You’re also going to have to add the following import statement to the top
+of the utils.py module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.gis.geos.collections</span> \
+    <span class="kn">import</span><span class="w"> </span><span class="nn">MultiPolygon</span><span class="o">,</span><span class="w"> </span><span class="nn">MultiLineString</span>
+</pre></div>
+</div>
+<p>Finally, in the importer.py module, you’ll have to add the following
+import statements:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.gis.geos.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">GEOSGeometry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">osr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geodjango.shapeEditor.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Feature</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id14">
+<h3>存储 Shapefile 的属性<a class="headerlink" href="#id14" title="此标题的永久链接">#</a></h3>
+<p>Store the shapefile’s attributes</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>既然我们已经处理了要素的几何图形，现在可以着手导入要素的属性了。基本流程包括遍历属性列表，从 OGR 要素中提取属性值，创建 AttributeValue 对象存储该值，然后保存到数据库:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="n">attr_value</span> <span class="o">=</span> <span class="n">AttributeValue</span><span class="p">(</span><span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span>
+                            <span class="n">attribute</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span>
+                            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">attr_value</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>真正的挑战在于从要素中提取属性值。由于 OGR Feature 对象针对不同字段类型有不同的取值方法，我们需要检查字段类型、调用相应的 GetFieldAs() 方法、将结果值转为字符串，最后存入 AttributeValue 对象。同时还需要正确处理 NULL 值，并处理字符编码问题——所有字符串值都需要从 shapefile 的字符编码转为 Unicode 才能存入数据库。鉴于这些复杂性，我们将在 utils.py 中定义新函数处理核心逻辑，import_data() 只需调用该函数即可。</p>
+<p>注意：由于用户可能选错 shapefile 的字符编码，属性值提取过程可能失败。因此我们需要添加错误处理机制。为此，工具函数 get_ogr_feature_attribute() 将返回 (success, result) 元组，其中 success 仅当属性成功提取时为 True，result 要么是提取的属性值字符串，要么是解释失败原因的报错信息。</p>
+<p>现在将以下代码添加到 import_data() 函数，实现属性值存储及错误处理:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+    <span class="n">success</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_ogr_feature_attribute</span><span class="p">(</span>
+                            <span class="n">attr</span><span class="p">,</span> <span class="n">src_feature</span><span class="p">,</span>
+                            <span class="n">character_encoding</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">)</span>
+        <span class="n">shapefile</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="n">attr_value</span> <span class="o">=</span> <span class="n">AttributeValue</span><span class="p">(</span><span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span>
+                            <span class="n">attribute</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span>
+                            <span class="n">value</span><span class="o">=</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">attr_value</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>注意我们向 get_ogr_feature_attribute() 传入了 Attribute 对象、OGR 要素和字符编码。若出现错误，我们会清理临时文件、删除之前创建的 shapefile 记录，并向调用者返回错误信息。若成功提取属性，则创建新的 AttributeValue 对象并存入数据库。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>注意我们使用 shapefile.delete() 删除部分导入的 shapefile 记录。默认情况下，Django 会自动级联删除通过外键关联的所有记录。这意味着 Shapefile 对象及其关联的 Attribute、Feature 和 AttributeValue 对象都会被删除。仅需一行代码即可彻底清除 shapefile 的所有数据引用。</p>
+</div>
+<p>现在实现 get_ogr_feature_attribute() 函数。将以下代码添加到 utils.py:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">getOGRFeatureAttribute</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
+    <span class="n">attr_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">feature</span><span class="o">.</span><span class="n">IsFieldSet</span><span class="p">(</span><span class="n">attr_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">needs_encoding</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTInteger</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsInteger</span><span class="p">(</span><span class="n">attr_name</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTIntegerList</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsIntegerList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTReal</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDouble</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%*.*f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">attr</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTRealList</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDoubleList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">str_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">str_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%*.*f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+                                        <span class="n">attr</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span>
+                                        <span class="n">value</span><span class="p">))</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">str_Values</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsString</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">needs_encoding</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTStringList</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsStringList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">))</span>
+        <span class="n">needs_encoding</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTDate</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDateTime</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">,</span><span class="n">tzone</span> <span class="o">=</span> <span class="n">parts</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">tzone</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTTime</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDateTime</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">,</span><span class="n">tzone</span> <span class="o">=</span> <span class="n">parts</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">,</span><span class="n">tzone</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTDateTime</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDateTime</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">,</span><span class="n">tzone</span> <span class="o">=</span> <span class="n">parts</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span>
+                                             <span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span>
+                                             <span class="n">second</span><span class="p">,</span><span class="n">tzone</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Unsupported attribute type: &quot;</span> <span class="o">+</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">needs_encoding</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Unable to decode value in &quot;</span> <span class="o">+</span>
+                    <span class="nb">repr</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; attribute.&amp;nbsp; &quot;</span> <span class="o">+</span>
+                    <span class="s2">&quot;Are you sure you&#39;re using the right &quot;</span> <span class="o">+</span>
+                    <span class="s2">&quot;character encoding?&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这段代码主要处理从 OGR 要素提取不同字段类型的繁琐逻辑。不必过分关注细节，其核心思路是提取属性值并转为字符串，必要时进行字符编码转换。</p>
+<p>最后在 importer.py 模块顶部添加导入语句:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">geodjango.shared.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttributeValue</span>
+</pre></div>
+</div>
+<p>（注：修正了函数命名不一致问题，统一使用下划线命名法；优化了日期时间格式化；修正了导入路径以保持项目一致性）</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we’ve dealt with the feature’s geometry, we can now look at importing the
+feature’s attributes. The basic process involves iterating over the attributes, extracting
+the attribute value from the OGR feature, creating an AttributeValue object to store
+the value, and then saving it into the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="o">...</span>
+    <span class="n">attr_value</span> <span class="o">=</span> <span class="n">AttributeValue</span><span class="p">(</span><span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span>
+                                <span class="n">attribute</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span>
+                                <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">attr_value</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The challenge is to extract the attribute value from the feature. Because the OGR
+Feature object has different methods to extract different types of field values,
+we are going to have to check for the different field types, call the appropriate
+GetFieldAs() method, convert the resulting value to a string, and then store this
+string into the AttributeValue object. NULL values will also have to be handled
+appropriately. In addition, we have to deal with character encoding; any string
+values will have to be converted from the shapefile’s character encoding into
+Unicode text so that they can be saved into the database. Because of this complexity,
+we’ll define a new utils.py function to do the hard work, and simply call that
+function from import_data().</p>
+<p>Note that, because the user might have selected the wrong character encoding for
+the shapefile, the process of extracting the attribute value can actually fail. Because
+of this, we have to add error-handling to our code. To support error-handling, our
+utility function, get_ogr_feature_attribute(), will return a (success, result)
+tuple, where success will be true if and only if the attribute was successfully
+extracted, and result will either be the extracted attribute value (as a string),
+or an error message explaining why the operation failed.</p>
+<p>Let’s add the necessary code to our import_data() function to store the
+attribute values into the database and gracefully handle any conversion
+errors that might occur:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">:</span>
+    <span class="n">success</span><span class="p">,</span><span class="n">result</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">getOGRFeatureAttribute</span><span class="p">(</span>
+                                                    <span class="n">attr</span><span class="p">,</span> <span class="n">srcFeature</span><span class="p">,</span>
+                                                    <span class="n">character_encoding</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">)</span>
+        <span class="n">shapefile</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="n">attr_value</span> <span class="o">=</span> <span class="n">AttributeValue</span><span class="p">(</span><span class="n">feature</span><span class="o">=</span><span class="n">feature</span><span class="p">,</span>
+                                <span class="n">attribute</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span>
+                                <span class="n">value</span><span class="o">=</span><span class="n">result</span><span class="p">)</span>
+    <span class="n">attr_value</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that we pass the Attribute object, the OGR feature, and the character encoding
+to the get_ogr_feature_attribute() function. If an error occurs, we clean up the
+temporary files, delete the shapefile we created earlier, and return the error message
+back to the caller. If the attribute was successfully extracted, we create a new
+AttributeValue object with the attribute’s value, and save it into the database.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that we use shapefile.delete() to remove the partially-imported shapefile from the database. By default, Django will also automatically delete any records that are related to the record being deleted through a ForeignKey field. This means that the Shapefile object will be deleted, along with all the related Attribute, Feature, and AttributeValue objects. With one line of code, we can completely remove all references to the shapefile’s data.</p>
+</div>
+<p>Now let’s implement that get_ogr_feature_attribute() function. Add the following to utils.py:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">getOGRFeatureAttribute</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
+    <span class="n">attr_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">feature</span><span class="o">.</span><span class="n">IsFieldSet</span><span class="p">(</span><span class="n">attr_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">needs_encoding</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTInteger</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsInteger</span><span class="p">(</span><span class="n">attr_name</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTIntegerList</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsIntegerList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTReal</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDouble</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%*.*f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">attr</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTRealList</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDoubleList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">str_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">str_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%*.*f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+                                        <span class="n">attr</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span>
+                                        <span class="n">value</span><span class="p">))</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">str_Values</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTString</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsString</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">needs_encoding</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTStringList</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsStringList</span><span class="p">(</span><span class="n">attr_name</span><span class="p">))</span>
+        <span class="n">needs_encoding</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTDate</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDateTime</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">,</span><span class="n">tzone</span> <span class="o">=</span> <span class="n">parts</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">tzone</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTTime</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDateTime</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">,</span><span class="n">tzone</span> <span class="o">=</span> <span class="n">parts</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">,</span><span class="n">tzone</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">attr</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">ogr</span><span class="o">.</span><span class="n">OFTDateTime</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">GetFieldAsDateTime</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">,</span><span class="n">tzone</span> <span class="o">=</span> <span class="n">parts</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">,</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span>
+                                             <span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span>
+                                             <span class="n">second</span><span class="p">,</span><span class="n">tzone</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Unsupported attribute type: &quot;</span> <span class="o">+</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">type</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">needs_encoding</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encoding</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Unable to decode value in &quot;</span> <span class="o">+</span>
+                    <span class="nb">repr</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; attribute.&amp;nbsp; &quot;</span> <span class="o">+</span>
+                    <span class="s2">&quot;Are you sure you&#39;re using the right &quot;</span> <span class="o">+</span>
+                    <span class="s2">&quot;character encoding?&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There’s a lot of ugly code here, relating to the extraction of different field types from
+the OGR feature. Don’t worry too much about these details; the basic concept is that
+we extract the attribute’s value, convert it to a string, and perform character encoding
+on the string if necessary.</p>
+<p>Finally, we’ll have to add the following import statement to the top of the
+importer.py module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">geodjango.shapeEditor.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">AttributeValue</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="id15">
+<h2>清理<a class="headerlink" href="#id15" title="此标题的永久链接">#</a></h2>
+<p>Cleaning up</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>现在我们已经导入了 shapefile 的数据，剩下的就是清理临时文件并告诉调用者导入成功。为此，只需在 <cite>import_data()</cite> 函数的末尾添加以下代码:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">)</span>
+<span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>就这样！</p>
+<p>为了测试这一切，获取一个 TM_WORLD_BORDERS-0.3 shapefile 的 ZIP 文件。你可以使用从 World Borders Dataset 网站下载的原始 ZIP 压缩包，或者重新压缩 shapefile 为一个新的 ZIP 压缩包。然后运行 ShapeEditor，点击 <strong>Import New Shapefile</strong> 按钮，点击 <strong>Browse…</strong> 并选择你要导入的 ZIP 压缩包。</p>
+<p>因为 World Borders Dataset 的特征使用了 Latin1 字符编码，所以你需要确保从弹出菜单中选择此编码。然后点击 <strong>Submit</strong>，等待几秒钟让 shapefile 导入。顺利的话，世界边界数据集将出现在已导入的 shapefiles 列表中：</p>
+<img alt="../_images/430-0.png" class="align-center" src="../_images/430-0.png" />
+<p>如果发生问题，检查错误信息以查看可能的原因。还要回头检查，确保你按照描述的代码正确输入。如果一切顺利，恭喜！你刚刚实现了 ShapeEditor 中最难的部分。从这里开始会更容易了。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that we’ve imported the shapefile’s data, all that’s left is to clean up our
+temporary files and tell the caller that the import succeeded. To do this, simply
+add the following lines to the end of your import_data() function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dst_dir</span><span class="p">)</span>
+<span class="k">return</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>That’s it!</p>
+<p>To test all this out, grab a copy of the TM_WORLD_BORDERS-0.3 shapefile in ZIP file
+format. You can either use the original ZIP archive that you downloaded from the
+World Borders Dataset website, or you can recompress the shapefile into a new ZIP
+archive. Then run the ShapeEditor, click on the <strong>Import New Shapefile</strong> button, click
+on <strong>Browse…</strong> and select the ZIP archive you want to import.</p>
+<p>Because the World Borders Dataset’s features use the Latin1 character encoding, you
+need to make sure that this encoding is selected from the popup menu. Then click on
+<strong>Submit</strong>, and wait a few seconds for the shapefile to be imported. All going well, the
+world borders dataset will appear in the list of imported shapefiles:</p>
+<img alt="../_images/430-0.png" class="align-center" src="../_images/430-0.png" />
+<p>If a problem occurs, check the error message to see what might be wrong.
+Also, go back and make sure you have typed the code in exactly as described.
+If it works, congratulations! You have just implemented the most difficult part
+of the ShapeEditor. It gets easier from here.</p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="exporting.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">导出 shapefiles</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="implementing.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">实现“列出 Shapefile”视图</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">导入 Shapefile</a><ul>
+<li><a class="reference internal" href="#id1">“导入 Shapefile”视图功能</a></li>
+<li><a class="reference internal" href="#id4">提取已上传的 Shapefile</a></li>
+<li><a class="reference internal" href="#id5">导入 Shapefile 的内容</a><ul>
+<li><a class="reference internal" href="#id6">打开 Shapefile</a></li>
+<li><a class="reference internal" href="#id7">将 Shapefile 对象添加到数据库</a></li>
+<li><a class="reference internal" href="#id8">定义 Shapefile 的属性</a></li>
+<li><a class="reference internal" href="#id9">存储 Shapefile 的功能</a></li>
+<li><a class="reference internal" href="#id14">存储 Shapefile 的属性</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id15">清理</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

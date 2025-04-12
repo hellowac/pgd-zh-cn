@@ -1,0 +1,865 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="copyright" title="版权所有" href="../copyright.html" /><link rel="next" title="其他类型地理空间数据的来源" href="other_format.html" /><link rel="prev" title="矢量格式的地理空间数据来源" href="vector_format.html" />
+
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>栅格格式地理空间数据源 - python地理空间开发 1.0 文档</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystyles.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">python地理空间开发 1.0 文档</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">python地理空间开发 1.0 文档</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">内容</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about_author.html">关于作者</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about_reviewers.html">审稿人简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../preface.html">前言</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch1/index.html">1 使用 Python 进行地理空间开发</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/python.html">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/geo_dev.html">地理空间开发</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/applications.html">地理空间开发的应用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/recent_dev.html">最新动态</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch1/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch2/index.html">2 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/core_concepts.html">核心 GIS 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/gis_data_format.html">GIS 数据格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/working.html">手动处理 GIS 数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch2/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch3/index.html">3 用于地理空间开发的 Python 库</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/dealing_proj.html">处理投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/analyzing.html">分析和处理地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/visualizing.html">可视化地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch3/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">4 地理空间数据来源</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="vector_format.html">矢量格式的地理空间数据来源</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">栅格格式地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="other_format.html">其他类型地理空间数据的来源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="choosing_format.html">选择地理空间数据源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch5/index.html">5 使用 Python 处理地理空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/pre-req.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/rw.html">读取和写入地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/changing.html">更改基准和投影</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/representing.html">表示和存储地理空间数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/performing.html">执行地理空间计算</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/converting.html">转换和标准化几何和距离单位</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/exercises.html">练习</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch5/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch6/index.html">6 数据库中的 GIS</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially.html">空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/spatially-indexes.html">空间索引</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/open-source.html">支持空间功能的开源数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/commerical.html">商业空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/recommended.html">建议的最佳做法</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/working.html">使用 Python 处理地理空间数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch6/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch7/index.html">7 使用空间数据</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/about-distal.html">关于 DISTAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/designing.html">设计和构建数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/downloading.html">下载数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/importing-data.html">导入数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/implementing.html">实现 DISTAL 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/aplication.html">应用程序审查和改进</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch7/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch8/index.html">8 使用 Python 和 Mapnik 生成地图</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/introducing.html">Mapnik 简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/creating.html">创建示例地图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapnik.html">Mapnik 深度介绍</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapgenerator.html">重新审视 MapGenerator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/mapdefinition.html">地图定义文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch8/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch9/index.html">9 整合所有要素——完整的地图系统</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/about-shapeditor.html">关于 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/designing-shape.html">设计 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/prerequisites.html">先决条件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/the-structure-ofdjango.html">Django 应用程序的结构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-database.html">设置数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/settingup-shapeeditor.html">设置 ShapeEditor 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-shapeditor.html">定义 ShapeEditor 的应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/creating-shared.html">创建共享应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/defining-datamodel.html">定义数据模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/playing.html">玩转管理系统</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch9/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch10/index.html">10 ShapeEditor – 实现列表视图、导入和导出</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/implementing.html">实现“列出 Shapefile”视图</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/importing.html">导入 Shapefile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/exporting.html">导出 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch10/summary.html">小结</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../ch11/index.html">11 ShapeEditor – 选择和编辑特征</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/selecting.html">选择要编辑的要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/editring.html">编辑要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/adding.html">添加要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting.html">删除要素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/deleting-shapefiles.html">删除 shapefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/using.html">使用 ShapeEditor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/further.html">进一步改进和增强</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ch11/summary.html">小结</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="id1">
+<h1>栅格格式地理空间数据源<a class="headerlink" href="#id1" title="此标题的永久链接">#</a></h1>
+<p>Sources of geospatial data in raster format</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>像Google Earth等程序的最引人入胜的方面之一就是能够“看到”地球，好像你在飞行其中。这是通过显示卫星和航拍照片，经过精心拼接，提供了从上方查看地球表面的错觉。</p>
+<p>虽然编写你自己的Google Earth版本几乎是不可能的任务，但你可以获得免费的卫星影像，这些影像以栅格格式的地理空间数据提供，然后可以在你自己的地理空间应用程序中使用。</p>
+<p>然而，栅格数据不仅仅限于地球表面的影像；还可以在栅格格式中找到其他有用的信息——例如， <strong>数字高程图（DEM）</strong> 包含地球表面每个点的高度，可以用来计算任何所需点的海拔高度。DEM数据还可以用来生成二维图像，通过不同的阴影或颜色表示不同的高度，或使用一种叫做 <strong>阴影起伏影像</strong> 的技术来模拟丘陵的阴影效果。</p>
+<p>在本节中，我们将看一下一个极为全面的卫星影像来源、Natural Earth网站上提供的栅格格式数据，以及一些免费的数字高程数据来源。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>One of the most enthralling aspects of programs such as Google Earth is the ability
+to “see” the Earth as you appear to fly above it. This is achieved by displaying
+satellite and aerial photographs carefully stitched together to provide the illusion
+that you are viewing the Earth’s surface from above.</p>
+<p>While writing your own version of Google Earth would be an almost impossible
+task, it is possible to obtain free satellite imagery in the form of raster format
+geospatial data, which you can then use in your own geospatial applications.</p>
+<p>Raster data is not just limited to images of the Earth’s surface however; other useful
+information can be found in raster format—for example, <strong>digital elevation maps
+(DEM)</strong> contain the height of each point on the Earth’s surface, which can then be
+used to calculate the elevation of any desired point. DEM data can also be used to
+generate two-dimensional images that represent different heights using different
+shades or colors, or to simulate the shading effect of hills using a technique called
+<strong>shaded relief imagery</strong>.</p>
+<p>In this section, we will look at an extremely comprehensive source of satellite
+imagery, the raster-format data available on the Natural Earth site, and some
+freely-available sources of digital elevation data.</p>
+</div>
+</div>
+<section id="landsat">
+<h2>Landsat<a class="headerlink" href="#landsat" title="此标题的永久链接">#</a></h2>
+<p>Landsat</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>Landsat 是一个持续进行的地球表面图像收集项目。这个名称来源于“土地”和“卫星”两个词。自1972年以来，一组专用的卫星持续不断地收集图像。Landsat影像包括黑白图像、传统的红/绿/蓝（RGB）彩色图像，以及红外和热成像。彩色图像的分辨率通常为每像素30米，而来自Landsat 7的黑白图像的分辨率为每像素15米。</p>
+<p>下图展示了新西兰罗托鲁瓦市的彩色校正Landsat卫星影像。市区位于湖泊的南侧（底部边缘）：</p>
+<a class="with-border reference internal image-reference" href="../_images/111-0.png"><img alt="../_images/111-0.png" class="with-border align-center" src="../_images/111-0.png" style="width: 370.5px; height: 329.0px;" /></a>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>Landsat is an ongoing effort to collect images of the Earth’s surface. The name is
+derived from land and satellite. A group of dedicated satellites have been continuously
+gathering images since 1972. Landsat imagery includes black and white, traditional
+red/green/blue (RGB) color images, as well as infrared and thermal imaging. The
+color images are typically at a resolution of 30 meters per pixel, while the black and
+white images from Landsat 7 are at a resolution of 15 meters per pixel.</p>
+<p>The following screenshot shows color-corrected Landsat satellite imagery for the city
+of Rotorua, New Zealand. The city itself is on the southern (bottom) edge of a lake:</p>
+<a class="with-border reference internal image-reference" href="../_images/111-0.png"><img alt="../_images/111-0.png" class="with-border align-center" src="../_images/111-0.png" style="width: 370.5px; height: 329.0px;" /></a>
+</div>
+</div>
+<section id="id2">
+<h3>数据格式<a class="headerlink" href="#id2" title="此标题的永久链接">#</a></h3>
+<p>Data format</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>Landsat 图像通常以 GeoTIFF 文件格式提供。GeoTIFF 是一种带有地理标签的 TIFF 图像文件格式，允许将图像地理参考到地球表面。大多数 GIS 软件和工具，包括 GDAL，都能够读取 GeoTIFF 格式的文件。</p>
+<p>由于这些图像直接来自卫星，您下载的文件通常将数据的不同波段存储在单独的文件中。根据卫星的不同，数据可能包含多达八个不同的波段。例如，Landsat 7 生成独立的红色、绿色和蓝色波段，以及三个不同的红外波段、一个热波段和一个高分辨率的“全色”（黑白）波段。</p>
+<p>为了更好地理解这一过程，让我们仔细看看创建前面截图所需的过程。原始卫星数据由八个单独的 GeoTIFF 文件组成，每个波段一个文件。波段 1 包含蓝色数据，波段 2 包含绿色数据，波段 3 包含红色数据。然后，使用 GDAL 将这些独立的文件组合成一个单一的彩色图像，如下所示：</p>
+<a class="with-border reference internal image-reference" href="../_images/112-0.png"><img alt="../_images/112-0.png" class="with-border align-center" src="../_images/112-0.png" style="width: 630.0px; height: 151.20000000000002px;" /></a>
+<p>另一个 Landsat 数据的复杂性在于，卫星拍摄的图像会受到多种因素的影响，包括地球的椭球形状、所拍摄地形的高度以及拍摄时卫星的方向。因此，原始数据并不完全准确地表示拍摄的特征。幸运的是， <strong>正射校正</strong> （Orthorectification）过程可以用来修正这些失真。在大多数情况下，可以直接下载正射校正后的卫星图像。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>Landsat images are typically available in the form of GeoTIFF files. GeoTIFF is a
+geospatially tagged TIFF image file format, allowing images to be georeferenced
+onto the Earth’s surface. Most GIS software and tools, including GDAL, are able
+to read GeoTIFF formatted files.</p>
+<p>Because the images come directly from a satellite, the files you can download
+typically store separate bands of data in separate files. Depending on the satellite
+the data came from, there can be up to eight different bands of data—for example,
+Landsat 7 generates separate red, green, and blue bands, as well as three different
+infrared bands, a thermal band, and a high-resolution “panchromatic” (black-and-
+white) band.</p>
+<p>To understand how this works, let’s take a closer look at the process required to create
+the preceding screenshot. The raw satellite data consists of eight separate GeoTIFF
+files, one for each band. Band 1 contains the blue color data, band 2 contains the green
+color data, and band 3 contains the red color data. These separate files can then be
+combined using GDAL to produce a single color image as follows:</p>
+<a class="with-border reference internal image-reference" href="../_images/112-0.png"><img alt="../_images/112-0.png" class="with-border align-center" src="../_images/112-0.png" style="width: 630.0px; height: 151.20000000000002px;" /></a>
+<p>Another complication with the Landsat data is that the images produced by the
+satellites are distorted by various factors, including the ellipsoid shape of the
+Earth, the elevation of the terrain being photographed, and the orientation of the
+satellite as the image is taken. The raw data is therefore not a completely accurate
+representation of the features being photographed. Fortunately a process known
+as <strong>orthorectification</strong> can be used to correct these distortions. In most cases,
+orthorectified versions of the satellite images can be downloaded directly.</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h3>获取 Landsat 影像<a class="headerlink" href="#id3" title="此标题的永久链接">#</a></h3>
+<p>Obtaining Landsat imagery</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>获取 Landsat 图像的最简单方法是利用马里兰大学全球土地覆盖设施（Global Land Cover Facility）网站：</p>
+<p><a class="reference external" href="http://glcf.umiacs.umd.edu/data/landsat">http://glcf.umiacs.umd.edu/data/landsat</a></p>
+<p>点击 <strong>Download via Search and Preview Tool</strong> 链接，然后点击 <strong>Map Search</strong>。从 <strong>Landsat Imagery</strong> 列表中选择 <strong>ETM+</strong>，如果您放大到所需的地球区域，您将看到各种 Landsat 图像覆盖的区域：</p>
+<a class="with-border reference internal image-reference" href="../_images/113-0.png"><img alt="../_images/113-0.png" class="with-border align-center" src="../_images/113-0.png" style="width: 561.4px; height: 597.8px;" /></a>
+<p>如果您选择选择工具（ <img alt="inline-image1" src="../_images/113-1.png" /> ），您将能够点击所需区域，然后选择 <strong>Preview &amp; Download</strong> 来选择要下载的图像。</p>
+<p>另外，如果您知道所需区域的路径和行号，您可以通过 FTP 直接访问文件。路径和行号（以及数据使用的 <strong>世界参考系统（WRS）</strong>）可以在 <strong>Preview &amp; Download</strong> 页面找到：</p>
+<a class="with-border reference internal image-reference" href="../_images/114-0.png"><img alt="../_images/114-0.png" class="with-border align-center" src="../_images/114-0.png" style="width: 634.5px; height: 410.0px;" /></a>
+<p>如果您希望通过 FTP 下载图像文件，主 FTP 站点位于：</p>
+<p><a class="reference external" href="ftp://ftp.glcf.umd.edu/glcf/Landsat">ftp://ftp.glcf.umd.edu/glcf/Landsat</a></p>
+<p>这些目录和文件的名称很复杂，其中包含了 WRS、路径和行号、卫星号、图像拍摄日期以及波段号。例如，一个名为 p091r089_7t20001123_z55_nn10.tif.gz 的文件指的是路径 091 和行号 089，这正好是前面截图中提到的塔斯马尼亚部分。数字 7 表示拍摄该图像的 Landsat 卫星号，20001123 是指图像拍摄的日期。文件名的最后部分 nn10 表示该文件是波段 1 的数据。</p>
+<p>通过这种方式解释文件名，您可以下载正确的文件，并匹配所需的波段。有关这些不同的卫星和波段的更多信息，请参阅全球土地覆盖设施网站右上角的文档链接：</p>
+<p><a class="reference external" href="http://glcf.umiacs.umd.edu/data/landsat">http://glcf.umiacs.umd.edu/data/landsat</a></p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>The easiest way to access Landsat imagery is to make use of the University of
+Maryland’s Global Land Cover Facility website:</p>
+<p><a class="reference external" href="http://glcf.umiacs.umd.edu/data/landsat">http://glcf.umiacs.umd.edu/data/landsat</a></p>
+<p>Click on the <strong>Download via Search and Preview Tool</strong> link, and then click on <strong>Map
+Search</strong>. Select <strong>ETM+</strong> from the <strong>Landsat Imagery</strong> list, and if you zoom in on the
+desired part of the Earth you will see the areas covered by various Landsat images:</p>
+<a class="with-border reference internal image-reference" href="../_images/113-0.png"><img alt="../_images/113-0.png" class="with-border align-center" src="../_images/113-0.png" style="width: 561.4px; height: 597.8px;" /></a>
+<p>If you choose the selection tool ( <img alt="inline-image1" src="../_images/113-1.png" /> ), you will be able to click on a desired area, then
+select <strong>Preview &amp; Download</strong> to choose the image to download.</p>
+<p>Alternatively, if you know the path and row number of the desired area of the earth,
+you can directly access the files via FTP. The path and row number (as well as the
+<strong>world reference system (WRS)</strong> used by the data) can be found on the <strong>Preview &amp;
+Download</strong> page:</p>
+<a class="with-border reference internal image-reference" href="../_images/114-0.png"><img alt="../_images/114-0.png" class="with-border align-center" src="../_images/114-0.png" style="width: 634.5px; height: 410.0px;" /></a>
+<p>If you want to download the image files via FTP, the main FTP site is at:</p>
+<p><a class="reference external" href="ftp://ftp.glcf.umd.edu/glcf/Landsat">ftp://ftp.glcf.umd.edu/glcf/Landsat</a></p>
+<p>The directories and files have complex names which include the WRS, the path and
+row number, the satellite number, the date at which the image was taken, and the
+band number. For example, a file named p091r089_7t20001123_z55_nn10.tif.
+gz refers to path 091 and row 089, which happens to be the portion of Tasmania
+highlighted in the preceding screenshot. The 7 refers to the number of the Landsat
+satellite that took the image, and 20001123 is a datestamp indicating when the image
+was taken. The final part of the filename, nn10, tells us that the file is for band 1.</p>
+<p>By interpreting the filename in this way, you can download the correct files, and
+match the files against the desired bands. For more information on what all these
+different satellites and bands mean, refer to the documentation links in the upper
+right-hand corner of the Global Land Cover Facility website:</p>
+<p><a class="reference external" href="http://glcf.umiacs.umd.edu/data/landsat">http://glcf.umiacs.umd.edu/data/landsat</a></p>
+</div>
+</div>
+</section>
+</section>
+<section id="natural-earth">
+<h2>Natural Earth<a class="headerlink" href="#natural-earth" title="此标题的永久链接">#</a></h2>
+<p>Natural Earth</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>除了提供矢量地图数据外，Natural Earth 网站（<a class="reference external" href="http://www.naturalearthdata.com">http://www.naturalearthdata.com</a>）还提供了五种不同类型的栅格地图，分别以 1:1000 万和 1:5000 万的比例尺提供：</p>
+<ul class="simple">
+<li><p>命名较为独特的 <strong>Cross-Blended Hypsometric Tints</strong> 提供了一种基于海拔和气候的颜色选择的可视化效果。这些图像通常与阴影地形图结合使用，呈现出逼真的地球表面效果。</p></li>
+<li><p><strong>Natural Earth 1</strong> 和 <strong>Natural Earth 2</strong> 是更理想化的地球表面视图，使用浅色调和柔和的颜色过渡，是绘制自定义地理数据的理想背景。</p></li>
+<li><p><strong>Ocean Bottom</strong> 数据集结合了阴影地形图和基于深度的颜色绘制，提供了海底的可视化效果。</p></li>
+<li><p><strong>Shaded Relief</strong> 图像使用灰度来“阴影”地球表面，基于高分辨率的海拔数据。</p></li>
+</ul>
+<p>另外，还提供了一种栅格数据集，提供了 1:5000 万比例尺的海底地形（bathymetry）可视化效果。以下截图是围绕新西兰的海洋区域的海底地形数据示例:</p>
+<a class="with-border reference internal image-reference" href="../_images/116-0.png"><img alt="../_images/116-0.png" class="with-border align-center" src="../_images/116-0.png" style="width: 247.0px; height: 260.0px;" /></a>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>In addition to providing vector map data, the Natural Earth website (<a class="reference external" href="http://www.naturalearthdata.com">http://www.naturalearthdata.com</a>) makes available five different types of raster maps at both 1:10 million and 1:50 million scale:</p>
+<ul class="simple">
+<li><p>The rather esoterically-named <strong>Cross-Blended Hypsometric Tints</strong> provide visualizations where the color is selected based on both elevation and climate. These images are then often combined with shaded relief images to make a realistic-looking view of the Earth’s surface.</p></li>
+<li><p><strong>Natural Earth 1</strong> and <strong>Natural Earth 2</strong> are more idealized views of the Earth’s surface, using a light palette and softly-blended colors, providing an excellent backdrop for drawing your own geospatial data.</p></li>
+<li><p>The <strong>Ocean Bottom</strong> dataset uses a combination of shaded relief imagery and depth-based coloring to provide a visualization of the ocean floor.</p></li>
+<li><p>The <strong>Shaded Relief</strong> imagery uses greyscale to “shade” the surface of the Earth based on high-resolution elevation data.</p></li>
+</ul>
+<p>One additional raster dataset is available that provides bathymetry (underwater depth) visualizations at 1:50 million scale. The following screenshot is an example of the bathymetry data for the oceans surrounding New Zealand:</p>
+<a class="with-border reference internal image-reference" href="../_images/116-0.png"><img alt="../_images/116-0.png" class="with-border align-center" src="../_images/116-0.png" style="width: 247.0px; height: 260.0px;" /></a>
+</div>
+</div>
+<section id="id4">
+<h3>数据格式<a class="headerlink" href="#id4" title="此标题的永久链接">#</a></h3>
+<p>Data format</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>大多数 Natural Earth 网站上的栅格格式数据采用标准的 TIFF 图像格式。唯一的例外是海底地形数据，它以分层的 Adobe Photoshop 文件形式提供，每个深度带都使用不同的蓝色阴影表示。</p>
+<p>在所有情况下，栅格数据采用地理（纬度/经度）投影，并使用标准的 WGS84 坐标系统，因此可以方便地在纬度和经度坐标与栅格图像中的像素坐标之间进行转换。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Most of the raster-format data on the Natural Earth site is in the standard TIFF image
+format. The one exception is the bathymetry data, which is provided in the form of
+a layered Adobe Photoshop file with differing shades of blue associated with each
+depth band.</p>
+<p>In all cases, the raster data is in geographic (latitude/longitude) projection, and
+uses the standard WGS84 datum, making it easy to translate between latitude
+and longitude coordinates and pixel coordinates within the raster image.</p>
+</div>
+</div>
+</section>
+<section id="id5">
+<h3>获取和使用 Natural Earth 栅格数据<a class="headerlink" href="#id5" title="此标题的永久链接">#</a></h3>
+<p>Obtaining and using Natural Earth raster data</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>与矢量数据一样，Natural Earth 网站上的栅格格式数据也非常容易下载；只需访问该网站并点击 <strong>Get the Data</strong> 链接来下载栅格格式数据。您可以选择以 1:1000 万或 1:5000 万比例尺下载数据，并且还可以选择下载每个文件的大或小版本。</p>
+<p>下载 TIFF 格式的数据后，您可以在图像编辑器中打开该文件，或使用标准的命令行工具（如 gdal_translate）来处理图像。对于海底地形数据，您可以直接在 Adobe Photoshop 中打开该文件，或者使用 GIMP 或 Flying Meat 的 Acorn 等更便宜的替代工具。每个深度带都是文件中的单独图层，默认情况下与特定的蓝色阴影相关联。如果您更喜欢不同的颜色，也可以进行选择，并选择要显示或隐藏的图层。完成后，您可以将图像压平并将其保存为 TIFF 文件，以便在程序中使用。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>As with the vector data, the raster-format data on the Natural Earth site is easy to
+download; simply go to the site and follow the <strong>Get the Data</strong> link to download the
+raster-format data. You can choose to download the data at either 1:10 million scale,
+or 1:50 million scale, and you can also choose to download the large or small size
+of each file.</p>
+<p>Once you have downloaded the TIFF format data, you can open the file in an image
+editor, or use a standard command-line utility such as gdal_translate to manipulate
+the image. For the bathymetry data, you can open the file directly in Adobe Photoshop,
+or use a cheaper alternative such as the GIMP or Flying Meat’s Acorn. Each depth band
+is a separate layer in the file, and by default is associated with a specific shade of blue.
+You can choose different colors if you prefer, and can select which layers to show or
+hide. When you are finished, you can then flatten the image and save it as a TIFF file
+for use in your programs.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="globe">
+<h2>全球陆地一公里基准高程 (GLOBE)<a class="headerlink" href="#globe" title="此标题的永久链接">#</a></h2>
+<p>Global Land One-kilometer Base Elevation (GLOBE)</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>GLOBE 是一项国际合作项目，旨在为全球范围内生产高质量的中分辨率数字高程（DEM）数据。其结果是提供了一系列免费的 DEM 文件，可用于多种地理空间分析和开发。</p>
+<p>以下截图显示的是针对智利北部的 GLOBE DEM 数据，该数据已被转换为灰度图像：</p>
+<a class="with-border reference internal image-reference" href="../_images/117-0.png"><img alt="../_images/117-0.png" class="with-border align-center" src="../_images/117-0.png" style="width: 384.5px; height: 236.5px;" /></a>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>GLOBE is an international effort to produce high-quality, medium-resolution digital
+elevation (DEM) data for the entire world. The result is a set of freely-available DEM
+files, which can be used for many types of geospatial analysis and development.</p>
+<p>The following screenshot shows GLOBE DEM data for northern Chile, converted to
+a grayscale image:</p>
+<a class="with-border reference internal image-reference" href="../_images/117-0.png"><img alt="../_images/117-0.png" class="with-border align-center" src="../_images/117-0.png" style="width: 384.5px; height: 236.5px;" /></a>
+</div>
+</div>
+<section id="id6">
+<h3>数据格式<a class="headerlink" href="#id6" title="此标题的永久链接">#</a></h3>
+<p>Data format</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>像所有的数字高程模型（DEM）数据一样，GLOBE使用栅格值表示地球表面某一点的海拔高度。在GLOBE的情况下，这些数据由32位带符号整数表示，表示高于（或低于）海平面的高度，单位为米。栅格数据中的每个单元格或“像素”代表地球表面上一个区域的高度，该区域的经度宽度为30弧秒，纬度高度也为30弧秒：</p>
+<a class="with-border reference internal image-reference" href="../_images/118-0.png"><img alt="../_images/118-0.png" class="with-border align-center" src="../_images/118-0.png" style="width: 211.0px; height: 179.0px;" /></a>
+<p>请注意，30弧秒大约等于0.00833度的纬度或经度，这相当于一个大约一公里宽和一公里高的正方形。</p>
+<p>原始的GLOBE数据仅仅是一个由32位整数组成的长列表，采用大端格式读取，栅格单元按从左到右、从上到下的顺序读取，如下所示：</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>x=0, y=0</p></td>
+<td><p>x=1, y=0</p></td>
+<td><p>…</p></td>
+<td><p>x=10800, y=0</p></td>
+</tr>
+<tr class="row-even"><td><p>x=0, y=1</p></td>
+<td><p>x=1, y=1</p></td>
+<td><p>…</p></td>
+<td><p>x=10800, y=1</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>x=0, y=6000</p></td>
+<td><p>x=1, y=6000</p></td>
+<td><p>…</p></td>
+<td><p>x=10800,y=6000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>一个单独的头文件（.hdr）提供了有关DEM数据的更多详细信息，包括宽度、高度和地理参考位置。像GDAL这样的工具可以读取原始数据，只要提供了头文件。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>Like all DEM data, GLOBE uses raster values to represent the elevation at a given point
+on the Earth’s surface. In the case of GLOBE, this data consists of 32-bit signed integers
+representing the height above (or below) sea level, in meters. Each cell or “pixel” within
+the raster data represents the elevation of a square on the Earth’s surface which is 30
+arc-seconds of longitude wide, and 30 arc-seconds of latitude high:</p>
+<a class="with-border reference internal image-reference" href="../_images/118-0.png"><img alt="../_images/118-0.png" class="with-border align-center" src="../_images/118-0.png" style="width: 211.0px; height: 179.0px;" /></a>
+<p>Note that 30 arc-seconds equals approximately 0.00833 degrees of latitude
+or longitude, which equates to a square roughly one kilometer wide and
+one kilometer high.</p>
+<p>The raw GLOBE data is simply a long list of 32-bit integers in big-endian format,
+where the cells are read left-to-right and then top-to-bottom, like this:</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p>x=0, y=0</p></td>
+<td><p>x=1, y=0</p></td>
+<td><p>…</p></td>
+<td><p>x=10800, y=0</p></td>
+</tr>
+<tr class="row-even"><td><p>x=0, y=1</p></td>
+<td><p>x=1, y=1</p></td>
+<td><p>…</p></td>
+<td><p>x=10800, y=1</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>x=0, y=6000</p></td>
+<td><p>x=1, y=6000</p></td>
+<td><p>…</p></td>
+<td><p>x=10800,y=6000</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A separate header (.hdr) file provides more detailed information about the DEM data, including the width and height and its georeferenced location. Tools such as GDAL are able to read the raw data as long as the header file is provided.</p>
+</div>
+</div>
+</section>
+<section id="id7">
+<h3>获取和使用 GLOBE 数据<a class="headerlink" href="#id7" title="此标题的永久链接">#</a></h3>
+<p>Obtaining and using GLOBE data</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>GLOBE 项目的官方网站可以通过以下链接访问：</p>
+<p><a class="reference external" href="http://www.ngdc.noaa.gov/mgg/topo/globe.html">http://www.ngdc.noaa.gov/mgg/topo/globe.html</a></p>
+<p>要查看 GLOBE 数据的详细文档，您可以点击 <strong>Get Data Online</strong> 链接，以下载预先计算好的数据集，或者选择自定义区域下载 DEM 数据。</p>
+<p>如果您下载了一个预先制作的瓦片文件，您还需要下载关联的 <cite>.hdr</cite> 文件，这样数据才能通过 GDAL 进行地理参考和处理。如果选择下载自定义区域，系统将为您创建一个合适的 <cite>*.hdr</cite> 文件—确保您选择的导出类型为 <strong>ESRI ArcView</strong>，这样生成的头文件格式符合 GDAL 的要求。</p>
+<p>如果您下载了预制瓦片文件，找到合适的头文件可能会有些困难。可以从以下链接下载适合的 ESRI 格式头文件：</p>
+<p><a class="reference external" href="http://www.ngdc.noaa.gov/mgg/topo/elev/esri/hdr">http://www.ngdc.noaa.gov/mgg/topo/elev/esri/hdr</a></p>
+<p>下载数据后，只需将原始 DEM 文件与 <cite>.hdr</cite> 文件放入同一目录中。然后，您可以使用 GDAL 直接打开该文件，如下所示:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.gdal</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;j10g.bil&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>此数据集将包含一条栅格数据带，您可以使用 GDAL 库及相关工具进行翻译、读取或处理。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>要查看如何使用 GDAL 处理 DEM 数据的示例，请参考第 3 章《Python 地理空间开发库》中的 GDAL 部分。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>The main website for the GLOBE project can be found at:</p>
+<p><a class="reference external" href="http://www.ngdc.noaa.gov/mgg/topo/globe.html">http://www.ngdc.noaa.gov/mgg/topo/globe.html</a></p>
+<p>For detailed documentation of the GLOBE data, you can follow the <strong>Get Data
+Online</strong> link to download precalculated sets of data or to choose a given area
+to download DEM data for.</p>
+<p>If you download one of the premade tiles, you will need to also download the
+associated .hdr file so that the data can be georeferenced and processed using
+GDAL. If you choose a custom area to download, a suitable <em>.hdr</em> file will be
+created for you—just make sure you choose an export type of <strong>ESRI ArcView</strong>
+so that the header is created in the format expected by GDAL.</p>
+<p>If you download a premade tile, the header files can be quite hard to find.
+Suitable header files in ESRI format can be downloaded from:</p>
+<p><a class="reference external" href="http://www.ngdc.noaa.gov/mgg/topo/elev/esri/hdr">http://www.ngdc.noaa.gov/mgg/topo/elev/esri/hdr</a></p>
+<p>Once you have downloaded the data, simply place the raw DEM file into the
+same directory as the .hdr file. You can then open the file directly using GDAL,
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.gdal</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;j10g.bil&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The dataset will consist of a single band of raster data, which you can then translate,
+read or process using the GDAL library and related tools.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>To see an example of using GDAL to process DEM data, please refer to the GDAL section in Chapter 3, Python Libraries for Geospatial Development.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ned">
+<h2>国家高程数据集 (NED)<a class="headerlink" href="#ned" title="此标题的永久链接">#</a></h2>
+<p>National Elevation Dataset (NED)</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>National Elevation Dataset (NED) 是由美国地质调查局（USGS）提供的高分辨率数字高程数据集。它涵盖了美国本土、阿拉斯加、夏威夷和其他美国领土。美国大部分地区的高程数据分辨率为每像素 30 米或 10 米，某些区域提供每像素 3 米的分辨率。而阿拉斯加的高程数据通常只提供每像素 60 米的分辨率。</p>
+<p>以下截图是使用 NED 高程数据生成的阴影地形图，展示的是旧金山马林半岛（Marin Headlands）的地形：</p>
+<a class="with-border reference internal image-reference" href="../_images/120-0.png"><img alt="../_images/120-0.png" class="with-border align-center" src="../_images/120-0.png" style="width: 681.0px; height: 435.5px;" /></a>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>The National Elevation Dataset (NED) is a high-resolution digital elevation dataset
+provided by the US Geological Survey. It covers the Continental United States, Alaska,
+Hawaii, and other US territories. Most of the United States is covered by elevation
+data at 30 meters/pixel or 10 meters/pixel resolution, with selected areas available
+at 3 meters/pixel. Alaska is generally only available at 60 meters/pixel resolution.</p>
+<p>The following shaded relief screenshot was generated using NED elevation data for
+the Marin Headlands, San Francisco:</p>
+<a class="with-border reference internal image-reference" href="../_images/120-0.png"><img alt="../_images/120-0.png" class="with-border align-center" src="../_images/120-0.png" style="width: 681.0px; height: 435.5px;" /></a>
+</div>
+</div>
+<section id="id8">
+<h3>数据格式<a class="headerlink" href="#id8" title="此标题的永久链接">#</a></h3>
+<p>Data format</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>NED 数据可以以多种格式下载，包括 GeoTIFF 和 ArcGRID，这些格式都可以使用 GDAL 进行处理。</p>
+<p>与其他 DEM 数据一样，栅格图像中的每个“像素”代表地球表面某个区域的高度。对于 NED 数据，高度是相对于 1988 年北美垂直基准（North American Vertical Datum of 1988，NAVD88）的米数。这大致等同于海平面以上或以下的高度，考虑到了潮汐和其他变化。</p>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>The NED data can be downloaded in various formats including GeoTIFF and
+ArcGRID, both of which can be processed using GDAL.</p>
+<p>As with other DEM data, each “pixel” in the raster image represents the height of a
+given area on the Earth’s surface. For NED data, the height is in meters above or below
+a reference height known as the North American Vertical Datum of 1988. This roughly
+equates to the height above or below sea level, allowing for tidal and other variations.</p>
+</div>
+</div>
+</section>
+<section id="id9">
+<h3>获取和使用 NED 数据<a class="headerlink" href="#id9" title="此标题的永久链接">#</a></h3>
+<p>Obtaining and using NED data</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>国家地形数据集（NED）的主要网站可以在以下链接找到：</p>
+<p><a class="reference external" href="http://ned.usgs.gov">http://ned.usgs.gov</a></p>
+<p>该网站介绍了 NED 数据集；要下载数据，您需要使用 <strong>National Map Viewer</strong>，其链接为：</p>
+<p><a class="reference external" href="http://viewer.nationalmap.gov/viewer/">http://viewer.nationalmap.gov/viewer/</a></p>
+<p>使用该查看器时，您可以缩放到所需区域，然后点击页面顶部的 <strong>Download Data</strong> 选项：</p>
+<p>点击该选项后，您可以根据当前地图范围进行下载，并选择 <strong>Elevation</strong> 作为您要下载的数据类型。您可以从多种数据格式中选择；GeoTIFF 是一个不错的选择。然后会弹出一个窗口，展示您可以下载的不同高程数据集：</p>
+<p>从 National Map Viewer 下载数据的过程有点像在线购物：您将所需的项添加到“购物车”，然后“结账”，输入您的电子邮件地址。提交订单后，您会收到一封电子邮件，其中包含数据下载链接。</p>
+<p>遗憾的是，National Map Viewer 的数据处理速度比较慢，您可能需要等待几分钟才能开始下载数据。</p>
+<p>您将收到一个压缩的 <em>.zip</em> 格式文件，里面包含您所需的数据以及大量的元数据文件和关于 NED 数据集的文档。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请注意，在打开文件之前，可能需要重命名文件以删除反斜杠，否则 GDAL 可能无法正确读取包含反斜杠的文件名。</p>
+</div>
+<p>下载完所需的 GeoTIFF 文件后，您可以像打开其他栅格数据集一样，在 GDAL 中打开它:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.gdal</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;dem.tif&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>最后，如果您正在处理 DEM 数据，您可以查看 <strong>gdaldem</strong> 工具，它是 GDAL 下载包的一部分。此程序使您能够轻松地查看和处理 DEM 栅格数据。前面的阴影显示图像就是通过此工具创建的，命令如下:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdaldem</span> <span class="n">hillshade</span> <span class="n">dem</span><span class="o">.</span><span class="n">tif</span> <span class="n">image</span><span class="o">.</span><span class="n">tiff</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>The main website for the National Elevation Dataset can be found at:</p>
+<p><a class="reference external" href="http://ned.usgs.gov">http://ned.usgs.gov</a></p>
+<p>This site describes the NED dataset; to download the data you’ll have to use the
+National Map Viewer, which is available at:</p>
+<p><a class="reference external" href="http://viewer.nationalmap.gov/viewer/">http://viewer.nationalmap.gov/viewer/</a></p>
+<p>To use the viewer, zoom in to the area you want, and then click on the <strong>Download
+Data</strong> option at the top of the page:</p>
+<img alt="../_images/120-1.png" class="with-border align-center" src="../_images/120-1.png" />
+<p>Click on this option to download by the current map extent, and select <strong>Elevation</strong> as the data you want to download. You can choose from a variety of data formats; GeoTIFF is a good option to use. A window then appears to show the various sets of elevation data you can download:</p>
+<a class="with-border reference internal image-reference" href="../_images/121-0.png"><img alt="../_images/121-0.png" class="with-border align-center" src="../_images/121-0.png" style="width: 434.7px; height: 440.1px;" /></a>
+<p>Downloading data from the National Map Viewer is a bit like buying something online: you add the desired item to your “cart”, then you “checkout” your order and enter your e-mail address. Once you “place your order”, you’ll be sent an e-mail with links to where you can download the data you need.</p>
+<p>Unfortunately, the National Map Viewer is quite slow to make the data available;
+expect to spend several minutes waiting for the data to start downloading.</p>
+<p>You will receive a compressed <em>.zip</em> format file containing the data you want,
+along with a large number of metadata files and documentation about the
+National Elevation Dataset.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Note that you might need to rename the files to remove the backslashes before you can open them; GDAL can get confused by filenames with backslashes.</p>
+</div>
+<p>Once you have downloaded the desired GeoTIFF files, you can open them in GDAL just as you would open any other raster dataset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">osgeo.gdal</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">osgeo</span><span class="o">.</span><span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;dem.tif&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, if you are working with DEM data you might like to check out the gdaldem utility, which is included as part of the GDAL download. This program makes it easy to view and manipulate DEM raster data. The preceding shaded relief screenshot was created using this utility, like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gdaldem</span> <span class="n">hillshade</span> <span class="n">dem</span><span class="o">.</span><span class="n">tif</span> <span class="n">image</span><span class="o">.</span><span class="n">tiff</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="other_format.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">其他类型地理空间数据的来源</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="vector_format.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">矢量格式的地理空间数据来源</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                <a href="../copyright.html">Copyright</a> &#169; 2025, Erik Westra
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">栅格格式地理空间数据源</a><ul>
+<li><a class="reference internal" href="#landsat">Landsat</a><ul>
+<li><a class="reference internal" href="#id2">数据格式</a></li>
+<li><a class="reference internal" href="#id3">获取 Landsat 影像</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#natural-earth">Natural Earth</a><ul>
+<li><a class="reference internal" href="#id4">数据格式</a></li>
+<li><a class="reference internal" href="#id5">获取和使用 Natural Earth 栅格数据</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#globe">全球陆地一公里基准高程 (GLOBE)</a><ul>
+<li><a class="reference internal" href="#id6">数据格式</a></li>
+<li><a class="reference internal" href="#id7">获取和使用 GLOBE 数据</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ned">国家高程数据集 (NED)</a><ul>
+<li><a class="reference internal" href="#id8">数据格式</a></li>
+<li><a class="reference internal" href="#id9">获取和使用 NED 数据</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/tabs.js"></script>
+    <script src="../_static/translations.js"></script>
+    </body>
+</html>

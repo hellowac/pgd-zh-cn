@@ -65,9 +65,9 @@ Working with GIS data manually
             print "Layer %d has %d features:" % (layerNum, numFeatures)
             print
 
-        for featureNum in range(numFeatures):
-            feature = layer.GetFeature(featureNum)
-            featureName = feature.GetField("NAME")
+            for featureNum in range(numFeatures):
+                feature = layer.GetFeature(featureNum)
+                featureName = feature.GetField("NAME")
             
         print "Feature %d has name %s" % (featureNum, featureName)
 
@@ -214,8 +214,9 @@ Working with GIS data manually
                     results['north'] = (x,y)
                 if results['south'] == None or results['south'][1] > y:
                     results['south'] = (x,y)
-                for i in range(geometry.GetGeometryCount()):
-                    findPoints(geometry.GetGeometryRef(i), results)
+            
+            for i in range(geometry.GetGeometryCount()):
+                findPoints(geometry.GetGeometryRef(i), results)
 
             shapefile = osgeo.ogr.Open("tl_2012_us_state.shp")
             layer = shapefile.GetLayer(0)
